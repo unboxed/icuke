@@ -1,8 +1,8 @@
 = iCuke
 
 iCuke allows you to test an iPhone application by embedding a HTTP server inside the simulated process at
-runtime. Cucumber steps are provided can check for the presence of text on the iPhone simulators screen and
-emulate user actions such as touching/typing.
+runtime. Cucumber steps are provided which can check for the presence of text on the iPhone simulator's screen
+and emulate user actions such as touching/typing.
 
 No modifications changes are required to iPhone applications which you wish to test, however, the steps rely on
 the presence of accurate Accessibility information in the iPhone application. This comes for free if you are
