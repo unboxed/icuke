@@ -12,12 +12,17 @@ begin
     gem.authors = ["Rob Holland"]
     gem.add_development_dependency "cucumber", ">= 0"
     gem.extensions = ['ext/iCuke/Rakefile']
-    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
+    gem.files += ['ext/iCuke/libicuke.dylib']
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
   puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
 end
+
+file 'app/iCuke/build/Debug-iphonesimulator/iCuke.app/iCuke' do
+  sh 'cd app/iCuke && xcodebuild -target iCuke -configuration Debug -sdk iphonesimulator3.1.2'
+end
+task :features => 'app/iCuke/build/Debug-iphonesimulator/iCuke.app/iCuke'
 
 begin
   require 'cucumber/rake/task'

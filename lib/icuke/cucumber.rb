@@ -47,7 +47,7 @@ end
 Given /^"([^\"]*)" is loaded in the simulator(?: using sdk (.*))?$/ do |application, sdk|
   launch File.expand_path(application),
          :sdk => sdk,
-         :env => { 'DYLD_INSERT_LIBRARIES' => '/Users/robholland/Development/Unboxed/icuke/lib/preload/iCuke/libicuke.dylib' }
+         :env => { 'DYLD_INSERT_LIBRARIES' => File.expand_path(File.dirname(__FILE__) + '/../../ext/iCuke/libicuke.dylib') }
 end
 
 Then /^I should see "([^\"]*)"$/ do |text|
