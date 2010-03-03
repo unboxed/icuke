@@ -41,6 +41,7 @@ Gem::Specification.new do |s|
      "app/iCuke/iCuke.xcodeproj/project.pbxproj",
      "app/iCuke/iCuke_Prefix.pch",
      "app/iCuke/main.m",
+     "ext/iCuke/.gitignore",
      "ext/iCuke/Rakefile",
      "ext/iCuke/brominet/NSObject+ClassName.h",
      "ext/iCuke/brominet/NSObject+ClassName.m",

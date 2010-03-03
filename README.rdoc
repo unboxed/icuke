@@ -1,6 +1,17 @@
 = iCuke
 
-Description goes here.
+iCuke allows you to test an iPhone application by embedding a HTTP server inside the simulated process at
+runtime. Cucumber steps are provided can check for the presence of text on the iPhone simulators screen and
+emulate user actions such as touching/typing.
+
+No modifications changes are required to iPhone applications which you wish to test, however, the steps rely on
+the presence of accurate Accessibility information in the iPhone application. This comes for free if you are
+using standard UIKit classes. If you find your steps are failing you should check what accessibility information
+is available from your app (the "show me the screen" step should help with this).
+
+In order to use iCuke you should install the gem and add "require 'icuke/cucumber'" to one of your cucumber
+support files (env.rb, for example). This will load iCuke's cucumber step definitions for you to use in your
+features.
 
 == Note on Patches/Pull Requests
  
