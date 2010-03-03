@@ -1,0 +1,30 @@
+require 'rake/clean'
+
+SDK_VERSION = '3.1.2'
+SDK_ROOT = "/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator#{SDK_VERSION}.sdk"
+CFLAGS = '-arch i386 -pipe -std=c99'
+SDK_CFLAGS = "-isysroot #{SDK_ROOT} -D__IPHONE_OS_VERSION_MIN_REQUIRED=30000"
+CC = '/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2'
+
+rule '.o' => '.m' do |o|
+  sh "#{CC} -I. -c -o #{o.name} -x objective-c #{CFLAGS} #{SDK_CFLAGS} #{o.source}"
+end
+
+file 'iCukeServer.o' => 'iCukeServer.m' do |o|
+  sh "#{CC} -I. -Ibrominet -Icocoahttpserver -c -o #{o.name} -x objective-c #{CFLAGS} #{o.prerequisites.join(' ')}"
+end
+
+file 'iCukeHTTPConnection.o' => 'iCukeHTTPConnection.m' do |o|
+  sh "#{CC} -I. -Ibrominet -Icocoahttpserver -c -o #{o.name} -x objective-c #{CFLAGS} #{SDK_CFLAGS} #{o.prerequisites.join(' ')}"
+end
+
+CLEAN.include('**/*.o')
+
+file 'libicuke.dylib' => FileList['**/*.m'].ext('.o') do |t|
+  sh "#{CC} -dynamiclib -o #{t.name} #{CFLAGS} #{SDK_CFLAGS} -framework Foundation -framework UIKit -framework CFNetwork #{t.prerequisites.join(' ')}"
+end
+
+CLEAN.include('libicuke.dylib')
+
+task :install => 'libicuke.dylib'
+task :default => :install
