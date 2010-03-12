@@ -25,7 +25,8 @@
 	paths = [fileManager contentsOfDirectoryAtPath: preferences error: NULL];
 	for (NSString *path in paths) {
 		if (![path hasPrefix: @"."]) {
-			unlink([path cStringUsingEncoding: [NSString defaultCStringEncoding]]);
+			NSLog(@"Removing: %@", path);
+			unlink([[preferences stringByAppendingPathComponent: path] cStringUsingEncoding: [NSString defaultCStringEncoding]]);
 		}
 	}
 
@@ -33,7 +34,8 @@
 	paths = [fileManager contentsOfDirectoryAtPath: documents error: NULL];
 	for (NSString *path in paths) {
 		if (![path hasPrefix: @"."]) {
-			unlink([path cStringUsingEncoding: [NSString defaultCStringEncoding]]);
+			NSLog(@"Removing: %@", path);
+			unlink([[documents stringByAppendingPathComponent: path] cStringUsingEncoding: [NSString defaultCStringEncoding]]);
 		}
 	}
 
