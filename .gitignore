@@ -1,21 +1,13 @@
 ## MAC OS
 .DS_Store
 
-## TEXTMATE
-*.tmproj
-tmtags
+## SVN
 
-## EMACS
-*~
-\#*
-.\#*
-
-## VIM
-*.swp
+.svn
 
 ## PROJECT::GENERAL
-coverage
 rdoc
 pkg
 
 ## PROJECT::SPECIFIC
+events.plist

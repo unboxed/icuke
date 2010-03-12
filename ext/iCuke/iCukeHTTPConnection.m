@@ -9,63 +9,147 @@
 #import <UIKit/UIKit.h>
 
 #import "HTTPResponse.h"
-#import "ScriptRunner.h"
 #import "iCukeHTTPConnection.h"
+#import "Viewer.h"
+#import "Recorder.h"
+#import "JSON.h"
+
+typedef struct {
+	unsigned char index;
+	unsigned char index2;
+	unsigned char type;
+	unsigned char flags;
+	float sizeX;
+	float sizeY;
+	float x;
+	float y;
+	int x6;
+} gs_path_info_t;
+
+typedef struct {
+	int type;
+	short deltaX;
+	short deltaY;
+	float x3;
+	float x4;
+	float pinch1;
+	float pinch2;
+	float averageX;
+	float averageY;
+	unsigned char x9_1;
+	unsigned char pathCount;
+	unsigned char x9_3;
+	unsigned char x9_4;
+} gs_hand_info_t;
 
 @implementation iCukeHTTPConnection
 
-- (UIView *)findView:(NSString *)address
-{
-  UIView *view = (UIView *)[address integerValue];
-
-  if ([view isKindOfClass:[UIView class]]) {
-    return view;
-  } else {
-    return nil;
-  }
-}
-
 - (NSObject<HTTPResponse> *)httpResponseForMethod:(NSString *)method URI:(NSString *)path
 {
-  ScriptRunner *runner = [[ScriptRunner alloc] init];
+	NSLog(@"Request: %@", path);
 
-  NSLog(@"Request: %@", path);
+	if ([path hasPrefix:@"/quit"]) {
+		exit(EXIT_SUCCESS);
+	} else if ([path hasPrefix:@"/view"]) {
+		NSData *browseData = [[[Viewer sharedViewer] screen] dataUsingEncoding:NSUTF8StringEncoding];
+		return [[[HTTPDataResponse alloc] initWithData:browseData] autorelease];
+	} else if ([path hasPrefix:@"/record"]) {
+		[[Recorder sharedRecorder] record];
 
-  if ([path isEqualToString:@"/view"])
-  {
-    NSString *result = [runner outputView];
-    [runner release];
+		NSData *browseData = [@"" dataUsingEncoding:NSUTF8StringEncoding];
+		return [[[HTTPDataResponse alloc] initWithData:browseData] autorelease];
+	} else if ([path hasPrefix:@"/save"]) {
+		NSDictionary *parameters = [self parseRequestQuery];
+		
+		[[Recorder sharedRecorder] saveToFile: [parameters objectForKey: @"file"]];
 
-    NSData *browseData = [result dataUsingEncoding:NSUTF8StringEncoding];
-    return [[[HTTPDataResponse alloc] initWithData:browseData] autorelease];
-  }
-  else if ([path hasPrefix:@"/touch/"]) {
-    NSString *address = [path lastPathComponent];
-    if ([address length] > 0) {
-      UIView *view = [self findView:address];
-      if (!view) {
-        NSLog(@"Unknown address requested: %d", address);
-        return nil;
-      }
+		NSData *browseData = [@"" dataUsingEncoding:NSUTF8StringEncoding];
+		return [[[HTTPDataResponse alloc] initWithData:browseData] autorelease];
+	} else if ([path hasPrefix:@"/load"]) {
+		NSDictionary *parameters = [self parseRequestQuery];
 
-      [runner simulateTouch:view hitTest: YES];
+		[[Recorder sharedRecorder] loadFromFile: [parameters objectForKey: @"file"]];
 
-      NSString *result = [runner outputView];
-      [runner release];
+		NSData *browseData = [@"" dataUsingEncoding:NSUTF8StringEncoding];
+		return [[[HTTPDataResponse alloc] initWithData:browseData] autorelease];
+	} else if ([path hasPrefix:@"/play"]) {
+		[[Recorder sharedRecorder] play];
 
-      NSData *response = [result dataUsingEncoding:NSUTF8StringEncoding];
-      return [[[HTTPDataResponse alloc] initWithData:response] autorelease];
-    }
-  }
+		NSData *browseData = [@"" dataUsingEncoding:NSUTF8StringEncoding];
+		return [[[HTTPDataResponse alloc] initWithData:browseData] autorelease];
+	} else if ([path hasPrefix:@"/stop"]) {
+		[[Recorder sharedRecorder] stop];
 
-  return nil;
+		NSData *browseData = [@"" dataUsingEncoding:NSUTF8StringEncoding];
+		return [[[HTTPDataResponse alloc] initWithData:browseData] autorelease];
+	} else if ([path hasPrefix:@"/event"]) {
+		NSDictionary *parameters = [self parseRequestQuery];
+		id parsed_json = [[parameters objectForKey: @"json"] JSONValue];
+		NSArray *events;
+
+		if ([parsed_json isKindOfClass:[NSDictionary class]]) {
+			events = [NSArray arrayWithObject: parsed_json];
+		} else {
+			events = parsed_json;
+		}
+
+		for (NSMutableDictionary *event in events) {
+			gs_hand_info_t hand_info;
+
+			bzero(&hand_info, sizeof(hand_info));
+
+			NSMutableDictionary *data = [event objectForKey: @"Data"];
+
+			hand_info.type = [[data objectForKey: @"Type"] integerValue];
+			NSDictionary *delta = [data objectForKey: @"Delta"];
+			hand_info.deltaX = [[delta objectForKey: @"X"] shortValue];
+			hand_info.deltaY = [[delta objectForKey: @"Y"] shortValue];
+			hand_info.averageX = [[[delta objectForKey: @"WindowLocation"] objectForKey: @"X"] floatValue];
+			hand_info.averageY = [[[delta objectForKey: @"WindowLocation"] objectForKey: @"Y"] floatValue];
+
+			NSArray *points = [data objectForKey: @"Paths"];
+
+			hand_info.pathCount = (unsigned char)[points count];
+
+			NSMutableData *raw_data = [NSMutableData dataWithBytes: &hand_info length: sizeof(hand_info)];
+
+			int index = hand_info.pathCount == 1 ? 2 : 1;
+
+			for (NSDictionary *point in points) {
+				gs_path_info_t path_info;
+
+				bzero(&path_info, sizeof(path_info));
+
+				path_info.index = path_info.index2 = index++;
+				path_info.type = hand_info.type == 6 ? 1 : 2;
+				path_info.sizeX = [[[point objectForKey: @"Size"] objectForKey: @"X"] floatValue];
+				path_info.sizeY = [[[point objectForKey: @"Size"] objectForKey: @"Y"] floatValue];
+				path_info.x = [[[point objectForKey: @"Location"] objectForKey: @"X"] floatValue];
+				path_info.y = [[[point objectForKey: @"Location"] objectForKey: @"Y"] floatValue];
+
+				[raw_data appendBytes: &path_info length: sizeof(path_info)];
+			}
+
+			[event setObject: raw_data forKey: @"Data"];
+
+			NSLog(@"Built event data:    %@", [event objectForKey: @"Data"]);
+		}
+
+		[[Recorder sharedRecorder] load: events];
+		[[Recorder sharedRecorder] play];
+
+		NSData *browseData = [@"" dataUsingEncoding:NSUTF8StringEncoding];
+		return [[[HTTPDataResponse alloc] initWithData:browseData] autorelease];
+	}
+
+	return nil;
 }
 
 - (NSData *)preprocessResponse:(CFHTTPMessageRef)response
 {
-  CFHTTPMessageSetHeaderFieldValue(response, CFSTR("Content-Type"), CFSTR("text/xml"));
+	CFHTTPMessageSetHeaderFieldValue(response, CFSTR("Content-Type"), CFSTR("text/xml"));
 
-  return [super preprocessResponse:response];
+	return [super preprocessResponse:response];
 }
 
 @end

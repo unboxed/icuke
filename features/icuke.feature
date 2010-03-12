@@ -3,10 +3,15 @@ Feature: Developer tests an application
   As a developer
   I want to use some shiney cucumber steps
   
-  Scenario: Developer basks in iPhone step goodness
+  Background:
     Given "app/iCuke/build/Debug-iphonesimulator/iCuke.app" is loaded in the simulator
+  
+  Scenario: Press buttons and see stuff
     Then I should see "iCuke"
-    When I press "About"
+    When I tap "About"
     Then I should see "About"
-    When I press "Done"
+    When I tap "Done"
     Then I should see "iCuke"
+
+  Scenario: Type into a textfield
+    Then I type "foo" in "Input"

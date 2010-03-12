@@ -1,17 +1,39 @@
 = iCuke
 
-iCuke allows you to test an iPhone application by embedding a HTTP server inside the simulated process at
-runtime. Cucumber steps are provided which can check for the presence of text on the iPhone simulator's screen
-and emulate user actions such as touching/typing.
+iCuke allows you to test an iPhone application with cucumber. It provides a selection of step definitions similar to
+those provided for testing web applications.
 
-No modifications changes are required to iPhone applications which you wish to test, however, the steps rely on
-the presence of accurate Accessibility information in the iPhone application. This comes for free if you are
-using standard UIKit classes. If you find your steps are failing you should check what accessibility information
-is available from your app (the "show me the screen" step should help with this).
+iCuke provides an XML version of the iPhone's screen and the ability to simulate events such as taps or typing. This
+is done via a HTTP interface which iCuke attaches to your application process.
 
-In order to use iCuke you should install the gem and add "require 'icuke/cucumber'" to one of your cucumber
-support files (env.rb, for example). This will load iCuke's cucumber step definitions for you to use in your
-features.
+iCuke requires no code changes to your application to work, however, it relies on accessibility information to
+function sensibly.
+
+If your application can be used via the VoiceOver screen reader then iCuke should not have any problems. Please see
+the apple documentation on making your application Accessible for more details on how to ensure iCuke will work with
+your application.
+
+== Usage
+
+Install the gem and load the iCuke step definitions in a cucumber support file:
+
+require 'icuke/cucumber'
+
+Write some scenarios like:
+
+Background:
+  Given "app/iCuke/build/Debug-iphonesimulator/iCuke.app" is loaded in the simulator
+
+Scenario: User views the About screen
+  When I tap "About"
+  Then I should see "Author:"
+
+== Bugs
+
+iCuke does not currently automate enabling the Accessibility Inspecter, which is required to be running for iCuke to
+function. I am still deciding how best to achieve this is in a reliable fashion.
+
+iCuke does not support drags, scrolling or pinches yet. They'll be here soon!
 
 == Note on Patches/Pull Requests
  

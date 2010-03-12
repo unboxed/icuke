@@ -8,7 +8,7 @@
 
 #import "HTTPServer.h"
 
-@interface iCukeServer : NSObject {
+@interface iCukeServer : HTTPServer {
 }
 
 + (void) start;

@@ -41,6 +41,8 @@
 - (BOOL)supportsMethod:(NSString *)method atPath:(NSString *)path;
 - (BOOL)expectsRequestBodyFromMethod:(NSString *)method atPath:(NSString *)relativePath;
 
+- (NSDictionary *)parseRequestQuery;
+
 - (BOOL)isSecureServer;
 - (NSArray *)sslIdentityAndCertificates;
 
