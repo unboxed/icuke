@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Rob Holland"]
-  s.date = %q{2010-03-03}
+  s.date = %q{2010-03-12}
   s.description = %q{Cucumber support for iPhone applications}
   s.email = %q{rob@the-it-refinery.co.uk}
   s.extensions = ["ext/iCuke/Rakefile"]
@@ -37,23 +37,18 @@ Gem::Specification.new do |s|
      "app/iCuke/FlipsideView.xib",
      "app/iCuke/MainView.xib",
      "app/iCuke/MainWindow.xib",
+     "app/iCuke/SniffingView.h",
+     "app/iCuke/SniffingView.m",
      "app/iCuke/iCuke-Info.plist",
      "app/iCuke/iCuke.xcodeproj/project.pbxproj",
      "app/iCuke/iCuke_Prefix.pch",
      "app/iCuke/main.m",
      "ext/iCuke/.gitignore",
      "ext/iCuke/Rakefile",
-     "ext/iCuke/brominet/NSObject+ClassName.h",
-     "ext/iCuke/brominet/NSObject+ClassName.m",
-     "ext/iCuke/brominet/ScriptRunner.h",
-     "ext/iCuke/brominet/ScriptRunner.m",
-     "ext/iCuke/brominet/TouchSynthesis.h",
-     "ext/iCuke/brominet/TouchSynthesis.m",
-     "ext/iCuke/brominet/UIApplication+XMLDescription.h",
-     "ext/iCuke/brominet/UIApplication+XMLDescription.m",
-     "ext/iCuke/brominet/UIView+XMLDescription.h",
-     "ext/iCuke/brominet/UIView+XMLDescription.m",
-     "ext/iCuke/brominet/XMLDescription.h",
+     "ext/iCuke/Recorder.h",
+     "ext/iCuke/Recorder.m",
+     "ext/iCuke/Viewer.h",
+     "ext/iCuke/Viewer.m",
      "ext/iCuke/cocoahttpserver/AsyncSocket.h",
      "ext/iCuke/cocoahttpserver/AsyncSocket.m",
      "ext/iCuke/cocoahttpserver/DDData.h",
@@ -77,12 +72,26 @@ Gem::Specification.new do |s|
      "ext/iCuke/iCukeHTTPConnection.m",
      "ext/iCuke/iCukeServer.h",
      "ext/iCuke/iCukeServer.m",
+     "ext/iCuke/json/JSON.h",
+     "ext/iCuke/json/NSObject+SBJSON.h",
+     "ext/iCuke/json/NSObject+SBJSON.m",
+     "ext/iCuke/json/NSString+SBJSON.h",
+     "ext/iCuke/json/NSString+SBJSON.m",
+     "ext/iCuke/json/SBJSON.h",
+     "ext/iCuke/json/SBJSON.m",
+     "ext/iCuke/json/SBJsonBase.h",
+     "ext/iCuke/json/SBJsonBase.m",
+     "ext/iCuke/json/SBJsonParser.h",
+     "ext/iCuke/json/SBJsonParser.m",
+     "ext/iCuke/json/SBJsonWriter.h",
+     "ext/iCuke/json/SBJsonWriter.m",
      "ext/iCuke/libicuke.dylib",
      "features/icuke.feature",
      "features/support/env.rb",
      "iCuke.gemspec",
      "lib/icuke.rb",
      "lib/icuke/cucumber.rb",
+     "lib/icuke/simulate.rb",
      "lib/icuke/simulator.rb"
   ]
   s.homepage = %q{http://github.com/robholland/iCuke}
