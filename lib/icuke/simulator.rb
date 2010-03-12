@@ -5,7 +5,7 @@ require 'curb'
 module ICuke
   class Simulator < OSX::NSObject
     include OSX
-
+    
     BASE_URL = 'http://localhost:50000'
     
     class FailedToStart < RuntimeError; end
@@ -37,7 +37,7 @@ module ICuke
       sdk_root = begin
         if options[:sdk]
           OSX::DTiPhoneSimulatorSystemRoot.knownRoots.find do |root|
-            root.sdkVersion == SDK_VERSION
+            root.sdkVersion == options[:sdk]
           end
         else
           OSX::DTiPhoneSimulatorSystemRoot.defaultRoot
