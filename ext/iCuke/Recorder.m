@@ -55,7 +55,7 @@ static Recorder *sharedRecorder = nil;
 }
 
 -(void)recordApplicationEvent:(NSDictionary*)event {
-	NSLog(@"Recorded event data: %@", [event objectForKey: @"Data"]);
+	NSLog(@"Recorded event: %@", event);
 
 	[eventList addObject:event];
 }

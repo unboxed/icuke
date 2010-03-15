@@ -35,31 +35,46 @@ class ICukeWorld
     Curl::Easy.http_get(BASE_URL + "/record")
   end
   
-  def tap(label, pause = 1)
-    unless frame = page.xpath(%Q{//*[(contains(@traits, "button") or contains(@traits, "updates_frequently") or contains(@traits, "keyboard_key")) and @label="#{label}"]/frame}).first
+  def tap(label, options = {}, &block)
+    options = {
+      :pause => true
+    }.merge(options)
+    
+    unless element = page.xpath(%Q{//*[(contains(@traits, "button") or contains(@traits, "updates_frequently") or contains(@traits, "keyboard_key")) and @label="#{label}" and frame]}).first
       raise %Q{No element labelled "#{label}" found in: #{response}}
     end
+    
+    # This seems brittle, revist how to fetch the frame without relying on it being the only child
+    frame = element.child
     
     # Hit the element in the middle
     x = frame['x'].to_f + (frame['width'].to_f / 2)
     y = frame['y'].to_f + (frame['height'].to_f / 2)
     
-    Curl::Easy.http_get(BASE_URL + "/event?json=#{Tap.new(x, y).to_json}")
+    Curl::Easy.http_get(BASE_URL + "/event?json=#{Tap.new(x, y, options).to_json}")
     
-    sleep(pause)
+    sleep(options[:pause] ? 1 : 0.2)
     
     refresh
+    
+    yield element if block_given?
   end
   
   def type(textfield, text)
-    tap(textfield)
+    tap(textfield, :hold_for => 0.75) do |field|
+      if field['value']
+        tap('Select All')
+        tap('Delete')
+      end
+    end
+    
     text.split('').each do |c|
       tried_next_keyboard = false
       begin
-        tap(c.downcase, 0)
+        tap(c.downcase, :pause => false)
       rescue Exception => e
         begin
-          tap('next keyboard', 0)
+          tap('next keyboard', :pause => false)
           tried_next_keyboard = true
           retry
         rescue

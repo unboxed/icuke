@@ -4,12 +4,23 @@ module ICuke
   module Simulate
     module Events
       class Event
-        def self.event_time
-          @time = @time.to_i + 1
+        attr_reader :hold_for, :event_time, :options
+        
+        def initialize(options = {})
+          @options = options
+          @hold_for = options[:hold_for] || 0.2
+          
+          @event_time = self.class.event_time
+          
+          self.class.hold_for(hold_for)
         end
         
-        def event_time
-          self.class.event_time
+        def self.event_time
+          @time.to_i
+        end
+        
+        def self.hold_for(seconds)
+          @time = @time.to_i + (seconds * 1_000_000_000)
         end
       end
       
@@ -27,7 +38,9 @@ module ICuke
         
         attr_accessor :type, :paths
         
-        def initialize(type, paths)
+        def initialize(type, paths, options = {})
+          super(options)
+          
           @type = type
           @paths = paths
         end
@@ -62,16 +75,18 @@ module ICuke
 
     module Gestures
       class Tap
-        attr_accessor :x, :y
+        attr_accessor :x, :y, :options
         
-        def initialize(x, y)
+        def initialize(x, y, options = {})
+          @options = options
+          
           @x = x
           @y = y
         end
         
         def to_json(*a)
           [
-            ICuke::Simulate::Events::Touch.new(:down, [[x, y]]),
+            ICuke::Simulate::Events::Touch.new(:down, [[x, y]], options),
             ICuke::Simulate::Events::Touch.new(:up, [[x, y]])
           ].to_json(*a)
         end
