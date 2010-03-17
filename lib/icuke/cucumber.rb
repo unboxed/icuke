@@ -113,6 +113,12 @@ Then /^I should see "([^\"]*)"$/ do |text|
   end
 end
 
+Then /^I should not see "([^\"]*)"$/ do |text|
+  unless page.xpath("//*[contains(., '#{text}') or contains(@label, '#{text}') or contains(@value, '#{text}')]").empty?
+    raise %Q{Content "#{text}" was found but was not expected in: #{response}}
+  end
+end
+
 When /^I tap "([^\"]*)"$/ do |label|
   tap(label)
 end
