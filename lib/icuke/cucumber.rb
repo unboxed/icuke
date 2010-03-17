@@ -28,11 +28,11 @@ class ICukeWorld
   end
   
   def response
-    @response ||= Curl::Easy.http_get(BASE_URL + '/view').body_str
+    @response ||= @simulator.view
   end
   
   def record
-    Curl::Easy.http_get(BASE_URL + "/record")
+    @simulator.record
   end
   
   def tap(label, options = {}, &block)
@@ -51,7 +51,7 @@ class ICukeWorld
     x = frame['x'].to_f + (frame['width'].to_f / 2)
     y = frame['y'].to_f + (frame['height'].to_f / 2)
     
-    Curl::Easy.http_get(BASE_URL + "/event?json=#{Tap.new(x, y, options).to_json}")
+    @simulator.fire_event(Tap.new(x, y, options))
     
     sleep(options[:pause] ? 1 : 0.2)
     
@@ -83,6 +83,10 @@ class ICukeWorld
       end
     end
     tap('Return')
+  end
+  
+  def set_application_defaults(defaults)
+    @simulator.set_defaults(defaults)
   end
   
   private

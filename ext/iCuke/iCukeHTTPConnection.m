@@ -53,6 +53,24 @@ typedef struct {
 	} else if ([path hasPrefix:@"/view"]) {
 		NSData *browseData = [[[Viewer sharedViewer] screen] dataUsingEncoding:NSUTF8StringEncoding];
 		return [[[HTTPDataResponse alloc] initWithData:browseData] autorelease];
+	} else if ([path hasPrefix:@"/defaults"]) {
+		NSUserDefaults *user_defaults = [NSUserDefaults standardUserDefaults];
+		id json = [[self parseRequestQuery] objectForKey:@"json"];
+
+		if (!json) {
+			NSDictionary *defaults = [user_defaults dictionaryRepresentation];
+
+			NSData *browseData = [[defaults JSONRepresentation] dataUsingEncoding:NSUTF8StringEncoding];
+			return [[[HTTPDataResponse alloc] initWithData:browseData] autorelease];
+		} else {
+			id parsed_json = [json JSONValue];
+
+			NSEnumerator *enumerator = [parsed_json keyEnumerator];
+			id key;
+			while ((key = [enumerator nextObject])) {
+				[user_defaults setObject: [parsed_json objectForKey: key] forKey: key];
+			}
+		}
 	} else if ([path hasPrefix:@"/record"]) {
 		[[Recorder sharedRecorder] record];
 

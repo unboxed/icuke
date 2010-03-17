@@ -1,12 +1,12 @@
 require 'osx/cocoa'
 OSX.require_framework '/Developer/Platforms/iPhoneSimulator.platform/Developer/Library/PrivateFrameworks/iPhoneSimulatorRemoteClient.framework'
-require 'curb'
+require 'httparty'
 
 module ICuke
   class Simulator < OSX::NSObject
     include OSX
-    
-    BASE_URL = 'http://localhost:50000'
+    include HTTParty
+    base_uri 'http://localhost:50000'
     
     class FailedToStart < RuntimeError; end
     
@@ -66,20 +66,46 @@ module ICuke
     end
     
     def quit
-      Curl::Easy.http_get(BASE_URL + '/quit')
-    rescue Curl::Err::GotNothingError
+      get '/quit'
+    rescue EOFError
+    end
+    
+    def view
+      get('/view')
+    end
+    
+    def record
+      get '/record'
+    end
+    
+    def stop
+      get '/stop'
     end
     
     def save(path)
-      Curl::Easy.http_get(BASE_URL + "/save?file=#{path}")
+      get '/save', :query => { :file => path }
     end
     
     def load(path)
-      Curl::Easy.http_get(BASE_URL + "/load?file=#{path}")
+      get '/load', :query => { :file => path }
     end
     
     def play
-      Curl::Easy.http_get(BASE_URL + '/play')
+      get '/play'
+    end
+    
+    def fire_event(event)
+      get '/event', :query => { :json => event.to_json }
+    end
+    
+    def set_defaults(defaults)
+      get '/defaults', :query => { :json => defaults.to_json }
+    end
+    
+    private
+    
+    def get(path, options = {})
+      self.class.get(path, options).body
     end
   end
 end
