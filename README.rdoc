@@ -9,6 +9,10 @@ is done via a HTTP interface which iCuke attaches to your application process.
 iCuke requires no code changes to your application to work, however, it relies on accessibility information to
 function sensibly.
 
+iCuke uses applescript to drive Xcode in order to launch the application into the iPhone Simulator. It is intended
+that iCuke will leave your Xcode project configuration (such as active target/configuration) as it found it. Please
+let us know if that is not the case.
+
 If your application can be used via the VoiceOver screen reader then iCuke should not have any problems. Please see
 the apple documentation on making your application Accessible for more details on how to ensure iCuke will work with
 your application.
@@ -22,7 +26,7 @@ require 'icuke/cucumber'
 Write some scenarios like:
 
 Background:
-  Given "app/iCuke/build/Debug-iphonesimulator/iCuke.app" is loaded in the simulator
+  Given "iCuke" from "app/iCuke/iCuke.xcodeproj" is loaded in the simulator
 
 Scenario: User views the About screen
   When I tap "About"
