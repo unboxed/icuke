@@ -1,4 +1,3 @@
-require 'curb'
 require 'nokogiri'
 
 require 'icuke/simulator'
@@ -6,8 +5,6 @@ require 'icuke/simulate'
 
 class ICukeWorld
   include ICuke::Simulate::Gestures
-  
-  BASE_URL = 'http://localhost:50000'
   
   attr_reader :response
   
@@ -101,10 +98,12 @@ World do
   ICukeWorld.new
 end
 
-Given /^"([^\"]*)" is loaded in the simulator(?: using sdk (.*))?$/ do |project, sdk|
+LIBICUKE = File.expand_path(File.dirname(__FILE__) + '/../../ext/iCuke/libicuke.dylib')
+
+Given /^(?:"([^\"]*)" from )?"([^\"]*)" is loaded in the simulator(?: using sdk (.*))?$/ do |target, project, sdk|
   launch File.expand_path(project),
-         # :sdk => sdk,
-         :env => { 'DYLD_INSERT_LIBRARIES' => File.expand_path(File.dirname(__FILE__) + '/../../ext/iCuke/libicuke.dylib') }
+         :target => target,
+         :env => { 'DYLD_INSERT_LIBRARIES' => LIBICUKE }
 end
 
 Then /^I should see "([^\"]*)"$/ do |text|

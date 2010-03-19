@@ -8,16 +8,29 @@ module ICuke
     base_uri 'http://localhost:50000'
     
     def launch(project_file, options = {})
+      options = {
+        :target => nil,
+        :configuration => 'Debug'
+      }.merge(options)
+      
       # If we don't kill the simulator first the rest of this function becomes
       # a no-op and we don't land on the applications first page
       simulator = Appscript.app('iPhone Simulator.app')
       simulator.quit if simulator.is_running?
-
+      
       xcode = Appscript.app('Xcode.app')
       xcode.launch
       xcode.open project_file
       project = xcode.active_project_document.project
-      # Currently runs whichever target is active, this should be configurable
+      
+      initial_build_configuration_type = project.active_build_configuration_type.get
+      project.active_build_configuration_type.set project.build_configuration_types[options[:configuration]]
+      
+      if options[:target]
+        initial_target = project.active_target.get
+        project.active_target.set project.targets[options[:target]]
+      end
+      
       executable = project.active_executable.get
       options[:env].each_pair do |name, value|
         executable.make :new => :environment_variable,
@@ -32,6 +45,14 @@ module ICuke
           sleep(0.1)
           retry
         end
+      end
+    ensure
+      # Restore the active build settings
+      if initial_build_configuration_type
+        project.active_build_configuration_type.set initial_build_configuration_type
+      end
+      if initial_target
+        project.active_target.set initial_target
       end
     end
     
