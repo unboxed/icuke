@@ -4,7 +4,7 @@ Feature: Developer tests an application
   I want to use some shiney cucumber steps
   
   Background:
-    Given "app/iCuke/build/Debug-iphonesimulator/iCuke.app" is loaded in the simulator
+    Given "app/iCuke/iCuke.xcodeproj" is loaded in the simulator
   
   Scenario: Press buttons and see stuff
     Then I should see "iCuke"

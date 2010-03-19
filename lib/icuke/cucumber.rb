@@ -101,9 +101,9 @@ World do
   ICukeWorld.new
 end
 
-Given /^"([^\"]*)" is loaded in the simulator(?: using sdk (.*))?$/ do |application, sdk|
-  launch File.expand_path(application),
-         :sdk => sdk,
+Given /^"([^\"]*)" is loaded in the simulator(?: using sdk (.*))?$/ do |project, sdk|
+  launch File.expand_path(project),
+         # :sdk => sdk,
          :env => { 'DYLD_INSERT_LIBRARIES' => File.expand_path(File.dirname(__FILE__) + '/../../ext/iCuke/libicuke.dylib') }
 end
 
@@ -133,11 +133,4 @@ end
 
 Then /^show me the screen$/ do
   puts response
-end
-
-After do |scenario|
-  # Leave the application on-screen to help debug the failure. This is only
-  # useful if this is the last scenario run though, so if you want to make use
-  # of this run the failing scenario on it's own.
-  quit unless scenario.failed?
 end

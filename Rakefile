@@ -11,6 +11,8 @@ begin
     gem.homepage = "http://github.com/robholland/iCuke"
     gem.authors = ["Rob Holland"]
     gem.add_development_dependency "cucumber", ">= 0"
+    gem.add_dependency "rb-appscript", ">= 0"
+    gem.add_dependency "httparty", ">= 0"
     gem.extensions = ['ext/iCuke/Rakefile']
     gem.files += ['ext/iCuke/libicuke.dylib']
   end

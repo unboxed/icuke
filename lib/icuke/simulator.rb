@@ -1,73 +1,42 @@
-require 'osx/cocoa'
-OSX.require_framework '/Developer/Platforms/iPhoneSimulator.platform/Developer/Library/PrivateFrameworks/iPhoneSimulatorRemoteClient.framework'
 require 'httparty'
+require 'appscript'
+require 'timeout'
 
 module ICuke
-  class Simulator < OSX::NSObject
-    include OSX
+  class Simulator
     include HTTParty
     base_uri 'http://localhost:50000'
     
-    class FailedToStart < RuntimeError; end
-    
-    objc_method :session_didStart_withError, 'v@:@i@'
-    def session_didStart_withError(session, started, error)
-      unless started == 1
-        raise FailedToStart, error
+    def launch(project_file, options = {})
+      # If we don't kill the simulator first the rest of this function becomes
+      # a no-op and we don't land on the applications first page
+      simulator = Appscript.app('iPhone Simulator.app')
+      simulator.quit if simulator.is_running?
+
+      xcode = Appscript.app('Xcode.app')
+      xcode.launch
+      xcode.open project_file
+      project = xcode.active_project_document.project
+      # Currently runs whichever target is active, this should be configurable
+      executable = project.active_executable.get
+      options[:env].each_pair do |name, value|
+        executable.make :new => :environment_variable,
+                        :with_properties => { :name => name, :value => value, :active => true }
       end
-      CFRunLoopStop(CFRunLoopGetCurrent())
-    end
-    
-    objc_method :session_didEndWithError, 'v@:@@'
-    def session_didEndWithError(session, error)
-      raise FailedToStart, error if error
-    end
-    
-    def launch(application, options = {})
-      options = {
-        :sdk => nil,
-        :client_name => 'Cucumber',
-        :args => [],
-        :env => { },
-        :debugger => false
-      }.merge!(options)
+      project.launch_
       
-      spec = OSX::DTiPhoneSimulatorApplicationSpecifier.specifierWithApplicationPath application
-      
-      sdk_root = begin
-        if options[:sdk]
-          OSX::DTiPhoneSimulatorSystemRoot.knownRoots.find do |root|
-            root.sdkVersion == options[:sdk]
-          end
-        else
-          OSX::DTiPhoneSimulatorSystemRoot.defaultRoot
+      Timeout::timeout(30) do
+        begin
+          view
+        rescue Errno::ECONNREFUSED
+          sleep(0.1)
+          retry
         end
       end
-      
-      config = OSX::DTiPhoneSimulatorSessionConfig.alloc.init
-      config.setApplicationToSimulateOnStart spec
-      config.setSimulatedSystemRoot sdk_root
-      config.setSimulatedApplicationShouldWaitForDebugger options[:debugger]
-      config.setSimulatedApplicationLaunchArgs options[:args]
-      config.setSimulatedApplicationLaunchEnvironment options[:env]
-      config.setLocalizedClientName options[:client_name]
-      
-      session = OSX::DTiPhoneSimulatorSession.alloc.init
-      session.setDelegate self
-      session.setSimulatedApplicationPID OSX::NSNumber.numberWithInt 35
-      result, error = session.requestStartWithConfig_timeout_error config, 30
-      
-      if !result
-        raise FailedToStart, error
-      end
-      
-      # Spin until we get a callback indicating success/failure
-      OSX::CFRunLoopRun()
     end
     
     def quit
-      get '/quit'
-    rescue EOFError
+      Appscript.app('iPhone Simulator.app').quit
     end
     
     def view
