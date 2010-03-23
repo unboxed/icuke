@@ -57,7 +57,7 @@ class ICukeWorld
     yield element if block_given?
   end
   
-  def type(textfield, text)
+  def type(textfield, text, options = {})
     tap(textfield, :hold_for => 0.75) do |field|
       if field['value']
         tap('Select All')
@@ -66,19 +66,22 @@ class ICukeWorld
     end
     
     text.split('').each do |c|
-      tried_next_keyboard = false
+      next_keyboard_keys = ['shift', 'next keyboard', 'shift']
+      
       begin
-        tap(c.downcase, :pause => false)
+        tap(c, :pause => false)
       rescue Exception => e
-        begin
-          tap('next keyboard', :pause => false)
-          tried_next_keyboard = true
-          retry
-        rescue
-          raise e
+        until next_keyboard_keys.empty?
+          begin
+            tap(next_keyboard_keys.shift, :pause => false)
+            retry
+          rescue
+          end
         end
+        raise e
       end
     end
+    
     tap('Return')
   end
   

@@ -14,4 +14,4 @@ Feature: Developer tests an application
     Then I should see "iCuke"
 
   Scenario: Type into a textfield
-    Then I type "foo" in "Input"
+    Then I type "fOo@Oo" in "Input"
