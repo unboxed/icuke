@@ -81,8 +81,17 @@ class ICukeWorld
         raise e
       end
     end
-    
-    tap('Return')
+
+    # From UIReturnKeyType
+    # Should probably sort these in rough order of likelyhood?
+    return_keys = ['return', 'go', 'google', 'join', 'next', 'route', 'search', 'send', 'yahoo', 'done', 'emergency call']
+    return_keys.each do |key|
+      begin
+        tap(key)
+        return
+      rescue
+      end
+    end
   end
   
   def set_application_defaults(defaults)
