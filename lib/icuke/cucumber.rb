@@ -173,7 +173,7 @@ When /^I type "([^\"]*)" in "([^\"]*)"$/ do |text, textfield|
   type(textfield, text)
 end
 
-When /^I scroll (down|up)(?: to "([^\"]*)")?$/ do |direction, text|
+When /^I scroll (down|up|left|right)(?: to "([^\"]*)")?$/ do |direction, text|
   if text
     scroll_to(text, :direction => direction.to_sym)
   else
