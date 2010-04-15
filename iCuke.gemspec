@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{iCuke}
-  s.version = "0.3.2"
+  s.version = "0.4.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Rob Holland"]
-  s.date = %q{2010-03-23}
+  s.date = %q{2010-04-15}
   s.description = %q{Cucumber support for iPhone applications}
   s.email = %q{rob@the-it-refinery.co.uk}
   s.extensions = ["ext/iCuke/Rakefile"]
@@ -44,32 +44,24 @@ Gem::Specification.new do |s|
      "app/iCuke/iCuke_Prefix.pch",
      "app/iCuke/main.m",
      "ext/iCuke/.gitignore",
+     "ext/iCuke/DefaultsResponse.h",
+     "ext/iCuke/DefaultsResponse.m",
+     "ext/iCuke/EventResponse.h",
+     "ext/iCuke/EventResponse.m",
      "ext/iCuke/Rakefile",
      "ext/iCuke/Recorder.h",
      "ext/iCuke/Recorder.m",
+     "ext/iCuke/RecorderResponse.h",
+     "ext/iCuke/RecorderResponse.m",
+     "ext/iCuke/SynthesizeSingleton.h",
+     "ext/iCuke/ViewResponse.h",
+     "ext/iCuke/ViewResponse.m",
      "ext/iCuke/Viewer.h",
      "ext/iCuke/Viewer.m",
-     "ext/iCuke/cocoahttpserver/AsyncSocket.h",
-     "ext/iCuke/cocoahttpserver/AsyncSocket.m",
-     "ext/iCuke/cocoahttpserver/DDData.h",
-     "ext/iCuke/cocoahttpserver/DDData.m",
-     "ext/iCuke/cocoahttpserver/DDNumber.h",
-     "ext/iCuke/cocoahttpserver/DDNumber.m",
-     "ext/iCuke/cocoahttpserver/DDRange.h",
-     "ext/iCuke/cocoahttpserver/DDRange.m",
-     "ext/iCuke/cocoahttpserver/HTTPAsyncFileResponse.h",
-     "ext/iCuke/cocoahttpserver/HTTPAsyncFileResponse.m",
-     "ext/iCuke/cocoahttpserver/HTTPAuthenticationRequest.h",
-     "ext/iCuke/cocoahttpserver/HTTPAuthenticationRequest.m",
-     "ext/iCuke/cocoahttpserver/HTTPConnection.h",
-     "ext/iCuke/cocoahttpserver/HTTPConnection.m",
-     "ext/iCuke/cocoahttpserver/HTTPResponse.h",
-     "ext/iCuke/cocoahttpserver/HTTPResponse.m",
-     "ext/iCuke/cocoahttpserver/HTTPServer.h",
-     "ext/iCuke/cocoahttpserver/HTTPServer.m",
-     "ext/iCuke/cocoahttpserver/LICENSE.txt",
-     "ext/iCuke/iCukeHTTPConnection.h",
-     "ext/iCuke/iCukeHTTPConnection.m",
+     "ext/iCuke/iCukeHTTPResponseHandler.h",
+     "ext/iCuke/iCukeHTTPResponseHandler.m",
+     "ext/iCuke/iCukeHTTPServer.h",
+     "ext/iCuke/iCukeHTTPServer.m",
      "ext/iCuke/iCukeServer.h",
      "ext/iCuke/iCukeServer.m",
      "ext/iCuke/json/JSON.h",
