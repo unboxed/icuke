@@ -41,7 +41,7 @@ class ICukeWorld
       :pause => true
     }.merge(options)
     
-    element ||= page.xpath(%Q{//*[(contains(@traits, "button") or contains(@traits, "updates_frequently") or contains(@traits, "keyboard_key")) and @label="#{label}" and frame]}).first
+    element = page.xpath(%Q{//*[(contains(@traits, "button") or contains(@traits, "updates_frequently") or contains(@traits, "keyboard_key")) and @label="#{label}" and frame]}).first
     
     unless element
       raise %Q{No element labelled "#{label}" found in: #{response}}
