@@ -36,16 +36,18 @@ class ICukeWorld
     page.xpath("//*[contains(., '#{text}') or contains(@label, '#{text}') or contains(@value, '#{text}')][frame[@x!='-0.000000']]").any?
   end
   
+  def onscreen?(x, y)
+    return x >= 0 && y >= 0 && x < 320 && y < 480
+  end
+  
   def tap(label, options = {}, &block)
     options = {
       :pause => true
     }.merge(options)
     
-    element = page.xpath(%Q{//*[(contains(@traits, "button") or contains(@traits, "updates_frequently") or contains(@traits, "keyboard_key")) and @label="#{label}" and frame]}).first
+    element = page.xpath(%Q{//*[(contains(@traits, "button") or contains(@traits, "updates_frequently") or contains(@traits, "keyboard_key") or contains(@traits, "link")) and (@label="#{label}" or @value="#{label}") and frame]}).first
     
-    unless element
-      raise %Q{No element labelled "#{label}" found in: #{response}}
-    end
+    raise %Q{No element labelled "#{label}" found in: #{response}} unless element
     
     # This seems brittle, revist how to fetch the frame without relying on it being the only child
     frame = element.child
@@ -53,6 +55,8 @@ class ICukeWorld
     # Hit the element in the middle
     x = frame['x'].to_f + (frame['width'].to_f / 2)
     y = frame['y'].to_f + (frame['height'].to_f / 2)
+    
+    raise %Q{Element "#{label}" is off screen in: #{response}} unless onscreen?(x, y)
     
     @simulator.fire_event(Tap.new(x, y, options))
     
@@ -81,6 +85,8 @@ class ICukeWorld
     @simulator.fire_event(Swipe.new(x, y, x2, y2, options))
     
     sleep(1)
+    
+    refresh
   end
   
   def type(textfield, text, options = {})
