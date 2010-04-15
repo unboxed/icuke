@@ -64,13 +64,19 @@ class ICukeWorld
   end
   
   def swipe(direction, options = {})
-    modifier = direction == :up ? -1 : 1
+    modifier = [:up, :left].include?(direction) ? -1 : 1
 
     # Just swipe from the middle of an iPhone-dimensioned screen for now
     x = 320 / 2
     y = 480 / 2
     x2 = x
-    y2 = y + (100 * modifier)
+    y2 = y
+
+    if [:up, :down].include?(direction)
+      y2 = y + (100 * modifier)
+    else
+      x2 = x + (100 * modifier)
+    end
     
     @simulator.fire_event(Swipe.new(x, y, x2, y2, options))
     
@@ -115,17 +121,16 @@ class ICukeWorld
   end
   
   def scroll_to(text, options = {})
-    # Switch directions because we swipe in the opposite direction to the way we want to scroll
-    direction = options.delete(:direction) == :down ? :up : :down
     previous_response = response.dup
     while page.xpath("//*[contains(., '#{text}') or contains(@label, '#{text}') or contains(@value, '#{text}')]").empty? do
-      swipe(direction)
+      scroll(options[:direction])
       raise %Q{Content "#{text}" not found in: #{response}} if response == previous_response
     end
   end
   
   def scroll(direction)
-    swipe(direction == :down ? :up : :down)
+    swipe_directions = { :up => :down, :down => :up, :left => :right, :right => :left }
+    swipe(swipe_directions[direction])
   end
   
   def set_application_defaults(defaults)

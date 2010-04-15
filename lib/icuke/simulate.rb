@@ -106,8 +106,11 @@ module ICuke
         
         def to_json(*a)
           events = [ICuke::Simulate::Events::Touch.new(:down, [[x, y]], options.merge(:hold_for => 0.015))]
-          (y .. y2).step(25) do |i|
-            events << ICuke::Simulate::Events::Touch.new(:moved, [[x, i]], :hold_for => 0.015)
+          i, j = x, y
+          while i < x2 or j < y2 do
+            events << ICuke::Simulate::Events::Touch.new(:moved, [[i, j]], :hold_for => 0.015)
+            i += 25 if i < x2
+            j += 25 if j < y2
           end
           events << ICuke::Simulate::Events::Touch.new(:moved, [[x2, y2]], :hold_for => 0.015)
           events << ICuke::Simulate::Events::Touch.new(:up, [[x2, y2]], :hold_for => 0.015)
