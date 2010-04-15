@@ -6,9 +6,9 @@
 //  Copyright 2010 The IT Refinery. All rights reserved.
 //
 
-#import "HTTPServer.h"
+#import "iCukeHTTPServer.h"
 
-@interface iCukeServer : HTTPServer {
+@interface iCukeServer : iCukeHTTPServer {
 }
 
 + (void) start;

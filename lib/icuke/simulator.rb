@@ -7,6 +7,8 @@ module ICuke
     include HTTParty
     base_uri 'http://localhost:50000'
     
+    class Error < StandardError; end
+    
     def launch(project_file, options = {})
       options = {
         :target => nil,
@@ -73,11 +75,11 @@ module ICuke
     end
     
     def save(path)
-      get '/save', :query => { :file => path }
+      get '/save', :query => URI.escape(path)
     end
     
     def load(path)
-      get '/load', :query => { :file => path }
+      get '/load', :query => URI.escape(path)
     end
     
     def play
@@ -85,17 +87,21 @@ module ICuke
     end
     
     def fire_event(event)
-      get '/event', :query => { :json => event.to_json }
+      get '/event', :query => URI.escape(event.to_json)
     end
     
     def set_defaults(defaults)
-      get '/defaults', :query => { :json => defaults.to_json }
+      get '/defaults', :query => URI.escape(defaults.to_json)
     end
     
     private
     
     def get(path, options = {})
-      self.class.get(path, options).body
+      response = self.class.get(path, options)
+      if response.code != 200
+        raise Simulator::Error, response.body
+      end
+      response.body
     end
   end
 end

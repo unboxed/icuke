@@ -139,10 +139,6 @@ static Viewer *sharedViewer = nil;
 }
 
 -(NSString *)screen {
-	NSLog(@"Dumping screen");
-
-	NSLog(@"AX Enabled: %i", AXAPIEnabled());
-
 	NSMutableString *xml = [NSMutableString stringWithString: @"<screen>"];
 
 	for (UIWindow *window in [UIApplication sharedApplication].windows) {

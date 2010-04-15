@@ -7,15 +7,12 @@
 //
 
 #import "iCukeServer.h"
-#import "iCukeHTTPConnection.h"
 #include <unistd.h>
 
 @implementation iCukeServer
 
 + (void)start {
-	HTTPServer *server = [HTTPServer new];
-	[server setConnectionClass: [iCukeHTTPConnection class]];
-	[server setPort:50000];
+	[[iCukeHTTPServer sharediCukeHTTPServer] start];
 
 	NSFileManager *fileManager= [[NSFileManager alloc] init];
 	NSArray *paths;
@@ -37,11 +34,6 @@
 			NSLog(@"Removing: %@", path);
 			unlink([[documents stringByAppendingPathComponent: path] cStringUsingEncoding: [NSString defaultCStringEncoding]]);
 		}
-	}
-
-	NSError *error;
-	if(![server start:&error]) {
-		NSLog(@"Error starting HTTP Server: %@", error);
 	}
 }
 
