@@ -45,7 +45,11 @@ class ICukeWorld
       :pause => true
     }.merge(options)
     
-    element = page.xpath(%Q{//*[(contains(@traits, "button") or contains(@traits, "updates_frequently") or contains(@traits, "keyboard_key") or contains(@traits, "link")) and (@label="#{label}" or @value="#{label}") and frame]}).first
+    element =
+      page.xpath(
+        %Q{//*[#{trait(:button, :updates_frequently, :keyboard_key)} and @label="#{label}" and frame]},
+        %Q{//*[#{trait(:link)} and @value="#{label}" and frame]}
+      ).first
     
     raise %Q{No element labelled "#{label}" found in: #{response}} unless element
     
@@ -144,6 +148,10 @@ class ICukeWorld
   end
   
   private
+  
+  def trait(*traits)
+    "(#{traits.map { |t| "contains(@traits, \"#{t}\")" }.join(' or ')})"
+  end
   
   def refresh
     @response = nil
