@@ -33,7 +33,7 @@ class ICukeWorld
   end
   
   def can_see?(text)
-    page.xpath("//*[contains(., '#{text}') or contains(@label, '#{text}') or contains(@value, '#{text}')][frame[@x!='-0.000000']]").any?
+    page.xpath("//*[contains(., '#{text}') or contains(@label, '#{text}') or contains(@value, '#{text}')]").any?
   end
   
   def onscreen?(x, y)
