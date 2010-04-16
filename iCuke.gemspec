@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{iCuke}
-  s.version = "0.4.1"
+  s.version = "0.4.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Rob Holland"]
-  s.date = %q{2010-04-15}
+  s.date = %q{2010-04-16}
   s.description = %q{Cucumber support for iPhone applications}
   s.email = %q{rob@the-it-refinery.co.uk}
   s.extensions = ["ext/iCuke/Rakefile"]
