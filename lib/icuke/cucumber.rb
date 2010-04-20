@@ -33,7 +33,7 @@ class ICukeWorld
   end
   
   def can_see?(text)
-    page.xpath("//*[contains(., '#{text}') or contains(@label, '#{text}') or contains(@value, '#{text}')]").any?
+    page.xpath(%Q{//*[contains(., "#{text}") or contains(@label, "#{text}") or contains(@value, "#{text}")]}).any?
   end
   
   def onscreen?(x, y)
@@ -132,7 +132,7 @@ class ICukeWorld
   
   def scroll_to(text, options = {})
     previous_response = response.dup
-    while page.xpath("//*[contains(., '#{text}') or contains(@label, '#{text}') or contains(@value, '#{text}')]").empty? do
+    while page.xpath(%Q{//*[contains(., "#{text}") or contains(@label, "#{text}") or contains(@value, "#{text}")]}).empty? do
       scroll(options[:direction])
       raise %Q{Content "#{text}" not found in: #{response}} if response == previous_response
     end
@@ -150,7 +150,7 @@ class ICukeWorld
   private
   
   def trait(*traits)
-    "(#{traits.map { |t| "contains(@traits, \"#{t}\")" }.join(' or ')})"
+    "(#{traits.map { |t| %Q{contains(@traits, "#{t}")} }.join(' or ')})"
   end
   
   def refresh
