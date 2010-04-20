@@ -106,15 +106,25 @@ module ICuke
         
         def to_json(*a)
           events = [ICuke::Simulate::Events::Touch.new(:down, [[x, y]], options.merge(:hold_for => 0.015))]
-          i, j = x, y
-          while i < x2 or j < y2 do
-            events << ICuke::Simulate::Events::Touch.new(:moved, [[i, j]], :hold_for => 0.015)
-            i += 25 if i < x2
-            j += 25 if j < y2
+          each_point([x, y], [x2, y2], 25) do |ix, iy|
+            events << ICuke::Simulate::Events::Touch.new(:moved, [[ix, iy]], :hold_for => 0.015)
           end
-          events << ICuke::Simulate::Events::Touch.new(:moved, [[x2, y2]], :hold_for => 0.015)
           events << ICuke::Simulate::Events::Touch.new(:up, [[x2, y2]], :hold_for => 0.015)
           events.to_json(*a)
+        end
+        
+        private
+        
+        def each_point(start, finish, max_step)
+          dx = finish[0] - start[0]
+          dy = finish[1] - start[1]
+          hypotenuse = Math.sqrt(dx*dx + dy*dy)
+          step = max_step / hypotenuse
+          steps = hypotenuse / max_step
+
+          1.upto(steps) do |i|
+            yield start[0] + i * step * dx, start[1] + i * step * dy
+          end
         end
       end
     end

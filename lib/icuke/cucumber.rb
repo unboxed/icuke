@@ -79,7 +79,7 @@ class ICukeWorld
     y = 480 / 2
     x2 = x
     y2 = y
-
+    
     if [:up, :down].include?(direction)
       y2 = y + (100 * modifier)
     else
