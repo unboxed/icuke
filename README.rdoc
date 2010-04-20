@@ -51,4 +51,4 @@ iCuke does not support drags, scrolling or pinches yet. They'll be here soon!
 
 == Copyright
 
-Copyright (c) 2010 Rob Holland. See LICENSE for details.
+Copyright (c) 2010 Unboxed Consulting. See LICENSE for details.
