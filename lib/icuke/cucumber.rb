@@ -105,7 +105,7 @@ class ICukeWorld
       next_keyboard_keys = ['shift', 'next keyboard', 'shift']
       
       begin
-        tap(c, :pause => false)
+        tap(c == ' ' ? 'space' : c, :pause => false)
       rescue Exception => e
         until next_keyboard_keys.empty?
           begin
