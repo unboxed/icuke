@@ -24,13 +24,25 @@ static Viewer *sharedViewer = nil;
 	[xml appendFormat: @"<%@", NSStringFromClass([self class])];
 	[self appendTraitsToXml: xml];
 	if ([[self accessibilityLabel] length] > 0) {
-		[xml appendFormat: @"label=\"%@\" ", [self accessibilityLabel]];
+		NSString *escaped_label = [self accessibilityLabel];
+		escaped_label = [escaped_label stringByReplacingOccurrencesOfString: @"&" withString: @"&amp;"];
+		escaped_label = [escaped_label stringByReplacingOccurrencesOfString: @"'" withString: @"&quot;"];
+		escaped_label = [escaped_label stringByReplacingOccurrencesOfString: @"\\" withString: @"&#39;"];
+		escaped_label = [escaped_label stringByReplacingOccurrencesOfString: @">" withString: @"&gt;"];
+		escaped_label = [escaped_label stringByReplacingOccurrencesOfString: @"<" withString: @"&lt;"];
+		[xml appendFormat: @"label=\"%@\" ", escaped_label];
 	}
 	if ([[self accessibilityHint] length] > 0) {
 		[xml appendFormat: @"hint=\"%@\" ", [self accessibilityHint]];
 	}
 	if ([[self accessibilityValue] length] > 0) {
-		[xml appendFormat: @"value=\"%@\" ", [self accessibilityValue]];
+		NSString *escaped_value = [self accessibilityValue];
+		escaped_value = [escaped_value stringByReplacingOccurrencesOfString: @"&" withString: @"&amp;"];
+		escaped_value = [escaped_value stringByReplacingOccurrencesOfString: @"'" withString: @"&quot;"];
+		escaped_value = [escaped_value stringByReplacingOccurrencesOfString: @"\\" withString: @"&#39;"];
+		escaped_value = [escaped_value stringByReplacingOccurrencesOfString: @">" withString: @"&gt;"];
+		escaped_value = [escaped_value stringByReplacingOccurrencesOfString: @"<" withString: @"&lt;"];
+		[xml appendFormat: @"value=\"%@\" ", escaped_value];
 	}
 	[xml appendString: @">"];
 }
