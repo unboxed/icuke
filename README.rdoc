@@ -43,16 +43,16 @@ install time.
 
 == Contributors
 
-Nigel Taylor
-Aslak Hellesøy
-Dominic Baggott
+* Nigel Taylor
+* Aslak Hellesøy
+* Dominic Baggott
 
 == Thanks
 
 Thanks go to the people who's work iCuke is based on:
 
-Matt Gallagher
-Ian Dees
+* Matt Gallagher
+* Ian Dees
 
 == Note on Patches/Pull Requests
  
