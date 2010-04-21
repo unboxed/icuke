@@ -102,14 +102,21 @@ class ICukeWorld
     end
     
     text.split('').each do |c|
-      next_keyboard_keys = ['more, letters', 'shift', 'next keyboard', 'shift', 'more, numbers', 'more, symbols']
-      
       begin
         tap(c == ' ' ? 'space' : c, :pause => false)
       rescue Exception => e
-        until next_keyboard_keys.empty?
+        try_keyboards =
+          case c
+          when /[a-zA-Z]/
+            ['more, letters', 'shift']
+          when /[0-9]/
+            ['more, numbers']
+          else
+            ['more, numbers', 'more, symbols']
+          end
+        until try_keyboards.empty?
           begin
-            tap(next_keyboard_keys.shift, :pause => false)
+            tap(try_keyboards.shift, :pause => false)
             retry
           rescue
           end
