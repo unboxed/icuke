@@ -102,7 +102,7 @@ class ICukeWorld
     end
     
     text.split('').each do |c|
-      next_keyboard_keys = ['shift', 'next keyboard', 'shift']
+      next_keyboard_keys = ['more, letters', 'shift', 'next keyboard', 'shift', 'more, numbers', 'more, symbols']
       
       begin
         tap(c == ' ' ? 'space' : c, :pause => false)
