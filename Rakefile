@@ -13,6 +13,7 @@ begin
     gem.add_dependency "cucumber", ">= 0"
     gem.add_dependency "rb-appscript", ">= 0"
     gem.add_dependency "httparty", ">= 0"
+    gem.add_dependency "nokogiri", ">= 0"
     gem.extensions = ['ext/iCuke/Rakefile']
     gem.files += ['ext/iCuke/libicuke.dylib']
   end
