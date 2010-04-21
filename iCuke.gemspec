@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{iCuke}
-  s.version = "0.4.5"
+  s.version = "0.4.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Rob Holland"]
@@ -77,6 +77,7 @@ Gem::Specification.new do |s|
      "ext/iCuke/json/SBJsonParser.m",
      "ext/iCuke/json/SBJsonWriter.h",
      "ext/iCuke/json/SBJsonWriter.m",
+     "ext/iCuke/libicuke.dylib",
      "features/icuke.feature",
      "features/support/env.rb",
      "iCuke.gemspec",
@@ -96,18 +97,21 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
-      s.add_development_dependency(%q<cucumber>, [">= 0"])
+      s.add_runtime_dependency(%q<cucumber>, [">= 0"])
       s.add_runtime_dependency(%q<rb-appscript>, [">= 0"])
       s.add_runtime_dependency(%q<httparty>, [">= 0"])
+      s.add_runtime_dependency(%q<nokogiri>, [">= 0"])
     else
       s.add_dependency(%q<cucumber>, [">= 0"])
       s.add_dependency(%q<rb-appscript>, [">= 0"])
       s.add_dependency(%q<httparty>, [">= 0"])
+      s.add_dependency(%q<nokogiri>, [">= 0"])
     end
   else
     s.add_dependency(%q<cucumber>, [">= 0"])
     s.add_dependency(%q<rb-appscript>, [">= 0"])
     s.add_dependency(%q<httparty>, [">= 0"])
+    s.add_dependency(%q<nokogiri>, [">= 0"])
   end
 end
 
