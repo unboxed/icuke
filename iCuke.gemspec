@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Rob Holland"]
-  s.date = %q{2010-04-20}
+  s.date = %q{2010-04-21}
   s.description = %q{Cucumber support for iPhone applications}
   s.email = %q{rob@the-it-refinery.co.uk}
   s.extensions = ["ext/iCuke/Rakefile"]
@@ -77,7 +77,6 @@ Gem::Specification.new do |s|
      "ext/iCuke/json/SBJsonParser.m",
      "ext/iCuke/json/SBJsonWriter.h",
      "ext/iCuke/json/SBJsonWriter.m",
-     "ext/iCuke/libicuke.dylib",
      "features/icuke.feature",
      "features/support/env.rb",
      "iCuke.gemspec",
@@ -86,7 +85,7 @@ Gem::Specification.new do |s|
      "lib/icuke/simulate.rb",
      "lib/icuke/simulator.rb"
   ]
-  s.homepage = %q{http://github.com/robholland/iCuke}
+  s.homepage = %q{http://github.com/unboxed/iCuke}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.5}
