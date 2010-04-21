@@ -88,7 +88,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/unboxed/iCuke}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.5}
+  s.rubygems_version = %q{1.3.6}
   s.summary = %q{Cucumber support for iPhone applications}
 
   if s.respond_to? :specification_version then

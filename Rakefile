@@ -10,7 +10,7 @@ begin
     gem.email = "rob@the-it-refinery.co.uk"
     gem.homepage = "http://github.com/unboxed/iCuke"
     gem.authors = ["Rob Holland"]
-    gem.add_development_dependency "cucumber", ">= 0"
+    gem.add_dependency "cucumber", ">= 0"
     gem.add_dependency "rb-appscript", ">= 0"
     gem.add_dependency "httparty", ">= 0"
     gem.extensions = ['ext/iCuke/Rakefile']
