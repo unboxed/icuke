@@ -1,7 +1,7 @@
 == 0.4.7 (2010-04-22)
 
 === Bugfixes
-* Work around a bug in some Ruby 1.8.7.* Net::HTTP code which causes the simulator to raise NoMethodError
+* Work around a bug in some Ruby 1.8.7.* Net::HTTP code which causes the simulator to raise NoMethodError (Rob Holland, Aslak Hellesøy)
 
 == 0.4.6 (2010-04-21)
 
