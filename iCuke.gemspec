@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{iCuke}
-  s.version = "0.4.8"
+  s.version = "0.4.9"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Rob Holland"]
@@ -83,7 +83,6 @@ Gem::Specification.new do |s|
      "features/support/env.rb",
      "iCuke.gemspec",
      "lib/icuke.rb",
-     "lib/icuke/core_ext.rb",
      "lib/icuke/cucumber.rb",
      "lib/icuke/simulate.rb",
      "lib/icuke/simulator.rb"
