@@ -8,3 +8,15 @@
 === Bugfixes
 * Depend on cucumber and nokogiri
 * Escape values and labels in XML so we don't produce invalid markup
+
+== 0.4.5 (2010-04-21)
+
+=== Bugfixes
+* More reliable keyboard switching
+
+== 0.4.4 (2010-04-21)
+
+=== Bugfixes
+* Allow ' in xpath queries
+* Allow typing spaces in inputs
+* Correct swipe behaviour in all directions (Rob Holland, Dominic Baggott)
