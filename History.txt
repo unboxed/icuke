@@ -1,3 +1,8 @@
+== 0.4.8 (2010-04-22)
+
+=== Stability
+* Try quitting XCode and restarting it if we aren't able to load the simulator
+
 == 0.4.7 (2010-04-22)
 
 === Bugfixes
