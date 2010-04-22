@@ -1,10 +1,84 @@
-require 'icuke/core_ext'
-
 require 'httparty'
 require 'appscript'
 require 'timeout'
 
 module ICuke
+  class XCode
+    def self.app
+      @app ||= Appscript.app('Xcode.app')
+    end
+
+    def self.open_project(project_file)
+      unless open_project?(project_file)
+        app.launch
+        app.open project_file
+      end
+      app.active_project_document.project
+    end
+
+    def self.open_project?(project_file)
+      running? and
+        app.active_project_document.get and
+        app.active_project_document.project.path.get == project_file
+    end
+
+    def self.interface
+      Appscript.app('System Events').application_processes['Xcode']
+    end
+
+    def self.running?
+      app.is_running?
+    end
+
+    def self.quit
+      IPhoneSimulator.quit
+      app.quit if running?
+      sleep(0.2) until !running?
+    end
+
+    def self.status
+      interface.windows[1].static_texts[0].value.get
+    end
+
+    def self.launched_app?
+      status =~ /launched$/
+    end
+
+    def self.installing_app?
+      status =~ /^Installing/
+    end
+
+    def self.with_settings(project, settings, &block)
+      initial_settings = {}
+
+      settings.each_key { |setting| initial_settings[setting] = project.send(setting).get }
+      settings.each_pair do |setting, value|
+        project.send(setting).set value
+      end
+
+      yield
+    ensure
+      initial_settings.each_pair do |setting, value|
+        project.send(setting).set value
+      end if running?
+    end
+  end
+  
+  class IPhoneSimulator
+    def self.app
+      @app ||= Appscript.app('iPhone Simulator.app')
+    end
+    
+    def self.quit
+      app.quit if running?
+      sleep(0.2) until !running?
+    end
+    
+    def self.running?
+      app.is_running?
+    end
+  end
+  
   class Simulator
     include Timeout
     include HTTParty
@@ -20,11 +94,10 @@ module ICuke
       
       # If we don't kill the simulator first the rest of this function becomes
       # a no-op and we don't land on the applications first page
-      simulator = Appscript.app('iPhone Simulator.app')
-      simulator.quit if simulator.is_running?
+      IPhoneSimulator.quit
       
       begin
-        project = open_project(project_file)
+        project = XCode.open_project(project_file)
         
         settings = {
           :active_build_configuration_type => project.build_configuration_types[options[:configuration]]
@@ -33,7 +106,7 @@ module ICuke
           settings[:active_target] = project.targets[options[:target]]
         end
         
-        with_settings(project, settings) do
+        XCode.with_settings(project, settings) do
           executable = project.active_executable.get
           options[:env].each_pair do |name, value|
             executable.make :new => :environment_variable,
@@ -42,53 +115,18 @@ module ICuke
           
           project.launch_
           
-          timeout(30) do
-            sleep(0.5) until simulator.is_running?
+          sleep(0.5) while XCode.installing_app?
+          
+          unless XCode.launched_app?
+            XCode.quit
+            retry
           end
         end
-      rescue Timeout::Error
-        xcode = Appscript.app('Xcode.app')
-        xcode.quit if xcode.is_running?
-        sleep(0.5) until !xcode.is_running?
-        retry
-      end
-      
-      timeout(30) do
-        begin
-          view
-        rescue Errno::ECONNREFUSED
-          sleep(0.5)
-          retry
-        end
-      end
-    end
-    
-    def open_project(project_file)
-      xcode = Appscript.app('Xcode.app')
-      unless xcode.active_project_document.get and xcode.active_project_document.project.path.get == project_file
-        xcode.launch
-        xcode.open project_file
-      end
-      xcode.active_project_document.project
-    end
-    
-    def with_settings(project, settings, &block)
-      initial_settings = {}
-      
-      settings.each_key { |setting| initial_settings[setting] = project.send(setting).get }
-      settings.each_pair do |setting, value|
-        project.send(setting).set value
-      end
-      
-      yield
-    ensure
-      initial_settings.each_pair do |setting, value|
-        project.send(setting).set value
       end
     end
     
     def quit
-      Appscript.app('iPhone Simulator.app').quit
+      IPhoneSimulator.quit
     end
     
     def view
