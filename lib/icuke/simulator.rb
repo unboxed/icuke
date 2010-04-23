@@ -121,6 +121,14 @@ module ICuke
             XCode.quit
             retry
           end
+          
+          timeout(30) do
+            begin
+              view
+            rescue Errno::ECONNREFUSED
+              sleep(0.5)
+            end
+          end
         end
       end
     end
