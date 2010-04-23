@@ -1,3 +1,8 @@
+== 0.4.11 (2010-04-23)
+
+=== Bugfixes
+* Give text fields a little more time to settle before typing to avoid losing the first keystroke on auto-capitalised fields.
+
 == 0.4.10 (2010-04-23)
 
 == Features

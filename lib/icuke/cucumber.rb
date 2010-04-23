@@ -101,6 +101,10 @@ class ICukeWorld
       end
     end
     
+    # Without this sleep fields which have auto-capitilisation/correction can
+    # miss the first keystroke for some reason.
+    sleep(0.5)
+    
     text.split('').each do |c|
       begin
         tap(c == ' ' ? 'space' : c, :pause => false)
