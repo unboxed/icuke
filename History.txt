@@ -1,3 +1,9 @@
+== 0.4.10 (2010-04-23)
+
+== Features
+* Add "within" support to "should see" steps
+* Print full UI hierarchy to allow for more powerful tests
+
 == 0.4.8 (2010-04-22)
 
 === Stability
