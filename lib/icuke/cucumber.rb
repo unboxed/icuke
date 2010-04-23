@@ -32,8 +32,8 @@ class ICukeWorld
     @simulator.record
   end
   
-  def can_see?(text)
-    page.xpath(%Q{//*[contains(., "#{text}") or contains(@label, "#{text}") or contains(@value, "#{text}")]}).any?
+  def can_see?(text, scope = '')
+    page.xpath(%Q{#{scope}//*[contains(., "#{text}") or contains(@label, "#{text}") or contains(@value, "#{text}")]}).any?
   end
   
   def onscreen?(x, y)
@@ -178,12 +178,12 @@ Given /^(?:"([^\"]*)" from )?"([^\"]*)" is loaded in the simulator(?: using sdk 
          :env => { 'DYLD_INSERT_LIBRARIES' => LIBICUKE }
 end
 
-Then /^I should see "([^\"]*)"$/ do |text|
-  raise %Q{Content "#{text}" not found in: #{response}} unless can_see?(text)
+Then /^I should see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, scope|
+  raise %Q{Content "#{text}" not found in: #{response}} unless can_see?(text, scope)
 end
 
-Then /^I should not see "([^\"]*)"$/ do |text|
-  raise %Q{Content "#{text}" was found but was not expected in: #{response}} if can_see?(text)
+Then /^I should not see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, scope|
+  raise %Q{Content "#{text}" was found but was not expected in: #{response}} if can_see?(text, scope)
 end
 
 When /^I tap "([^\"]*)"$/ do |label|

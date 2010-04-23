@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Rob Holland"]
-  s.date = %q{2010-04-22}
+  s.date = %q{2010-04-23}
   s.description = %q{Cucumber support for iPhone applications}
   s.email = %q{rob@the-it-refinery.co.uk}
   s.extensions = ["ext/iCuke/Rakefile"]
