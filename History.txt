@@ -1,3 +1,8 @@
+== 0.4.12 (2010-04-23)
+
+=== Bugfixes
+* Give the HTTP server 30 seconds to start up after XCode claims the app is launched.
+
 == 0.4.11 (2010-04-23)
 
 === Bugfixes
