@@ -129,6 +129,7 @@ module ICuke
               view
             rescue Errno::ECONNREFUSED
               sleep(0.5)
+              retry
             end
           end
         end

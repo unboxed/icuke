@@ -48,7 +48,8 @@ class ICukeWorld
     element =
       page.xpath(
         %Q{//*[#{trait(:button, :updates_frequently, :keyboard_key)} and @label="#{label}" and frame]},
-        %Q{//*[#{trait(:link)} and @value="#{label}" and frame]}
+        %Q{//*[#{trait(:link)} and @value="#{label}" and frame]},
+        %Q{//*[@label="#{label}" and frame]}
       ).first
     
     raise %Q{No element labelled "#{label}" found in: #{response}} unless element
