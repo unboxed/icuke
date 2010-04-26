@@ -1,3 +1,5 @@
+require 'icuke/core_ext'
+
 require 'httparty'
 require 'appscript'
 require 'timeout'
