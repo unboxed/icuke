@@ -74,6 +74,10 @@ typedef struct {
 		NSArray *points = [data objectForKey: @"Paths"];
 
 		hand_info.pathCount = (unsigned char)[points count];
+		if (hand_info.type != 1) {
+			hand_info.x9_3 = 0x7c;
+			hand_info.x9_4 = 0x98;
+		}
 
 		NSMutableData *raw_data = [NSMutableData dataWithBytes: &hand_info length: sizeof(hand_info)];
 
@@ -86,6 +90,7 @@ typedef struct {
 
 			path_info.index = path_info.index2 = index++;
 			path_info.type = hand_info.type == 6 ? 1 : 2;
+			path_info.flags = hand_info.type == 1 ? 0x43 : 0x3f;
 			path_info.sizeX = [[[point objectForKey: @"Size"] objectForKey: @"X"] floatValue];
 			path_info.sizeY = [[[point objectForKey: @"Size"] objectForKey: @"Y"] floatValue];
 			path_info.x = [[[point objectForKey: @"Location"] objectForKey: @"X"] floatValue];
