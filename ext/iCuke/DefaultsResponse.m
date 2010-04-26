@@ -20,7 +20,6 @@
 {
 	NSUserDefaults *user_defaults = [NSUserDefaults standardUserDefaults];
 	NSString *json = [[url query] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-	NSLog(@"defaults json: %@", json);
 	NSData *defaultsData = nil;
 
 	if (!json) {
