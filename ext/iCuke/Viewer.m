@@ -27,7 +27,8 @@ static Viewer *sharedViewer = nil;
 		if ([[self accessibilityLabel] length] > 0) {
 			NSString *escaped_label = [self accessibilityLabel];
 			escaped_label = [escaped_label stringByReplacingOccurrencesOfString: @"&" withString: @"&amp;"];
-			escaped_label = [escaped_label stringByReplacingOccurrencesOfString: @"'" withString: @"&quot;"];
+			escaped_label = [escaped_label stringByReplacingOccurrencesOfString: @"\"" withString: @"&quot;"];
+			escaped_label = [escaped_label stringByReplacingOccurrencesOfString: @"'" withString: @"&apos;"];
 			escaped_label = [escaped_label stringByReplacingOccurrencesOfString: @"\\" withString: @"&#39;"];
 			escaped_label = [escaped_label stringByReplacingOccurrencesOfString: @">" withString: @"&gt;"];
 			escaped_label = [escaped_label stringByReplacingOccurrencesOfString: @"<" withString: @"&lt;"];
@@ -39,7 +40,8 @@ static Viewer *sharedViewer = nil;
 		if ([[self accessibilityValue] length] > 0) {
 			NSString *escaped_value = [self accessibilityValue];
 			escaped_value = [escaped_value stringByReplacingOccurrencesOfString: @"&" withString: @"&amp;"];
-			escaped_value = [escaped_value stringByReplacingOccurrencesOfString: @"'" withString: @"&quot;"];
+			escaped_value = [escaped_value stringByReplacingOccurrencesOfString: @"\"" withString: @"&quot;"];
+			escaped_value = [escaped_value stringByReplacingOccurrencesOfString: @"'" withString: @"&apos;"];
 			escaped_value = [escaped_value stringByReplacingOccurrencesOfString: @"\\" withString: @"&#39;"];
 			escaped_value = [escaped_value stringByReplacingOccurrencesOfString: @">" withString: @"&gt;"];
 			escaped_value = [escaped_value stringByReplacingOccurrencesOfString: @"<" withString: @"&lt;"];
