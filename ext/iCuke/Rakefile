@@ -2,7 +2,7 @@ require 'rake/clean'
 
 SDK_VERSION = '3.1.2'
 SDK_ROOT = "/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator#{SDK_VERSION}.sdk"
-CFLAGS = '-arch i386 -pipe -std=c99 -DTARGET_OS_IPHONE'
+CFLAGS = '-arch i386 -pipe -ggdb -std=c99 -DTARGET_OS_IPHONE'
 SDK_CFLAGS = "-isysroot #{SDK_ROOT} -F/System/Library/PrivateFrameworks -D__IPHONE_OS_VERSION_MIN_REQUIRED=30000"
 CC = '/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2'
 
