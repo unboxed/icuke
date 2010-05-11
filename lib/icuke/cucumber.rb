@@ -68,7 +68,7 @@ class ICukeWorld
     
     @simulator.fire_event(Tap.new(x, y, options))
     
-    sleep(options[:pause] ? 1 : 0.2)
+    sleep(options[:pause] ? 2 : 0.2)
     
     refresh
     
