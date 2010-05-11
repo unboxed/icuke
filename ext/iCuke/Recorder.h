@@ -2,6 +2,8 @@
 
 @interface Recorder : NSObject {
 	NSMutableArray* eventList;
+	id playbackDelegate;
+	SEL playbackDoneSelector;
 }
 
 +(Recorder *)sharedRecorder;
@@ -9,7 +11,7 @@
 -(void)saveToFile:(NSString*)path;
 -(void)load:(NSArray*)events;
 -(void)loadFromFile:(NSString*)path;
--(void)play;
+-(void)playbackWithDelegate:(id)delegate doneSelector:(SEL)selector;
 -(void)stop;
 
 @end

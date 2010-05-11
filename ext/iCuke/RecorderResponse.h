@@ -2,4 +2,5 @@
 
 @interface RecorderResponse : iCukeHTTPResponseHandler {
 }
+- (void)finishResponse;
 @end

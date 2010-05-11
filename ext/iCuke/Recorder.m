@@ -1,6 +1,7 @@
 #import <UIKit/UIKit.h>
 
 #import "Recorder.h"
+#import "Viewer.h"
 
 @interface UIApplication (Recording)
 
@@ -72,14 +73,18 @@ static Recorder *sharedRecorder = nil;
 	[eventList setArray: [NSMutableArray arrayWithContentsOfFile: path]];
 }
 
--(void)play {
-	NSLog(@"Starting playback");
+-(void)playbackWithDelegate: (id)delegate doneSelector:(SEL)doneSelector {
+	NSLog(@"Playback");
 
-	[[UIApplication sharedApplication] _playbackEvents: eventList atPlaybackRate: 1.0f messageWhenDone: self withSelector: @selector(done:)];
+	playbackDelegate = delegate;
+	playbackDoneSelector = doneSelector;
+
+	[[UIApplication sharedApplication] _playbackEvents: eventList atPlaybackRate: 1.0f messageWhenDone: self withSelector: @selector(playbackDone:)];
 }
 
--(void)done:(NSDictionary*)detail {
-	NSLog(@"Finished playback");
+-(void)playbackDone:(NSDictionary *)details {
+	NSLog(@"Playback complete");
+	[playbackDelegate performSelector: playbackDoneSelector];
 }
 
 @end

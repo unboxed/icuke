@@ -103,8 +103,11 @@ typedef struct {
 	}
 
 	[[Recorder sharedRecorder] load: events];
-	[[Recorder sharedRecorder] play];
+	[[Recorder sharedRecorder] playbackWithDelegate: self doneSelector: @selector(finishResponse)];
+}
 
+- (void)finishResponse
+{
 	CFHTTPMessageRef response = CFHTTPMessageCreateResponse(kCFAllocatorDefault, 200, NULL, kCFHTTPVersion1_1);
 	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Connection", (CFStringRef)@"close");
 	CFDataRef headerData = CFHTTPMessageCopySerializedMessage(response);
