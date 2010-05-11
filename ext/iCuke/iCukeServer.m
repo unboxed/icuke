@@ -8,22 +8,29 @@
 
 #import "iCukeServer.h"
 #include <unistd.h>
+#include <stdlib.h>
+
+static NSAutoreleasePool *pool;
 
 @implementation iCukeServer
 
 + (void)start {
+	pool = [[NSAutoreleasePool alloc] init];
+    
 	[[iCukeHTTPServer sharediCukeHTTPServer] start];
 
 	NSFileManager *fileManager= [[NSFileManager alloc] init];
 	NSArray *paths;
 
-	NSString *preferences = [NSHomeDirectory() stringByAppendingPathComponent: @"Library/Preferences"];
+	if (!getenv("ICUKE_KEEP_PREFERENCES")) {
+		NSString *preferences = [NSHomeDirectory() stringByAppendingPathComponent: @"Library/Preferences"];
 
-	paths = [fileManager contentsOfDirectoryAtPath: preferences error: NULL];
-	for (NSString *path in paths) {
-		if (![path hasPrefix: @"."]) {
-			NSLog(@"Removing: %@", path);
-			unlink([[preferences stringByAppendingPathComponent: path] cStringUsingEncoding: [NSString defaultCStringEncoding]]);
+		paths = [fileManager contentsOfDirectoryAtPath: preferences error: NULL];
+		for (NSString *path in paths) {
+			if (![path hasPrefix: @"."]) {
+				NSLog(@"Removing: %@", path);
+				unlink([[preferences stringByAppendingPathComponent: path] cStringUsingEncoding: [NSString defaultCStringEncoding]]);
+			}
 		}
 	}
 
@@ -37,10 +44,20 @@
 	}
 }
 
++ (void)stop {
+	[pool release];
+}
+
 @end
 
 void start_server(void) __attribute__((constructor));
 void start_server(void)
 {
-  [iCukeServer start];
+	[iCukeServer start];
+}
+
+void stop_server(void) __attribute__((destructor));
+void stop_server(void)
+{
+	[iCukeServer stop];
 }
