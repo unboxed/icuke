@@ -341,7 +341,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(iCukeHTTPServer);
 		[responseHandlers addObject:handler];
 		[self stopReceivingForFileHandle:incomingFileHandle close:NO];
 
-		[handler startResponse];	
+		[handler startResponse];
 		return;
 	}
 
