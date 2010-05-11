@@ -1,5 +1,4 @@
 require 'tmpdir'
-require 'background_process'
 
 module ICuke
   class Simulator
