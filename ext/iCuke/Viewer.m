@@ -2,9 +2,6 @@
 
 #import "Viewer.h"
 
-// AX API
-extern Boolean AXAPIEnabled(void);
-
 static Viewer *sharedViewer = nil;
 
 @interface NSObject (UIAccessibilityViewer)
@@ -136,7 +133,7 @@ static Viewer *sharedViewer = nil;
 	for (UIView *view in self.subviews) {
 		[view appendToXml: xml];
 	}
-	
+
 	[self appendChildrenToXml: xml];
 	[self appendCloseToXml: xml];
 }
