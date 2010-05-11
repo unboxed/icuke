@@ -52,16 +52,19 @@ class ICukeWorld
         %Q{//*[@label="#{label}" and frame]}
       ).first
     
-    raise %Q{No element labelled "#{label}" found in: #{response}} unless element
+    raise %Q{No element labelled "#{label}" found in: #{page}} unless element
     
     # This seems brittle, revist how to fetch the frame without relying on it being the only child
     frame = element.child
     
-    # Hit the element in the middle
-    x = frame['x'].to_f + (frame['width'].to_f / 2)
-    y = frame['y'].to_f + (frame['height'].to_f / 2)
+    x = frame['x'].to_f
+    y = frame['y'].to_f
     
-    raise %Q{Element "#{label}" is off screen in: #{response}} unless onscreen?(x, y)
+    # Hit the element in the middle
+    x += (frame['width'].to_f / 2)
+    y += (frame['height'].to_f / 2)
+    
+    raise %Q{Element "#{label}" is off screen in: #{page}} unless onscreen?(x, y)
     
     @simulator.fire_event(Tap.new(x, y, options))
     
@@ -74,7 +77,7 @@ class ICukeWorld
   
   def swipe(direction, options = {})
     modifier = [:up, :left].include?(direction) ? -1 : 1
-
+    
     # Just swipe from the middle of an iPhone-dimensioned screen for now
     x = 320 / 2
     y = 480 / 2
@@ -82,9 +85,9 @@ class ICukeWorld
     y2 = y
     
     if [:up, :down].include?(direction)
-      y2 = y + (100 * modifier)
+      y2 = y + (y * modifier)
     else
-      x2 = x + (100 * modifier)
+      x2 = x + (x * modifier)
     end
     
     @simulator.fire_event(Swipe.new(x, y, x2, y2, options))
@@ -146,7 +149,7 @@ class ICukeWorld
     previous_response = response.dup
     while page.xpath(%Q{//*[contains(., "#{text}") or contains(@label, "#{text}") or contains(@value, "#{text}")]}).empty? do
       scroll(options[:direction])
-      raise %Q{Content "#{text}" not found in: #{response}} if response == previous_response
+      raise %Q{Content "#{text}" not found in: #{page}} if response == previous_response
     end
   end
   
@@ -175,6 +178,10 @@ World do
   ICukeWorld.new
 end
 
+After do
+  quit
+end
+
 LIBICUKE = File.expand_path(File.dirname(__FILE__) + '/../../ext/iCuke/libicuke.dylib')
 
 Given /^(?:"([^\"]*)" from )?"([^\"]*)" is loaded in the simulator(?: using sdk (.*))?$/ do |target, project, sdk|
@@ -184,11 +191,11 @@ Given /^(?:"([^\"]*)" from )?"([^\"]*)" is loaded in the simulator(?: using sdk 
 end
 
 Then /^I should see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, scope|
-  raise %Q{Content "#{text}" not found in: #{response}} unless can_see?(text, scope)
+  raise %Q{Content "#{text}" not found in: #{page}} unless can_see?(text, scope)
 end
 
 Then /^I should not see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, scope|
-  raise %Q{Content "#{text}" was found but was not expected in: #{response}} if can_see?(text, scope)
+  raise %Q{Content "#{text}" was found but was not expected in: #{page}} if can_see?(text, scope)
 end
 
 When /^I tap "([^\"]*)"$/ do |label|
@@ -212,5 +219,5 @@ Then /^I put the phone into recording mode$/ do
 end
 
 Then /^show me the screen$/ do
-  puts response
+  puts page.to_s
 end
