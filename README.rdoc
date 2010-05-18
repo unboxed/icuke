@@ -36,7 +36,7 @@ function. I am still deciding how best to achieve this is in a reliable fashion.
 iCuke does not support testing applications on real devices, because I don't know of a way get a preload library to load
 on the device.
 
-iCuke does not support drags, scrolling or pinches yet. They'll be here soon!
+iCuke does not support drags or pinches yet. They'll be here soon!
 
 iCuke compiles against the 3.1.2 SDK. I'm not sure how to make that configurable as the compilation is done at gem
 install time.
@@ -53,6 +53,7 @@ Thanks go to the people who's work iCuke is based on:
 
 * Matt Gallagher
 * Ian Dees
+* Felipe Barreto
 
 == Note on Patches/Pull Requests
  
