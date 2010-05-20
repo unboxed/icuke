@@ -23,3 +23,13 @@ def touch_output(type, x, y)
     type.to_s +
     '}'
 end
+
+def timestamps(json)
+  segments = json.split('"Time":')
+  segments.delete_at 0
+  timestamps = []
+  segments.each do |segment|
+    timestamps << segment.split(',')[0].to_i
+  end
+  timestamps
+end

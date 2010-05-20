@@ -83,6 +83,7 @@ class ICukeWorld
     y = 480 / 2
     x2 = x
     y2 = y
+    hold_for = 0.015
     
     if [:up, :down].include?(direction)
       y2 = y + (y * modifier)
@@ -90,7 +91,7 @@ class ICukeWorld
       x2 = x + (x * modifier)
     end
     
-    @simulator.fire_event(Swipe.new(x, y, x2, y2, options))
+    @simulator.fire_event(Swipe.new(x, y, x2, y2, hold_for, options))
     
     sleep(1)
     

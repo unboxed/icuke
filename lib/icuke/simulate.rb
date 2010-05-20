@@ -93,23 +93,24 @@ module ICuke
       end
       
       class Swipe
-        attr_accessor :x, :y, :x2, :y2, :options
+        attr_accessor :x, :y, :x2, :y2, :options, :hold_for
         
-        def initialize(x, y, x2, y2, options)
+        def initialize(x, y, x2, y2, hold_for, options)
           @options = options
           
           @x = x
           @y = y
           @x2 = x2
           @y2 = y2
+          @hold_for = hold_for
         end
         
         def to_json(*a)
-          events = [ICuke::Simulate::Events::Touch.new(:down, [[x, y]], options.merge(:hold_for => 0.015))]
+          events = [ICuke::Simulate::Events::Touch.new(:down, [[x, y]], options.merge(:hold_for => hold_for))]
           each_point([x, y], [x2, y2], 25) do |ix, iy|
-            events << ICuke::Simulate::Events::Touch.new(:moved, [[ix, iy]], :hold_for => 0.015)
+            events << ICuke::Simulate::Events::Touch.new(:moved, [[ix, iy]], :hold_for => hold_for)
           end
-          events << ICuke::Simulate::Events::Touch.new(:up, [[x2, y2]], :hold_for => 0.015)
+          events << ICuke::Simulate::Events::Touch.new(:up, [[x2, y2]], :hold_for => hold_for)
           events.to_json(*a)
         end
         
