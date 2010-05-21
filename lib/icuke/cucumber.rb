@@ -83,7 +83,6 @@ class ICukeWorld
     y = 480 / 2
     x2 = x
     y2 = y
-    hold_for = 0.015
     
     if [:up, :down].include?(direction)
       y2 = y + (y * modifier)
@@ -91,10 +90,16 @@ class ICukeWorld
       x2 = x + (x * modifier)
     end
     
-    @simulator.fire_event(Swipe.new(x, y, x2, y2, hold_for, options))
+    @simulator.fire_event(Swipe.new(x, y, x2, y2, 0.015, options))
     
     sleep(1)
     
+    refresh
+  end
+
+  def drag(source_x, source_y, dest_x, dest_y, options = {})
+    @simulator.fire_event(Swipe.new(source_x, source_y, dest_x, dest_y, 0.1, options))
+
     refresh
   end
   

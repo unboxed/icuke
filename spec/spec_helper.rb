@@ -1,9 +1,29 @@
 require 'rubygems'
-require 'spec'
 
 $:.unshift(File.dirname(__FILE__) + '/../lib')
 require 'icuke'
 $:.unshift(File.dirname(__FILE__))
+
+begin
+  require 'rspec'
+  require 'rspec/autorun'
+  Rspec.configure do |c|
+    c.color_enabled = true
+    c.before(:each) do
+      ::Term::ANSIColor.coloring = true
+    end
+  end
+rescue LoadError
+  require 'spec'
+  require 'spec/autorun'
+  Spec::Runner.configure do |c|
+    c.before(:each) do
+      ::Term::ANSIColor.coloring = true
+    end
+  end
+end
+
+require 'cucumber'
 
 
 def calculate_move(x1, y1, x2, y2, step_num)
@@ -32,4 +52,16 @@ def timestamps(json)
     timestamps << segment.split(',')[0].to_i
   end
   timestamps
+end
+
+
+def World
+end
+def After
+end
+def Given(something)
+end
+def When(something)
+end
+def Then(something)
 end
