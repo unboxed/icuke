@@ -98,9 +98,14 @@ class ICukeWorld
   end
 
   def drag(source_x, source_y, dest_x, dest_y, options = {})
-    @simulator.fire_event(Swipe.new(source_x, source_y, dest_x, dest_y, 0.1, options))
-
+    @simulator.fire_event(Swipe.new(source_x, source_y, dest_x, dest_y, 0.15, options))
     refresh
+  end
+
+  def drag_with_source(source, destination)
+    sources = source.split(',').collect {|val| val.strip.to_i}
+    destinations = destination.split(',').collect {|val| val.strip.to_i}
+    drag(sources[0], sources[1], destinations[0], destinations[1])
   end
   
   def type(textfield, text, options = {})
@@ -210,6 +215,10 @@ end
 
 When /^I type "([^\"]*)" in "([^\"]*)"$/ do |text, textfield|
   type(textfield, text)
+end
+
+When /^I drag from ([^\"]*) to ([^\"]*)$/ do |source, destination|
+  drag_with_source(source, destination)
 end
 
 When /^I scroll (down|up|left|right)(?: to "([^\"]*)")?$/ do |direction, text|

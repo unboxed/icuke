@@ -71,11 +71,22 @@ describe ICukeWorld do
     it "should simulate a swipe from source to destination" do
       sx, sy, dx, dy = 10, 20, 30, 40
       ICuke::Simulate::Gestures::Swipe.should_receive(:new).
-        with(sx, sy, dx, dy, 0.1, {})
+        with(sx, sy, dx, dy, 0.15, {})
       @cuke_world.drag(sx, sy, dx, dy, {})
     end
 
-    
-    
+  end
+  
+  describe "when performing a drag with a source" do
+
+    before(:each) do
+      @simulator.stub(:fire_event)
+    end
+
+    it "should parse the input values" do
+      ICuke::Simulate::Gestures::Swipe.should_receive(:new).
+        with(12, 24, 34, 44, 0.15, {})
+      @cuke_world.drag_with_source("12,24", "34,44")
+    end
   end
 end
