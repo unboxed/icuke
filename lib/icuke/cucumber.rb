@@ -52,19 +52,7 @@ class ICukeWorld
         %Q{//*[@label="#{label}" and frame]}
       ).first
     
-    raise %Q{No element labelled "#{label}" found in: #{page}} unless element
-    
-    # This seems brittle, revist how to fetch the frame without relying on it being the only child
-    frame = element.child
-    
-    x = frame['x'].to_f
-    y = frame['y'].to_f
-    
-    # Hit the element in the middle
-    x += (frame['width'].to_f / 2)
-    y += (frame['height'].to_f / 2)
-    
-    raise %Q{Element "#{label}" is off screen in: #{page}} unless onscreen?(x, y)
+    x, y = locate_element(element)
     
     @simulator.fire_event(Tap.new(x, y, options))
     
@@ -76,7 +64,7 @@ class ICukeWorld
   end
   
   def swipe(direction, options = {})
-    modifier = [:up, :left].include?(direction) ? -1 : 1
+    modifier = direction_modifier(direction)
     
     # Just swipe from the middle of an iPhone-dimensioned screen for now
     x = 320 / 2
@@ -91,14 +79,13 @@ class ICukeWorld
     end
     
     @simulator.fire_event(Swipe.new(x, y, x2, y2, 0.015, options))
-    
     sleep(1)
-    
     refresh
   end
 
   def drag(source_x, source_y, dest_x, dest_y, options = {})
     @simulator.fire_event(Swipe.new(source_x, source_y, dest_x, dest_y, 0.15, options))
+    sleep(1)
     refresh
   end
 
@@ -108,6 +95,25 @@ class ICukeWorld
     drag(sources[0], sources[1], destinations[0], destinations[1])
   end
   
+  def drag_slider_to(label, direction, distance)
+    element =
+      page.xpath(
+        %Q{//*[#{trait(:updates_frequently)} and @label="#{label}" and frame]}
+      ).first
+    
+    x, y = locate_element(element)
+    dest_x, dest_y = x, y
+    modifier = direction_modifier(direction)
+    
+    if [:up, :down].include?(direction)
+      dest_y += modifier * distance
+    else
+      dest_x += modifier * distance
+    end
+    
+    drag(x,y,dest_x,dest_y)
+  end
+
   def type(textfield, text, options = {})
     tap(textfield, :hold_for => 0.75) do |field|
       if field['value']
@@ -183,6 +189,28 @@ class ICukeWorld
     @response = nil
     @xml = nil
   end
+
+  def locate_element(element)
+    raise %Q{No element labelled "#{label}" found in: #{page}} unless element
+    
+    # This seems brittle, revist how to fetch the frame without relying on it being the only child
+    frame = element.child
+    
+    x = frame['x'].to_f
+    y = frame['y'].to_f
+    
+    # Hit the element in the middle
+    x += (frame['width'].to_f / 2)
+    y += (frame['height'].to_f / 2)
+    
+    raise %Q{Element "#{label}" is off screen in: #{page}} unless onscreen?(x, y)
+
+    return x, y
+  end
+
+  def direction_modifier(direction)
+    [:up, :left].include?(direction) ? -1 : 1
+  end
 end
 
 World do
@@ -219,6 +247,10 @@ end
 
 When /^I drag from ([^\"]*) to ([^\"]*)$/ do |source, destination|
   drag_with_source(source, destination)
+end
+
+When /^I select the "([^\"]*)" slider and drag ([^\"]*) pixels (down|up|left|right)$/ do |label, distance, direction|
+  drag_slider_to(label, direction.to_sym, distance.to_i)
 end
 
 When /^I scroll (down|up|left|right)(?: to "([^\"]*)")?$/ do |direction, text|

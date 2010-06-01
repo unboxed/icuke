@@ -51,7 +51,6 @@ Feature: iPhone integration tests
   Scenario: Switches and sliders
     When I tap "Controls"
     And I tap "Standard switch"
-    Then show me the screen
     
   Scenario: Finding text
     When I tap "TextView"
@@ -97,9 +96,13 @@ Feature: iPhone integration tests
     And I tap "Curl Image"
 
   Scenario: Draging
-    And I tap "Controls"
-    When I drag from 258,285 to 319,285
+    When I tap "Controls"
+    And I drag from 258,285 to 319,285
+    And I drag from 293,285 to 258,285
     And I drag from 244,439 to 319,439
+    And I tap "Back"
+    And I tap "Controls"
+    And I select the "Standard slider" slider and drag 50 pixels left
     And I tap "Back"
     And I scroll down
     And I tap "Toolbar"
