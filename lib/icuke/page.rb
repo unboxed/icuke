@@ -13,11 +13,11 @@ class Page
 
   def onscreen?(text, scope='')
     element = find_element(text, scope).first
-    x, y = locate_element(element)
+    x, y = element_position(element)
     return x >= 0 && y >= 0 && x < 320 && y < 480
   end
 
-  def locate_element(element)
+  def element_position(element)
     frame = element.child
     
     x = frame['x'].to_f

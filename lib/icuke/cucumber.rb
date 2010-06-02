@@ -39,7 +39,7 @@ class ICukeWorld
     }.merge(options)
     
     element = page.first_tappable_element(label)
-    x, y = page.locate_element(element)
+    x, y = page.element_position(element)
     
     @simulator.fire_event(Tap.new(x, y, options))
     
@@ -84,7 +84,7 @@ class ICukeWorld
   
   def drag_slider_to(label, direction, distance)
     element = page.first_slider_element(label)
-    x, y = page.locate_element(element)
+    x, y = page.element_position(element)
     dest_x, dest_y = x, y
     modifier = direction_modifier(direction)
     
@@ -147,7 +147,7 @@ class ICukeWorld
   
   def scroll_to(text, options = {})
     previous_response = response.dup
-    while not onscreen?(text) do
+    while not page.onscreen?(text) do
       scroll(options[:direction])
       raise %Q{Content "#{text}" not found in: #{page}} if response == previous_response
     end

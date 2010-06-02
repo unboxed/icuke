@@ -10,7 +10,7 @@ describe Page do
     @page = Page.new(@xml)
   end
   
-  describe "when testing if an element exists" do
+  context "when testing if an element exists" do
     
     it "should be able to search for a label" do
       @page.exists?("Customized Slider").should be_true
@@ -35,7 +35,7 @@ describe Page do
     
   end
 
-  describe "when finding a tappable element" do
+  context "when finding a tappable element" do
 
     it "should find an element with a button trait" do
       @page.first_tappable_element("Standard switch").name.should == "UISwitch"
@@ -55,7 +55,7 @@ describe Page do
     
   end
 
-  describe "when finding a slider element" do
+  context "when finding a slider element" do
 
     it "should find a slider by its label" do
       @page.first_slider_element("Standard slider").name.should == "UISlider"

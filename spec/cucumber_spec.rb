@@ -14,7 +14,7 @@ describe ICukeWorld do
     @cuke_world.stub!(:sleep)
   end
 
-  describe "when performing a swipe" do
+  context "when performing a swipe" do
 
     before(:each) do
       @simulator.should_receive(:fire_event)
@@ -57,7 +57,7 @@ describe ICukeWorld do
     
   end
   
-  describe "when performing a drag" do
+  context "when performing a drag" do
 
     before(:each) do
       @simulator.stub(:fire_event)
@@ -77,7 +77,7 @@ describe ICukeWorld do
 
   end
   
-  describe "when performing a drag with a source" do
+  context "when performing a drag with a source" do
 
     before(:each) do
       @simulator.stub(:fire_event)
