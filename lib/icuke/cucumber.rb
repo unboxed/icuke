@@ -2,6 +2,7 @@ require 'nokogiri'
 
 require 'icuke/simulator'
 require 'icuke/simulate'
+require 'icuke/page'
 
 class ICukeWorld
   include ICuke::Simulate::Gestures
@@ -21,7 +22,7 @@ class ICukeWorld
   end
   
   def page
-    @xml ||= Nokogiri::XML::Document.parse(response).root
+    @page ||= Page.new(response)
   end
   
   def response
@@ -32,27 +33,13 @@ class ICukeWorld
     @simulator.record
   end
   
-  def can_see?(text, scope = '')
-    page.xpath(%Q{#{scope}//*[contains(., "#{text}") or contains(@label, "#{text}") or contains(@value, "#{text}")]}).any?
-  end
-  
-  def onscreen?(x, y)
-    return x >= 0 && y >= 0 && x < 320 && y < 480
-  end
-  
   def tap(label, options = {}, &block)
     options = {
       :pause => true
     }.merge(options)
     
-    element =
-      page.xpath(
-        %Q{//*[#{trait(:button, :updates_frequently, :keyboard_key)} and @label="#{label}" and frame]},
-        %Q{//*[#{trait(:link)} and @value="#{label}" and frame]},
-        %Q{//*[@label="#{label}" and frame]}
-      ).first
-    
-    x, y = locate_element(element)
+    element = page.first_tappable_element(label)
+    x, y = page.locate_element(element)
     
     @simulator.fire_event(Tap.new(x, y, options))
     
@@ -96,12 +83,8 @@ class ICukeWorld
   end
   
   def drag_slider_to(label, direction, distance)
-    element =
-      page.xpath(
-        %Q{//*[#{trait(:updates_frequently)} and @label="#{label}" and frame]}
-      ).first
-    
-    x, y = locate_element(element)
+    element = page.first_slider_element(label)
+    x, y = page.locate_element(element)
     dest_x, dest_y = x, y
     modifier = direction_modifier(direction)
     
@@ -164,7 +147,7 @@ class ICukeWorld
   
   def scroll_to(text, options = {})
     previous_response = response.dup
-    while page.xpath(%Q{//*[contains(., "#{text}") or contains(@label, "#{text}") or contains(@value, "#{text}")]}).empty? do
+    while not onscreen?(text) do
       scroll(options[:direction])
       raise %Q{Content "#{text}" not found in: #{page}} if response == previous_response
     end
@@ -181,31 +164,9 @@ class ICukeWorld
   
   private
   
-  def trait(*traits)
-    "(#{traits.map { |t| %Q{contains(@traits, "#{t}")} }.join(' or ')})"
-  end
-  
   def refresh
     @response = nil
-    @xml = nil
-  end
-
-  def locate_element(element)
-    raise %Q{No element labelled "#{label}" found in: #{page}} unless element
-    
-    # This seems brittle, revist how to fetch the frame without relying on it being the only child
-    frame = element.child
-    
-    x = frame['x'].to_f
-    y = frame['y'].to_f
-    
-    # Hit the element in the middle
-    x += (frame['width'].to_f / 2)
-    y += (frame['height'].to_f / 2)
-    
-    raise %Q{Element "#{label}" is off screen in: #{page}} unless onscreen?(x, y)
-
-    return x, y
+    @page = nil
   end
 
   def direction_modifier(direction)
@@ -230,11 +191,11 @@ Given /^(?:"([^\"]*)" from )?"([^\"]*)" is loaded in the simulator(?: using sdk 
 end
 
 Then /^I should see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, scope|
-  raise %Q{Content "#{text}" not found in: #{page}} unless can_see?(text, scope)
+  raise %Q{Content "#{text}" not found in: #{page}} unless page.exists?(text, scope)
 end
 
 Then /^I should not see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, scope|
-  raise %Q{Content "#{text}" was found but was not expected in: #{page}} if can_see?(text, scope)
+  raise %Q{Content "#{text}" was found but was not expected in: #{page}} if page.exists?(text, scope)
 end
 
 When /^I tap "([^\"]*)"$/ do |label|

@@ -6,31 +6,6 @@ Feature: iPhone integration tests
   Background:
     Given "app/UICatalog.xcodeproj" is loaded in the simulator
 
-  Scenario: Navigating through the application
-    When I tap "Buttons"
-    And I tap "Back"
-    And I tap "Controls"
-    And I tap "Back"
-    And I tap "TextFields"
-    And I tap "Back"
-    And I tap "SearchBar"
-    And I tap "Back"
-    And I tap "TextView"
-    And I tap "Back"
-    And I tap "Images"
-    And I tap "Back"
-    And I tap "Web"
-    And I tap "Back"
-    And I tap "Segment"
-    And I tap "Back"
-    And I scroll down
-    And I tap "Toolbar"
-    And I tap "Back"
-    And I tap "Alerts"
-    And I tap "Back"
-    And I tap "Transitions"
-    And I tap "Back"
-    
   Scenario: Scrolling up and down
     When I tap "Buttons"
     And I scroll down
@@ -48,7 +23,7 @@ Feature: iPhone integration tests
     And I tap "More info"
     And I tap "Add contact"
 
-  Scenario: Switches and sliders
+  Scenario: Switches
     When I tap "Controls"
     And I tap "Standard switch"
     
@@ -73,7 +48,7 @@ Feature: iPhone integration tests
   Scenario: Web
     When I tap "Web"
     And I tap "Clear text"
-    And I type "http://www.leandog.com" in "URL entry"
+    And I type "http://google.com" in "URL entry"
 
   Scenario: Toolbar
     When I scroll down
