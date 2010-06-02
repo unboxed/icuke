@@ -18,6 +18,7 @@ class Page
   end
 
   def element_position(element)
+    # This seems brittle, revist how to fetch the frame without relying on it being the only child
     frame = element.child
     
     x = frame['x'].to_f

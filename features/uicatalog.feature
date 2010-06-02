@@ -13,6 +13,10 @@ Feature: iPhone integration tests
     And I tap "Back"
     And I scroll down
     And I tap "Transitions"
+    
+  Scenario: Scrolling to a visible object
+    When I scroll down to "Transitions"
+    Then I should see "Transitions"
 
   Scenario: Pressing buttons
     When I tap "Buttons"
