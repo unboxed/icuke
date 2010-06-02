@@ -30,9 +30,6 @@ to function sensibly. If your accessibility information is not accurate, iCuke m
 
 == Bugs
 
-iCuke does not currently automate enabling the Accessibility Inspecter, which is required to be running for iCuke to
-function. I am still deciding how best to achieve this is in a reliable fashion.
-
 iCuke does not support testing applications on real devices, because I don't know of a way get a preload library to load
 on the device.
 
