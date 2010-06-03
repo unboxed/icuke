@@ -55,12 +55,22 @@ class Page
   end
 
   def find_slider_button(element)
-    frame = element.child
-    x, y = frame['x'].to_f, frame['y'].to_f
-    width, height = frame['width'].to_f, frame['height'].to_f
+    x, y, width, height = frame_coordinates(element.child)
     percentage = 0.01 * element['value'].to_f
-    # need to adjust for padding around control - using 10 pixels max
-    adjustment = (percentage - 0.5) * 20
+    calculate_percentage_with_adjustment(x,y,width,height,percentage)
+  end
+
+  def find_slider_percentage_location(element, percentage)
+    x, y, width, height = frame_coordinates(element.child)
+    percentage = 0.01 * percentage
+    calculate_percentage_with_adjustment(x,y,width,height,percentage)
+  end
+  
+  private
+
+  def calculate_percentage_with_adjustment(x,y,width,height,percentage,adjustment=10)
+    # need to adjust for padding around control - using 10 pixels default
+    adjustment = (percentage - 0.5) * (2*adjustment)
     if width < height
       x += width / 2
       y += height * percentage - adjustment
@@ -68,11 +78,12 @@ class Page
       x += width * percentage - adjustment
       y += height / 2
     end
-    return x, y
+    return x,y
   end
 
-  
-  private
+  def frame_coordinates(frame)
+    return frame['x'].to_f, frame['y'].to_f, frame['width'].to_f, frame['height'].to_f
+  end
   
   def trait(*traits)
     "(#{traits.map { |t| %Q{contains(@traits, "#{t}")} }.join(' or ')})"

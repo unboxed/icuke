@@ -98,6 +98,13 @@ class ICukeWorld
     drag(x,y,dest_x,dest_y)
   end
 
+  def drag_slider_to_percentage(label, percentage)
+    element = page.first_slider_element(label)
+    x, y = page.find_slider_button(element)
+    dest_x, dest_y = page.find_slider_percentage_location(element, percentage)
+    drag(x,y,dest_x,dest_y)
+  end
+
   def type(textfield, text, options = {})
     tap(textfield, :hold_for => 0.75) do |field|
       if field['value']
@@ -214,6 +221,10 @@ end
 
 When /^I select the "([^\"]*)" slider and drag ([^\"]*) pixels (down|up|left|right)$/ do |label, distance, direction|
   drag_slider_to(label, direction.to_sym, distance.to_i)
+end
+
+When /^I move the "([^\"]*)" slider to ([^\"]*) percent$/ do |label, percent|
+  drag_slider_to_percentage(label, percent.to_i)
 end
 
 When /^I scroll (down|up|left|right)(?: to "([^\"]*)")?$/ do |direction, text|

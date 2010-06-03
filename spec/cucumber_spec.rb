@@ -82,9 +82,11 @@ describe ICukeWorld do
         with(12, 24, 34, 44, 0.15, {})
       @cuke_world.drag_with_source("12,24", "34,44")
     end
+    
   end
 
   context "when draging a slider" do
+    
     before(:each) do
       @page = []
       @page.should_receive(:first_slider_element).at_least(:once)
@@ -101,5 +103,24 @@ describe ICukeWorld do
     end
 
   end
-  
+
+  context "when draging a slider to a percentage value" do
+    
+    before(:each) do
+      @element = []
+      @page = []
+      @page.should_receive(:first_slider_element).and_return(@element)
+      @page.should_receive(:find_slider_button).and_return([244, 287])
+      Page.should_receive(:new).and_return(@page)
+    end
+
+    it "should identify the destination on the page" do
+      @page.should_receive(:find_slider_percentage_location).with(@element, 30).
+        and_return([230, 287])
+      ICuke::Simulate::Gestures::Swipe.should_receive(:new).
+        with(244, 287, 230, 287, 0.15, {})
+      @cuke_world.drag_slider_to_percentage("label", 30)
+    end
+    
+  end
 end

@@ -85,6 +85,12 @@ Feature: iPhone integration tests
     And I select the "Standard Slider" slider and drag 20 pixels right
     And I select the "Standard Slider" slider and drag 40 pixels left
     And I select the "Standard Slider" slider and drag 70 pixels right
+    And I move the "Standard Slider" slider to 50 percent
+    And I move the "Standard Slider" slider to 25 percent
+    And I move the "Standard Slider" slider to 0 percent
+    And I move the "Standard Slider" slider to 75 percent
+    And I move the "Standard Slider" slider to 100 percent
+    And I move the "Standard Slider" slider to 50 percent
     And I tap "Back"
     And I scroll down
     And I tap "Toolbar"
