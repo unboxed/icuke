@@ -9,6 +9,8 @@ describe ICukeWorld do
 
   before(:each) do
     @simulator = []
+    @simulator.stub(:view)
+    @simulator.stub(:fire_event)
     ICuke::Simulator.should_receive(:new).and_return(@simulator)
     @cuke_world = ICukeWorld.new
     @cuke_world.stub!(:sleep)
@@ -59,10 +61,6 @@ describe ICukeWorld do
   
   context "when performing a drag" do
 
-    before(:each) do
-      @simulator.stub(:fire_event)
-    end
-
     it "should fire an event" do
       @simulator.should_receive(:fire_event)
       @cuke_world.drag(1,2,3,4,{})
@@ -79,14 +77,29 @@ describe ICukeWorld do
   
   context "when performing a drag with a source" do
 
-    before(:each) do
-      @simulator.stub(:fire_event)
-    end
-
     it "should parse the input values" do
       ICuke::Simulate::Gestures::Swipe.should_receive(:new).
         with(12, 24, 34, 44, 0.15, {})
       @cuke_world.drag_with_source("12,24", "34,44")
     end
   end
+
+  context "when draging a slider" do
+    before(:each) do
+      @page = []
+      @page.should_receive(:first_slider_element).at_least(:once)
+      @page.should_receive(:find_slider_button).at_least(:once).and_return([244, 287])
+      Page.should_receive(:new).at_least(:once).and_return(@page)
+    end
+
+    it "should set the destination properly" do
+      {:up=>[244,267], :down=>[244,307], :right=>[264,287], :left=>[224,287]}.each do |d|
+        ICuke::Simulate::Gestures::Swipe.should_receive(:new).
+          with(244, 287, d[1][0], d[1][1], 0.15, {})
+        @cuke_world.drag_slider_to('Label', d[0], 20)
+      end
+    end
+
+  end
+  
 end

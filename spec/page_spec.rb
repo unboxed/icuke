@@ -70,5 +70,42 @@ describe Page do
     end
   
   end
+
+  context "when finding the button for a slider" do
+    
+    before(:each) do
+      @frame = {}
+      @element = {}
+      @element.should_receive(:child).at_least(:once).and_return(@frame)
+    end
+
+    it "should find coordinates when slider is horizontal" do
+      set_frame_values(184,275,120,24)
+      {'50%' => 244, '100%' => 294, '75%' =>  269, '25%' => 219, '0%' => 194}.each do |v|
+        @element['value'] = v[0]
+        x, y = @page.find_slider_button(@element)
+        x.should == v[1]
+        y.should == 287
+      end
+    end
+
+    it "should find coordinates when slider is vertical" do
+      set_frame_values(184,175,24,120)
+      {'50%' => 235, '100%' => 285, '75%' =>  260,'25%' => 210, '0%' => 185}.each do |v|
+        @element['value'] = v[0]
+        x,y = @page.find_slider_button(@element)
+        x.should == 196
+        y.should == v[1]
+      end
+    end
+
+    def set_frame_values(x, y, width, height)
+      @frame['x'] = x
+      @frame['y'] = y
+      @frame['width'] = width
+      @frame['height'] = height
+    end
+
+  end
   
 end

@@ -84,7 +84,8 @@ class ICukeWorld
   
   def drag_slider_to(label, direction, distance)
     element = page.first_slider_element(label)
-    x, y = page.element_position(element)
+    x, y = page.find_slider_button(element)
+    
     dest_x, dest_y = x, y
     modifier = direction_modifier(direction)
     
@@ -172,6 +173,7 @@ class ICukeWorld
   def direction_modifier(direction)
     [:up, :left].include?(direction) ? -1 : 1
   end
+
 end
 
 World do
@@ -227,5 +229,5 @@ Then /^I put the phone into recording mode$/ do
 end
 
 Then /^show me the screen$/ do
-  puts page.to_s
+  puts page.xml.to_s
 end

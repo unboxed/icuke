@@ -81,7 +81,10 @@ Feature: iPhone integration tests
     And I drag from 244,439 to 319,439
     And I tap "Back"
     And I tap "Controls"
-    And I select the "Standard slider" slider and drag 50 pixels left
+    And I select the "Standard Slider" slider and drag 50 pixels left
+    And I select the "Standard Slider" slider and drag 20 pixels right
+    And I select the "Standard Slider" slider and drag 40 pixels left
+    And I select the "Standard Slider" slider and drag 70 pixels right
     And I tap "Back"
     And I scroll down
     And I tap "Toolbar"

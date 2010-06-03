@@ -53,6 +53,24 @@ class Page
     element
     
   end
+
+  def find_slider_button(element)
+    frame = element.child
+    x, y = frame['x'].to_f, frame['y'].to_f
+    width, height = frame['width'].to_f, frame['height'].to_f
+    percentage = 0.01 * element['value'].to_f
+    # need to adjust for padding around control - using 10 pixels max
+    adjustment = (percentage - 0.5) * 20
+    if width < height
+      x += width / 2
+      y += height * percentage - adjustment
+    else
+      x += width * percentage - adjustment
+      y += height / 2
+    end
+    return x, y
+  end
+
   
   private
   
