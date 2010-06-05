@@ -7,13 +7,13 @@ SDK_CFLAGS = "-isysroot #{SDK_ROOT} -F/System/Library/PrivateFrameworks -D__IPHO
 CC = '/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2'
 
 rule '.o' => '.m' do |o|
-  sh "#{CC} -I. -Ijson -c -o #{o.name} -fvisibility=hidden -x objective-c #{CFLAGS} #{SDK_CFLAGS} #{o.source}"
+  sh "#{CC} -I. -Ijson -c -o #{o.name} -x objective-c #{CFLAGS} #{SDK_CFLAGS} #{o.source}"
 end
 
 CLEAN.include('**/*.o')
 
 file 'libicuke.dylib' => FileList['**/*.m'].ext('.o') do |t|
-  sh "#{CC} -dynamiclib -o #{t.name} -fvisibility=hidden #{CFLAGS} #{SDK_CFLAGS} -framework Foundation -framework GraphicsServices -framework UIKit -framework CFNetwork -framework AXRuntime #{t.prerequisites.join(' ')}"
+  sh "#{CC} -dynamiclib -o #{t.name} #{CFLAGS} #{SDK_CFLAGS} -framework Foundation -framework GraphicsServices -framework UIKit -framework CFNetwork -framework AXRuntime #{t.prerequisites.join(' ')}"
 end
 
 CLEAN.include('libicuke.dylib')
