@@ -40,6 +40,9 @@
 	NSString *path = [NSString stringWithFormat: @"/Users/%@/Library/Application Support/iPhone Simulator/%@/Library/Preferences", NSUserName(), [[UIDevice currentDevice] systemVersion]];
 	path = [path stringByAppendingPathComponent: @"com.apple.Accessibility.plist"];
 	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithContentsOfFile: path];
+	if (!dict) {
+		dict = [NSMutableDictionary dictionaryWithCapacity: 2];
+	}
 	NSNumber *enabled = [NSNumber numberWithBool: YES];
 	[dict setObject: enabled forKey: @"AccessibilityEnabled"];
 	[dict setObject: enabled forKey: @"ApplicationAccessibilityEnabled"];
