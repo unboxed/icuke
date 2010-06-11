@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'rake'
+require 'lib/icuke/sdk'
 
 begin
   require 'jeweler'
@@ -22,8 +23,10 @@ rescue LoadError
   puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
 end
 
+ICuke::SDK.use_latest
+
 file 'app/build/Debug-iphonesimulator/UICatalog.app/UICatalog' do
-  sh 'cd app && xcodebuild -target UICatalog -configuration Debug -sdk iphonesimulator3.1.2'
+  sh "cd app && xcodebuild -target UICatalog -configuration Debug -sdk #{ICuke::SDK.fullname}"
 end
 task :app => 'app/build/Debug-iphonesimulator/UICatalog.app/UICatalog'
 task :features => :app
@@ -54,28 +57,4 @@ Rake::RDocTask.new do |rdoc|
   rdoc.title = "iCuke #{version}"
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
-end
-
-task :launch => [:app, :lib] do
-  require 'lib/icuke/simulator'
-
-  simulator = ICuke::Simulator.new
-  simulator.launch File.expand_path('app/iCuke/build/Debug-iphonesimulator/iCuke.app'),
-    :env => { 'DYLD_INSERT_LIBRARIES' => File.expand_path(File.dirname(__FILE__) + '/ext/iCuke/libicuke.dylib') }
-end
-
-task :replay => :launch do
-  simulator = ICuke::Simulator.new
-  simulator.load(File.expand_path(File.dirname(__FILE__) + '/events.plist'))
-  simulator.play
-end
-
-task :debug => [:app, :lib] do
-  require 'lib/icuke/simulator'
-
-  simulator = ICuke::Simulator.new
-  simulator.launch File.expand_path('app/iCuke/build/Debug-iphonesimulator/iCuke.app'),
-    :env => { 'DYLD_INSERT_LIBRARIES' => File.expand_path(File.dirname(__FILE__) + '/ext/iCuke/libicuke.dylib') },
-    :debugger => true
-  puts `ps aux|grep [i]Cuke.app/iCuke`
 end
