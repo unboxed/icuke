@@ -53,7 +53,7 @@ module ICuke
     def self.root
       require_sdk
       
-      "/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator#{version}.sdk"
+      "/#{`xcode-select -path`.chomp}/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator#{version}.sdk"
     end
     
     def self.home

@@ -4,7 +4,7 @@ SUPPORTED_SDKS = ['3']
 
 ICuke::SDK.major_versions.each do |sdk|
   unless SUPPORTED_SDKS.include?(sdk)
-    puts "iCuke does not currently support version #{sdk} of the iPhone SDK"
+    puts "Note: iCuke does not currently support version #{sdk} of the iPhone SDK, skipping"
     next
   end
   

@@ -4,7 +4,7 @@ require 'timeout'
 module ICuke
   class XCode
     def self.app
-      @app ||= Appscript.app('Xcode.app')
+      @app ||= Appscript.app(File.join(`xcode-select -print-path`.chomp, 'Applications', 'XCode.app'))
     end
 
     def self.open_project(project_file)
@@ -65,7 +65,7 @@ module ICuke
   
   class IPhoneSimulator
     def self.app
-      @app ||= Appscript.app('iPhone Simulator.app')
+      @app ||= Appscript.app(File.join(`xcode-select -print-path`.chomp, 'Platforms', 'iPhoneSimulator.platform', 'Developer', 'Applications', 'iPhone Simulator.app'))
     end
     
     def self.quit
