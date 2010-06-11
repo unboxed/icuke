@@ -151,6 +151,9 @@ static Viewer *sharedViewer = nil;
 
 -(NSString *)screen {
 	NSMutableString *xml = [NSMutableString stringWithString: @"<screen>"];
+	CGRect frame = [[UIScreen mainScreen] applicationFrame];
+	[xml appendFormat: @"<frame x=\"%f\" y=\"%f\" width=\"%f\" height=\"%f\"/>",
+		frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 
 	for (UIWindow *window in [UIApplication sharedApplication].windows) {
 		[window appendToXml: xml];
