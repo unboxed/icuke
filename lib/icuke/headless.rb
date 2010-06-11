@@ -13,14 +13,10 @@ module ICuke
       app_name = File.basename(project_file, '.xcodeproj')
       directory = "#{File.dirname(project_file)}/build/#{options[:configuration]}-iphonesimulator"
       
-      ENV['DYLD_ROOT_PATH'] = '/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.1.2.sdk'
       ENV['DYLD_FRAMEWORK_PATH'] = directory
-      ENV['IPHONE_SIMULATOR_ROOT'] = '/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.1.2.sdk'
-      home = Dir.mktmpdir
-      FileUtils.mkdir_p File.join(home, 'Library', 'Preferences')
-      FileUtils.cp File.join(File.dirname(__FILE__), 'com.apple.Accessibility.plist'), File.join(home, 'Library', 'Preferences')
-      FileUtils.mkdir File.join(home, 'Documents')
-      ENV['CFFIXED_USER_HOME'] = home
+      ENV['DYLD_ROOT_PATH'] = ICuke::SDK.root
+      ENV['IPHONE_SIMULATOR_ROOT'] = ICuke::SDK.root
+      ENV['CFFIXED_USER_HOME'] = Dir.mktmpdir
       ENV['ICUKE_KEEP_PREFERENCES'] = '1'
       
       options[:env].each_pair do |k, v|

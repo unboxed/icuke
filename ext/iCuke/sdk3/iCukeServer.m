@@ -10,13 +10,12 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-static NSAutoreleasePool *pool;
-
 @implementation iCukeServer
 
-+ (void)start {
-	pool = [[NSAutoreleasePool alloc] init];
-    
++ (void)load
+{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+
 	[[iCukeHTTPServer sharediCukeHTTPServer] start];
 
 	NSFileManager *fileManager= [[NSFileManager alloc] init];
@@ -27,11 +26,25 @@ static NSAutoreleasePool *pool;
 
 		paths = [fileManager contentsOfDirectoryAtPath: preferences error: NULL];
 		for (NSString *path in paths) {
+			NSLog(@"Found: %@", path);
 			if (![path hasPrefix: @"."]) {
 				NSLog(@"Removing: %@", path);
 				unlink([[preferences stringByAppendingPathComponent: path] cStringUsingEncoding: [NSString defaultCStringEncoding]]);
 			}
 		}
+	}
+
+	// This is a hack, I can't find a nicer way. The iPhone Simulator's
+	// preferences are hidden away from applications. None of the preference APIs
+	// allow access to them.
+	NSString *path = [NSString stringWithFormat: @"/Users/%@/Library/Application Support/iPhone Simulator/%@/Library/Preferences", NSUserName(), [[UIDevice currentDevice] systemVersion]];
+	path = [path stringByAppendingPathComponent: @"com.apple.Accessibility.plist"];
+	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithContentsOfFile: path];
+	NSNumber *enabled = [NSNumber numberWithBool: YES];
+	[dict setObject: enabled forKey: @"AccessibilityEnabled"];
+	[dict setObject: enabled forKey: @"ApplicationAccessibilityEnabled"];
+	if (![dict writeToFile: path atomically: YES]) {
+		NSLog(@"Failed to write %@ out to %@", dict, path);
 	}
 
 	NSString *documents = [NSHomeDirectory() stringByAppendingPathComponent: @"Documents"];
@@ -42,22 +55,8 @@ static NSAutoreleasePool *pool;
 			unlink([[documents stringByAppendingPathComponent: path] cStringUsingEncoding: [NSString defaultCStringEncoding]]);
 		}
 	}
-}
-
-+ (void)stop {
+	
 	[pool release];
 }
 
 @end
-
-void start_server(void) __attribute__((constructor));
-void start_server(void)
-{
-	[iCukeServer start];
-}
-
-void stop_server(void) __attribute__((destructor));
-void stop_server(void)
-{
-	[iCukeServer stop];
-}

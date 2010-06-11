@@ -11,6 +11,4 @@
 @interface iCukeServer : iCukeHTTPServer {
 }
 
-+ (void) start;
-
 @end

@@ -101,8 +101,6 @@ module ICuke
           settings[:active_target] = project.targets[options[:target]]
         end
         
-        set_preferences
-        
         XCode.with_settings(project, settings) do
           executable = project.active_executable.get
           options[:env].each_pair do |name, value|
@@ -133,32 +131,6 @@ module ICuke
     
     def quit
       IPhoneSimulator.quit
-      restore_preferences
-    end
-    
-    private
-    
-    def accessibility_plist
-      File.expand_path(File.join('~', 'Library', 'Application Support', 'iPhone Simulator', '3.1.2', 'Library', 'Preferences', 'com.apple.Accessibility.plist'))
-    end
-    
-    def accessibility_plist_backup
-      accessibility_plist + '.icuke'
-    end
-    
-    def restore_preferences
-      if File.exists? accessibility_plist_backup
-        FileUtils.mv accessibility_plist_backup, accessibility_plist
-      else
-        FileUtils.rm accessibility_plist
-      end
-    end
-    
-    def set_preferences
-      if File.exists? accessibility_plist
-        FileUtils.mv accessibility_plist, accessibility_plist_backup
-      end
-      FileUtils.cp File.join(File.dirname(__FILE__), 'com.apple.Accessibility.plist'), accessibility_plist
     end
   end
 end

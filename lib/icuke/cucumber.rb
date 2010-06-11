@@ -1,5 +1,6 @@
 require 'nokogiri'
 
+require 'icuke/sdk'
 require 'icuke/simulator'
 require 'icuke/simulate'
 
@@ -182,12 +183,21 @@ After do
   quit
 end
 
-LIBICUKE = File.expand_path(File.dirname(__FILE__) + '/../../ext/iCuke/libicuke.dylib')
+LIBICUKE_DIR = File.expand_path(File.dirname(__FILE__) + '/../../ext/iCuke')
 
-Given /^(?:"([^\"]*)" from )?"([^\"]*)" is loaded in the simulator(?: using sdk (.*))?$/ do |target, project, sdk|
+Given /^(?:"([^\"]*)" from )?"([^\"]*)" is loaded in the simulator(?: with SDK "([^\"]*)")?$/ do |target, project, sdk_version|
+  if sdk_version
+    ICuke::SDK.use(sdk_version)
+  else
+    ICuke::SDK.use_latest
+  end
+  
   launch File.expand_path(project),
          :target => target,
-         :env => { 'DYLD_INSERT_LIBRARIES' => LIBICUKE }
+         :env => {
+           'DYLD_LIBRARY_PATH' => LIBICUKE_DIR,
+           'DYLD_INSERT_LIBRARIES' => File.join(LIBICUKE_DIR, ICuke::SDK.dylib)
+         }
 end
 
 Then /^I should see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, scope|
