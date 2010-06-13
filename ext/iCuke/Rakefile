@@ -1,6 +1,6 @@
 require File.join(File.dirname(__FILE__), '..', '..', 'lib', 'icuke', 'sdk')
 
-SUPPORTED_SDKS = ['3']
+SUPPORTED_SDKS = ['3', '4']
 
 ICuke::SDK.major_versions.each do |sdk|
   unless SUPPORTED_SDKS.include?(sdk)
