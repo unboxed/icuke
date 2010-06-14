@@ -151,17 +151,17 @@ class ICukeWorld
   end
   
   def scroll_to(text, options = {})
-    x, y, x2, y2 = screen.swipe_coordinates(swipe_direction(options[:direction]))
     previous_response = response.dup
     until screen.visible?(text) do
-      @simulator.fire_event(Swipe.new(x, y, x2, y2, 0.15, options))
-      refresh
+      scroll(options[:direction])
       raise %Q{Content "#{text}" not found in: #{screen}} if response == previous_response
     end
   end
   
   def scroll(direction)
-    swipe(swipe_direction(direction))
+    x, y, x2, y2 = screen.swipe_coordinates(swipe_direction(direction))
+    @simulator.fire_event(Swipe.new(x, y, x2, y2, 0.15, {}))
+    refresh
   end
   
   def set_application_defaults(defaults)
