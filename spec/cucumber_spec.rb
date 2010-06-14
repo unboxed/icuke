@@ -88,10 +88,10 @@ describe ICukeWorld do
   context "when draging a slider" do
     
     before(:each) do
-      @page = []
-      @page.should_receive(:first_slider_element).at_least(:once)
-      @page.should_receive(:find_slider_button).at_least(:once).and_return([244, 287])
-      Page.should_receive(:new).at_least(:once).and_return(@page)
+      @screen = []
+      @screen.should_receive(:first_slider_element).at_least(:once)
+      @screen.should_receive(:find_slider_button).at_least(:once).and_return([244, 287])
+      Screen.should_receive(:new).at_least(:once).and_return(@screen)
     end
 
     it "should set the destination properly" do
@@ -108,14 +108,14 @@ describe ICukeWorld do
     
     before(:each) do
       @element = []
-      @page = []
-      @page.should_receive(:first_slider_element).and_return(@element)
-      @page.should_receive(:find_slider_button).and_return([244, 287])
-      Page.should_receive(:new).and_return(@page)
+      @screen = []
+      @screen.should_receive(:first_slider_element).and_return(@element)
+      @screen.should_receive(:find_slider_button).and_return([244, 287])
+      Screen.should_receive(:new).and_return(@screen)
     end
 
-    it "should identify the destination on the page" do
-      @page.should_receive(:find_slider_percentage_location).with(@element, 30).
+    it "should identify the destination on the screen" do
+      @screen.should_receive(:find_slider_percentage_location).with(@element, 30).
         and_return([230, 287])
       ICuke::Simulate::Gestures::Swipe.should_receive(:new).
         with(244, 287, 230, 287, 0.15, {})

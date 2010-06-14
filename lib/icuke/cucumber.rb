@@ -2,7 +2,7 @@ require 'nokogiri'
 
 require 'icuke/simulator'
 require 'icuke/simulate'
-require 'icuke/page'
+require 'icuke/screen'
 
 class ICukeWorld
   include ICuke::Simulate::Gestures
@@ -21,8 +21,8 @@ class ICukeWorld
     @simulator.quit
   end
   
-  def page
-    @page ||= Page.new(response)
+  def screen
+    @screen ||= Screen.new(response)
   end
   
   def response
@@ -38,8 +38,8 @@ class ICukeWorld
       :pause => true
     }.merge(options)
     
-    element = page.first_tappable_element(label)
-    x, y = page.element_position(element)
+    element = screen.first_tappable_element(label)
+    x, y = screen.element_position(element)
     
     @simulator.fire_event(Tap.new(x, y, options))
     
@@ -51,7 +51,7 @@ class ICukeWorld
   end
   
   def swipe(direction, options = {})
-    x,y,x2,y2 = page.swipe_coordinates(direction)
+    x,y,x2,y2 = screen.swipe_coordinates(direction)
     @simulator.fire_event(Swipe.new(x, y, x2, y2, 0.015, options))
     sleep(1)
     refresh
@@ -70,8 +70,8 @@ class ICukeWorld
   end
   
   def drag_slider_to(label, direction, distance)
-    element = page.first_slider_element(label)
-    x, y = page.find_slider_button(element)
+    element = screen.first_slider_element(label)
+    x, y = screen.find_slider_button(element)
     
     dest_x, dest_y = x, y
     modifier = direction_modifier(direction)
@@ -86,9 +86,9 @@ class ICukeWorld
   end
 
   def drag_slider_to_percentage(label, percentage)
-    element = page.first_slider_element(label)
-    x, y = page.find_slider_button(element)
-    dest_x, dest_y = page.find_slider_percentage_location(element, percentage)
+    element = screen.first_slider_element(label)
+    x, y = screen.find_slider_button(element)
+    dest_x, dest_y = screen.find_slider_percentage_location(element, percentage)
     drag(x,y,dest_x,dest_y)
   end
 
@@ -141,12 +141,12 @@ class ICukeWorld
   end
   
   def scroll_to(text, options = {})
-    x,y,x2,y2 = page.swipe_coordinates(swipe_direction(options[:direction]))
+    x,y,x2,y2 = screen.swipe_coordinates(swipe_direction(options[:direction]))
     previous_response = response.dup
-    while not page.onscreen?(text) do
+    while not screen.onscreen?(text) do
       @simulator.fire_event(Swipe.new(x, y, x2, y2, 0.15, options))
       refresh
-      raise %Q{Content "#{text}" not found in: #{page}} if response == previous_response
+      raise %Q{Content "#{text}" not found in: #{screen}} if response == previous_response
     end
   end
   
@@ -162,7 +162,7 @@ class ICukeWorld
   
   def refresh
     @response = nil
-    @page = nil
+    @screen = nil
   end
 
   def swipe_direction(direction)
@@ -193,11 +193,11 @@ Given /^(?:"([^\"]*)" from )?"([^\"]*)" is loaded in the simulator(?: using sdk 
 end
 
 Then /^I should see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, scope|
-  raise %Q{Content "#{text}" not found in: #{page}} unless page.exists?(text, scope)
+  raise %Q{Content "#{text}" not found in: #{screen}} unless screen.exists?(text, scope)
 end
 
 Then /^I should not see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, scope|
-  raise %Q{Content "#{text}" was found but was not expected in: #{page}} if page.exists?(text, scope)
+  raise %Q{Content "#{text}" was found but was not expected in: #{screen}} if screen.exists?(text, scope)
 end
 
 When /^I tap "([^\"]*)"$/ do |label|
@@ -233,5 +233,5 @@ Then /^I put the phone into recording mode$/ do
 end
 
 Then /^show me the screen$/ do
-  puts page.xml.to_s
+  puts screen.xml.to_s
 end

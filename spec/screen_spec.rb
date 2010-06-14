@@ -1,36 +1,36 @@
 require 'spec/spec_helper'
-require 'icuke/page'
+require 'icuke/screen'
 
-describe Page do
+describe Screen do
   before(:all) do
     @xml = File.read('spec/fixtures/controls_page.xml')
   end
 
   before(:each) do
-    @page = Page.new(@xml)
+    @screen = Screen.new(@xml)
   end
   
   context "when testing if an element exists" do
     
     it "should be able to search for a label" do
-      @page.exists?("Customized Slider").should be_true
+      @screen.exists?("Customized Slider").should be_true
     end
 
     it "should be able to search for a label within a scope" do
       # why does this not work with any scope?
-      @page.exists?("Customized Slider", "UIWindow").should be_true
+      @screen.exists?("Customized Slider", "UIWindow").should be_true
     end
 
     it "should be able to search for a value" do
-      @page.exists?("50%").should be_true
+      @screen.exists?("50%").should be_true
     end
 
     it "should be able to search for a node" do
-      @page.exists?("UISlider").should be_true
+      @screen.exists?("UISlider").should be_true
     end
 
     it "should know when an element is visible on the screen" do
-      @page.onscreen?("Standard Slider").should be_true
+      @screen.onscreen?("Standard Slider").should be_true
     end
     
   end
@@ -38,19 +38,19 @@ describe Page do
   context "when finding a tappable element" do
 
     it "should find an element with a button trait" do
-      @page.first_tappable_element("Standard switch").name.should == "UISwitch"
+      @screen.first_tappable_element("Standard switch").name.should == "UISwitch"
     end
 
     it "should find an element with an updates_frequently trait" do
-      @page.first_tappable_element("Custom").name.should == "UIAccessibilityElementMockView"
+      @screen.first_tappable_element("Custom").name.should == "UIAccessibilityElementMockView"
     end
 
     it "should find an element by its label" do
-      @page.first_tappable_element("Customized Slider").name.should == "UILabel"
+      @screen.first_tappable_element("Customized Slider").name.should == "UILabel"
     end
 
     it "should raise an exception when the element is not found" do
-      lambda{@page.first_tappable_element("does_not_exist")}.should raise_error
+      lambda{@screen.first_tappable_element("does_not_exist")}.should raise_error
     end
     
   end
@@ -58,15 +58,15 @@ describe Page do
   context "when finding a slider element" do
 
     it "should find a slider by its label" do
-      @page.first_slider_element("Standard slider").name.should == "UISlider"
+      @screen.first_slider_element("Standard slider").name.should == "UISlider"
     end
 
     it "should find a slider by a UILabel withing the same parent" do
-      @page.first_slider_element("Standard Slider").name.should == "UISlider"
+      @screen.first_slider_element("Standard Slider").name.should == "UISlider"
     end
     
     it "should raise an exception when the element is not found" do
-      lambda{@page.first_slider_element("does_not_exist")}.should raise_error
+      lambda{@screen.first_slider_element("does_not_exist")}.should raise_error
     end
   
   end
@@ -83,7 +83,7 @@ describe Page do
       set_frame_values(184,275,120,24)
       {'50%' => 244, '100%' => 294, '75%' =>  269, '25%' => 219, '0%' => 194}.each do |v|
         @element['value'] = v[0]
-        x, y = @page.find_slider_button(@element)
+        x, y = @screen.find_slider_button(@element)
         x.should == v[1]
         y.should == 287
       end
@@ -93,7 +93,7 @@ describe Page do
       set_frame_values(184,175,24,120)
       {'50%' => 235, '100%' => 285, '75%' =>  260,'25%' => 210, '0%' => 185}.each do |v|
         @element['value'] = v[0]
-        x,y = @page.find_slider_button(@element)
+        x,y = @screen.find_slider_button(@element)
         x.should == 196
         y.should == v[1]
       end
@@ -112,7 +112,7 @@ describe Page do
     it "should find percentage coordinate when slider is horizontal" do
       set_frame_values(184,275,120,24)
       {50 => 244, 100 => 294, 75 => 269, 25 => 219, 0 => 194}.each do |v|
-        x,y = @page.find_slider_percentage_location(@element, v[0])
+        x,y = @screen.find_slider_percentage_location(@element, v[0])
         x.should == v[1]
         y.should == 287
       end
@@ -121,7 +121,7 @@ describe Page do
     it "should find percentage coordinate when slider is vertical" do
       set_frame_values(184,175,24,120)
       {50 => 235, 100 => 285, 75 =>  260, 25 => 210, 0 => 185}.each do |v|
-        x,y = @page.find_slider_percentage_location(@element, v[0])
+        x,y = @screen.find_slider_percentage_location(@element, v[0])
         x.should == 196
         y.should == v[1]
       end
@@ -132,31 +132,31 @@ describe Page do
   context "when finding the coordinates for a swipe" do
 
     it "should start the coordinates with the center of the screen" do
-      x,y,x2,y2 = @page.swipe_coordinates(:down)
+      x,y,x2,y2 = @screen.swipe_coordinates(:down)
       x.should == 160
       y.should == 240
     end
 
     it "should end the swipe at the top center when swiping up" do
-      x,y,x2,y2 = @page.swipe_coordinates(:up)
+      x,y,x2,y2 = @screen.swipe_coordinates(:up)
       x2.should == 160
       y2.should == 0
     end
 
     it "should end the swipe at the bottom center when swiping down" do
-      x,y,x2,y2 = @page.swipe_coordinates(:down)
+      x,y,x2,y2 = @screen.swipe_coordinates(:down)
       x2.should == 160
       y2.should == 480
     end
 
     it "should end the swipe at the right center when swiping right" do
-      x,y,x2,y2 = @page.swipe_coordinates(:right)
+      x,y,x2,y2 = @screen.swipe_coordinates(:right)
       x2.should == 320
       y2.should == 240
     end
 
     it "should end the swipe at the left center when swiping left" do
-      x,y,x2,y2 = @page.swipe_coordinates(:left)
+      x,y,x2,y2 = @screen.swipe_coordinates(:left)
       x2.should == 0
       y2.should == 240
     end

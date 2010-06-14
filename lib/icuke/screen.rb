@@ -1,6 +1,6 @@
 require 'nokogiri'
 
-class Page
+class Screen
   attr_reader :xml
   
   def initialize(root)
