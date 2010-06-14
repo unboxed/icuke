@@ -16,6 +16,10 @@ module ICuke
       all.map { |s| s.split('.').first }.uniq
     end
     
+    def self.minor_versions
+      all.map { |s| s.sub(/^([0-9]+\.[0-9]+).*/, '\1') }.uniq
+    end
+    
     def self.latest(major_version = nil)
       @latest ||= major_version ? all.grep(/^#{major_version}\./).last : all.last
     end

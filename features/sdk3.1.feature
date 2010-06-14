@@ -4,7 +4,7 @@ Feature: iPhone integration tests
   I want cucumber to be able to drive the simulator
 
   Background:
-    Given "app/sdk3/UICatalog.xcodeproj" is loaded in the simulator with SDK 3.1.3
+    Given "app/sdk3.1/UICatalog.xcodeproj" is loaded in the simulator with SDK 3.1
 
   Scenario: Pressing buttons
     When I tap "Buttons"

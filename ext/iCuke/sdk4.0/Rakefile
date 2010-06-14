@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), '..', '..', '..', 'lib', 'icuke', 'sdk')
 require 'rake/clean'
 
-version = 4
+version = '4.0'
 ICuke::SDK.use_latest(version)
 
 CFLAGS = '-arch i386 -pipe -ggdb -std=c99 -DTARGET_OS_IPHONE'

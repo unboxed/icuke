@@ -1,8 +1,8 @@
 require File.join(File.dirname(__FILE__), '..', '..', 'lib', 'icuke', 'sdk')
 
-SUPPORTED_SDKS = ['3', '4']
+SUPPORTED_SDKS = ['3.1', '4.0']
 
-ICuke::SDK.major_versions.each do |sdk|
+ICuke::SDK.minor_versions.each do |sdk|
   unless SUPPORTED_SDKS.include?(sdk)
     puts "Note: iCuke does not currently support version #{sdk} of the iPhone SDK, skipping"
     next
