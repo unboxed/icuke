@@ -35,14 +35,14 @@ on the device.
 
 iCuke does not support drags or pinches yet. They'll be here soon!
 
-iCuke compiles against the 3.1.2 SDK. I'm not sure how to make that configurable as the compilation is done at gem
-install time.
+iCuke compiles against the latest 3.1 and 4.0 SDKs it can find. Compiling against 3.2 is not currently supported.
 
 == Contributors
 
 * Nigel Taylor
 * Aslak Hellesøy
 * Dominic Baggott
+* Jeff Morgan
 
 == Thanks
 
