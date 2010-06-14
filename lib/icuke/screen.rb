@@ -1,10 +1,13 @@
 require 'nokogiri'
 
 class Screen
-  attr_reader :xml
+  attr_reader :xml, :x, :y, :width, :height
   
   def initialize(root)
     @xml = Nokogiri::XML::Document.parse(root).root
+    frame = @xml.at_xpath('/screen/frame')
+    @x, @y = frame['x'].to_f, frame['y'].to_f
+    @width, @height = frame['width'].to_f, frame['height'].to_f
   end
   
   def exists?(text, scope = '')
@@ -13,18 +16,16 @@ class Screen
 
   def visible?(text, scope='')
     element = find_element(text, scope).first
-    x, y = element_position(element)
-    return x >= 0 && y >= 0 && x < 320 && y < 480
+    _x, _y = element_center(element)
+    return _x >= self.x && _y >= self.y && _x < self.width && _y < self.height
   end
 
-  def element_position(element)
-    # This seems brittle, revist how to fetch the frame without relying on it being the only child
-    frame = element.child
+  def element_center(element)
+    frame = element.at_xpath('./frame')
     
     x = frame['x'].to_f
     y = frame['y'].to_f
     
-    # Hit the element in the middle
     x += (frame['width'].to_f / 2)
     y += (frame['height'].to_f / 2)
     
@@ -54,16 +55,16 @@ class Screen
 
   def find_slider_button(element)
     percentage = 0.01 * element['value'].to_f
-    calculate_percentage_with_adjustment(element.child,percentage)
+    calculate_percentage_with_adjustment(element.child, percentage)
   end
 
   def find_slider_percentage_location(element, percentage)
     percentage = 0.01 * percentage
-    calculate_percentage_with_adjustment(element.child,percentage)
+    calculate_percentage_with_adjustment(element.child, percentage)
   end
   
   def center_coordinates
-    return 320 / 2, 480 / 2
+    @center ||= element_center(@xml.at_xpath('/screen'))
   end
 
   def swipe_coordinates(direction)
@@ -80,7 +81,7 @@ class Screen
 
   private
 
-  def calculate_percentage_with_adjustment(frame,percentage,adjustment=10)
+  def calculate_percentage_with_adjustment(frame, percentage, adjustment=10)
     # need to adjust for padding around control - using 10 pixels default
     x, y = frame['x'].to_f, frame['y'].to_f
     width, height = frame['width'].to_f, frame['height'].to_f

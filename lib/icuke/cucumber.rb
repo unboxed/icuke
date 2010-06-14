@@ -40,7 +40,7 @@ class ICukeWorld
     }.merge(options)
     
     element = screen.first_tappable_element(label)
-    x, y = screen.element_position(element)
+    x, y = screen.element_center(element)
     
     @simulator.fire_event(Tap.new(x, y, options))
     
@@ -52,7 +52,7 @@ class ICukeWorld
   end
   
   def swipe(direction, options = {})
-    x,y,x2,y2 = screen.swipe_coordinates(direction)
+    x, y, x2, y2 = screen.swipe_coordinates(direction)
     @simulator.fire_event(Swipe.new(x, y, x2, y2, 0.015, options))
     sleep(1)
     refresh
