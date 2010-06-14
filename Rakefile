@@ -23,13 +23,19 @@ rescue LoadError
   puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
 end
 
-ICuke::SDK.use_latest
-
-file 'app/build/Debug-iphonesimulator/UICatalog.app/UICatalog' do
-  sh "cd app && xcodebuild -target UICatalog -configuration Debug -sdk #{ICuke::SDK.fullname}"
+file 'app/sdk3/build/Debug-iphonesimulator/UICatalog.app/UICatalog' do
+  ICuke::SDK.use_latest(3)
+  sh "cd app/sdk3 && xcodebuild -target UICatalog -configuration Debug -sdk #{ICuke::SDK.fullname}"
 end
-task :app => 'app/build/Debug-iphonesimulator/UICatalog.app/UICatalog'
-task :features => :app
+task :sdk3_app => 'app/sdk3/build/Debug-iphonesimulator/UICatalog.app/UICatalog'
+task :features => :sdk3_app
+
+file 'app/sdk4/build/Debug-iphonesimulator/UICatalog.app/UICatalog' do
+  ICuke::SDK.use_latest(4)
+  sh "cd app/sdk4 && xcodebuild -target UICatalog -configuration Debug -sdk #{ICuke::SDK.fullname}"
+end
+task :sdk4_app => 'app/sdk3/build/Debug-iphonesimulator/UICatalog.app/UICatalog'
+task :features => :sdk4_app
 
 task :lib do
   sh 'cd ext/iCuke && rake'

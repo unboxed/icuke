@@ -185,7 +185,7 @@ end
 
 LIBICUKE_DIR = File.expand_path(File.dirname(__FILE__) + '/../../ext/iCuke')
 
-Given /^(?:"([^\"]*)" from )?"([^\"]*)" is loaded in the simulator(?: with SDK "([^\"]*)")?$/ do |target, project, sdk_version|
+Given /^(?:"([^\"]*)" from )?"([^\"]*)" is loaded in the simulator(?: with SDK ([0-9.]+))?$/ do |target, project, sdk_version|
   if sdk_version
     ICuke::SDK.use(sdk_version)
   else
