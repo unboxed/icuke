@@ -14,7 +14,7 @@ end
 CLEAN.include('**/*.o')
 
 file "../#{ICuke::SDK.dylib}" => FileList['**/*.m'].ext('.o') do |t|
-  sh "xcrun -sdk #{ICuke::SDK.fullname} gcc -dynamiclib -o #{t.name} -Xlinker -objc_abi_version -Xlinker 2 #{CFLAGS} #{SDK_CFLAGS} -framework Foundation -framework GraphicsServices -framework UIKit -framework CFNetwork -framework AXRuntime #{t.prerequisites.join(' ')}"
+  sh "xcrun -sdk #{ICuke::SDK.fullname} gcc-4.0 -dynamiclib -o #{t.name} -Xlinker -objc_abi_version -Xlinker 2 #{CFLAGS} #{SDK_CFLAGS} -framework Foundation -framework GraphicsServices -framework UIKit -framework CFNetwork -framework AXRuntime #{t.prerequisites.join(' ')}"
 end
 
 CLEAN.include("../#{ICuke::SDK.dylib}")
