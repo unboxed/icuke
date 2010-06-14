@@ -128,6 +128,40 @@ describe Page do
     end
     
   end
+
+  context "when finding the coordinates for a swipe" do
+
+    it "should start the coordinates with the center of the screen" do
+      x,y,x2,y2 = @page.swipe_coordinates(:down)
+      x.should == 160
+      y.should == 240
+    end
+
+    it "should end the swipe at the top center when swiping up" do
+      x,y,x2,y2 = @page.swipe_coordinates(:up)
+      x2.should == 160
+      y2.should == 0
+    end
+
+    it "should end the swipe at the bottom center when swiping down" do
+      x,y,x2,y2 = @page.swipe_coordinates(:down)
+      x2.should == 160
+      y2.should == 480
+    end
+
+    it "should end the swipe at the right center when swiping right" do
+      x,y,x2,y2 = @page.swipe_coordinates(:right)
+      x2.should == 320
+      y2.should == 240
+    end
+
+    it "should end the swipe at the left center when swiping left" do
+      x,y,x2,y2 = @page.swipe_coordinates(:left)
+      x2.should == 0
+      y2.should == 240
+    end
+        
+  end
   
   def set_frame_values(x, y, width, height)
     @frame['x'] = x

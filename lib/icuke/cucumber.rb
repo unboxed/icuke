@@ -51,20 +51,7 @@ class ICukeWorld
   end
   
   def swipe(direction, options = {})
-    modifier = direction_modifier(direction)
-    
-    # Just swipe from the middle of an iPhone-dimensioned screen for now
-    x = 320 / 2
-    y = 480 / 2
-    x2 = x
-    y2 = y
-    
-    if [:up, :down].include?(direction)
-      y2 = y + (y * modifier)
-    else
-      x2 = x + (x * modifier)
-    end
-    
+    x,y,x2,y2 = page.swipe_coordinates(direction)
     @simulator.fire_event(Swipe.new(x, y, x2, y2, 0.015, options))
     sleep(1)
     refresh
@@ -154,16 +141,17 @@ class ICukeWorld
   end
   
   def scroll_to(text, options = {})
+    x,y,x2,y2 = page.swipe_coordinates(swipe_direction(options[:direction]))
     previous_response = response.dup
     while not page.onscreen?(text) do
-      scroll(options[:direction])
+      @simulator.fire_event(Swipe.new(x, y, x2, y2, 0.15, options))
+      refresh
       raise %Q{Content "#{text}" not found in: #{page}} if response == previous_response
     end
   end
   
   def scroll(direction)
-    swipe_directions = { :up => :down, :down => :up, :left => :right, :right => :left }
-    swipe(swipe_directions[direction])
+    swipe(swipe_direction(direction))
   end
   
   def set_application_defaults(defaults)
@@ -175,6 +163,11 @@ class ICukeWorld
   def refresh
     @response = nil
     @page = nil
+  end
+
+  def swipe_direction(direction)
+    swipe_directions = { :up => :down, :down => :up, :left => :right, :right => :left }
+    swipe_directions[direction]
   end
 
   def direction_modifier(direction)

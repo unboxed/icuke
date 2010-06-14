@@ -64,6 +64,22 @@ class Page
     calculate_percentage_with_adjustment(element.child,percentage)
   end
   
+  def center_coordinates
+    return 320 / 2, 480 / 2
+  end
+
+  def swipe_coordinates(direction)
+    modifier = [:up, :left].include?(direction) ? -1 : 1
+    x, y = center_coordinates
+    x2, y2 = x, y
+    if [:up, :down].include?(direction)
+      y2 = y + (y * modifier)
+    else
+      x2 = x + (x * modifier)
+    end
+    return x, y, x2, y2
+  end
+
   private
 
   def calculate_percentage_with_adjustment(frame,percentage,adjustment=10)
