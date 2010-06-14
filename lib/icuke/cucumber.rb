@@ -3,6 +3,7 @@ require 'nokogiri'
 require 'icuke/sdk'
 require 'icuke/simulator'
 require 'icuke/simulate'
+require 'icuke/screen'
 
 class ICukeWorld
   include ICuke::Simulate::Gestures
@@ -21,8 +22,8 @@ class ICukeWorld
     @simulator.quit
   end
   
-  def page
-    @xml ||= Nokogiri::XML::Document.parse(response).root
+  def screen
+    @screen ||= Screen.new(response)
   end
   
   def response
@@ -33,39 +34,13 @@ class ICukeWorld
     @simulator.record
   end
   
-  def can_see?(text, scope = '')
-    page.xpath(%Q{#{scope}//*[contains(., "#{text}") or contains(@label, "#{text}") or contains(@value, "#{text}")]}).any?
-  end
-  
-  def onscreen?(x, y)
-    return x >= 0 && y >= 0 && x < 320 && y < 480
-  end
-  
   def tap(label, options = {}, &block)
     options = {
       :pause => true
     }.merge(options)
     
-    element =
-      page.xpath(
-        %Q{//*[#{trait(:button, :updates_frequently, :keyboard_key)} and @label="#{label}" and frame]},
-        %Q{//*[#{trait(:link)} and @value="#{label}" and frame]},
-        %Q{//*[@label="#{label}" and frame]}
-      ).first
-    
-    raise %Q{No element labelled "#{label}" found in: #{page}} unless element
-    
-    # This seems brittle, revist how to fetch the frame without relying on it being the only child
-    frame = element.child
-    
-    x = frame['x'].to_f
-    y = frame['y'].to_f
-    
-    # Hit the element in the middle
-    x += (frame['width'].to_f / 2)
-    y += (frame['height'].to_f / 2)
-    
-    raise %Q{Element "#{label}" is off screen in: #{page}} unless onscreen?(x, y)
+    element = screen.first_tappable_element(label)
+    x, y = screen.element_position(element)
     
     @simulator.fire_event(Tap.new(x, y, options))
     
@@ -77,27 +52,47 @@ class ICukeWorld
   end
   
   def swipe(direction, options = {})
-    modifier = [:up, :left].include?(direction) ? -1 : 1
-    
-    # Just swipe from the middle of an iPhone-dimensioned screen for now
-    x = 320 / 2
-    y = 480 / 2
-    x2 = x
-    y2 = y
-    
-    if [:up, :down].include?(direction)
-      y2 = y + (y * modifier)
-    else
-      x2 = x + (x * modifier)
-    end
-    
-    @simulator.fire_event(Swipe.new(x, y, x2, y2, options))
-    
+    x,y,x2,y2 = screen.swipe_coordinates(direction)
+    @simulator.fire_event(Swipe.new(x, y, x2, y2, 0.015, options))
     sleep(1)
-    
     refresh
   end
+
+  def drag(source_x, source_y, dest_x, dest_y, options = {})
+    @simulator.fire_event(Drag.new(source_x, source_y, dest_x, dest_y, 0.15, options))
+    sleep(1)
+    refresh
+  end
+
+  def drag_with_source(source, destination)
+    sources = source.split(',').collect {|val| val.strip.to_i}
+    destinations = destination.split(',').collect {|val| val.strip.to_i}
+    drag(sources[0], sources[1], destinations[0], destinations[1])
+  end
   
+  def drag_slider_to(label, direction, distance)
+    element = screen.first_slider_element(label)
+    x, y = screen.find_slider_button(element)
+    
+    dest_x, dest_y = x, y
+    modifier = direction_modifier(direction)
+    
+    if [:up, :down].include?(direction)
+      dest_y += modifier * distance
+    else
+      dest_x += modifier * distance
+    end
+    
+    drag(x, y, dest_x, dest_y)
+  end
+
+  def drag_slider_to_percentage(label, percentage)
+    element = screen.first_slider_element(label)
+    x, y = screen.find_slider_button(element)
+    dest_x, dest_y = screen.find_slider_percentage_location(element, percentage)
+    drag(x, y, dest_x, dest_y)
+  end
+
   def type(textfield, text, options = {})
     tap(textfield, :hold_for => 0.75) do |field|
       if field['value']
@@ -147,16 +142,17 @@ class ICukeWorld
   end
   
   def scroll_to(text, options = {})
+    x, y, x2, y2 = screen.swipe_coordinates(swipe_direction(options[:direction]))
     previous_response = response.dup
-    while page.xpath(%Q{//*[contains(., "#{text}") or contains(@label, "#{text}") or contains(@value, "#{text}")]}).empty? do
-      scroll(options[:direction])
-      raise %Q{Content "#{text}" not found in: #{page}} if response == previous_response
+    until screen.visible?(text) do
+      @simulator.fire_event(Swipe.new(x, y, x2, y2, 0.15, options))
+      refresh
+      raise %Q{Content "#{text}" not found in: #{screen}} if response == previous_response
     end
   end
   
   def scroll(direction)
-    swipe_directions = { :up => :down, :down => :up, :left => :right, :right => :left }
-    swipe(swipe_directions[direction])
+    swipe(swipe_direction(direction))
   end
   
   def set_application_defaults(defaults)
@@ -165,14 +161,20 @@ class ICukeWorld
   
   private
   
-  def trait(*traits)
-    "(#{traits.map { |t| %Q{contains(@traits, "#{t}")} }.join(' or ')})"
-  end
-  
   def refresh
     @response = nil
-    @xml = nil
+    @screen = nil
   end
+
+  def swipe_direction(direction)
+    swipe_directions = { :up => :down, :down => :up, :left => :right, :right => :left }
+    swipe_directions[direction]
+  end
+
+  def direction_modifier(direction)
+    [:up, :left].include?(direction) ? -1 : 1
+  end
+
 end
 
 World do
@@ -201,11 +203,11 @@ Given /^(?:"([^\"]*)" from )?"([^\"]*)" is loaded in the simulator(?: with SDK (
 end
 
 Then /^I should see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, scope|
-  raise %Q{Content "#{text}" not found in: #{page}} unless can_see?(text, scope)
+  raise %Q{Content "#{text}" not found in: #{screen}} unless screen.exists?(text, scope)
 end
 
 Then /^I should not see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, scope|
-  raise %Q{Content "#{text}" was found but was not expected in: #{page}} if can_see?(text, scope)
+  raise %Q{Content "#{text}" was found but was not expected in: #{screen}} if screen.exists?(text, scope)
 end
 
 When /^I tap "([^\"]*)"$/ do |label|
@@ -214,6 +216,18 @@ end
 
 When /^I type "([^\"]*)" in "([^\"]*)"$/ do |text, textfield|
   type(textfield, text)
+end
+
+When /^I drag from (.*) to (.*)$/ do |source, destination|
+  drag_with_source(source, destination)
+end
+
+When /^I select the "(.*)" slider and drag (.*) pixels (down|up|left|right)$/ do |label, distance, direction|
+  drag_slider_to(label, direction.to_sym, distance.to_i)
+end
+
+When /^I move the "([^\"]*)" slider to (.*) percent$/ do |label, percent|
+  drag_slider_to_percentage(label, percent.to_i)
 end
 
 When /^I scroll (down|up|left|right)(?: to "([^\"]*)")?$/ do |direction, text|
@@ -229,5 +243,5 @@ Then /^I put the phone into recording mode$/ do
 end
 
 Then /^show me the screen$/ do
-  puts page.to_s
+  puts screen.xml.to_s
 end
