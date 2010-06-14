@@ -17,11 +17,11 @@ module ICuke
     end
     
     def self.minor_versions
-      all.map { |s| s.sub(/^([0-9]+\.[0-9]+).*/, '\1') }.uniq
+      all.map { |s| s.split('.')[0 .. 1].join('.') }.uniq
     end
     
-    def self.latest(major_version = nil)
-      @latest ||= major_version ? all.grep(/^#{major_version}\./).last : all.last
+    def self.latest(version = nil)
+      @latest ||= version ? all.grep(/^#{version}(?:\.|$)/).last : all.last
     end
     
     def self.use(version)
@@ -45,7 +45,13 @@ module ICuke
     def self.major_version
       require_sdk
       
-      version.split('.').first
+      version.split('.')[0]
+    end
+    
+    def self.minor_version
+      require_sdk
+      
+      version.split('.')[0 .. 1].join('.')
     end
     
     def self.fullname
@@ -69,7 +75,7 @@ module ICuke
     def self.dylib
       require_sdk
       
-      "libicuke-sdk#{version.split('.').first}.dylib"
+      "libicuke-sdk#{minor_version}.dylib"
     end
     
     private
