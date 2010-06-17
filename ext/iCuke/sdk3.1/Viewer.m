@@ -1,8 +1,13 @@
+#import <QuartzCore/QuartzCore.h>
 #import <UIKit/UIKit.h>
 
 #import "Viewer.h"
 
 static Viewer *sharedViewer = nil;
+
+@interface NSObject (Accessibility)
+-(BOOL)_accessibilityIsFrameOutOfBounds;
+@end
 
 @interface NSObject (UIAccessibilityViewer)
 
@@ -115,9 +120,21 @@ static Viewer *sharedViewer = nil;
 
 @end
 
+@implementation UITableView (AccessibilityVisibilityFix)
+
+-(void)appendChildrenToXml:(NSMutableString *)xml {
+	// Ignore the accessibility interface here because it doesn't allow us a way to tell if a cell is visible.
+	for (UIView *view in [self visibleCells]) {
+		[view appendToXml: xml];
+	}
+}
+
+@end
+
 @interface UIView (Viewer)
 
 -(void)appendToXml:(NSMutableString *)xml;
+-(void)appendFrameToXml:(NSMutableString *)xml;
 
 @end
 
@@ -126,9 +143,11 @@ static Viewer *sharedViewer = nil;
 -(void)appendToXml:(NSMutableString *)xml {
 	[self appendOpenToXml: xml];
 
-	if ([self isAccessibilityElement]) {
-		[self appendFrameToXml: xml];
+	if ([self _accessibilityIsFrameOutOfBounds]) {
+		[xml appendFormat: @"<invisible/>"];
 	}
+
+	[self appendFrameToXml: xml];
 
 	for (UIView *view in self.subviews) {
 		[view appendToXml: xml];
@@ -136,6 +155,23 @@ static Viewer *sharedViewer = nil;
 
 	[self appendChildrenToXml: xml];
 	[self appendCloseToXml: xml];
+}
+
+-(void)appendFrameToXml:(NSMutableString *)xml {
+	CGRect frame;
+
+	if ([self isAccessibilityElement]) {
+		frame = [self accessibilityFrame];
+	} else {
+		frame = [self frame];
+	}
+	[xml appendFormat: @"<frame x=\"%f\" y=\"%f\" width=\"%f\" height=\"%f\"/>",
+		frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
+
+	frame = [[[UIApplication sharedApplication] keyWindow] convertRect:self.layer.visibleRect fromView:self];
+
+	[xml appendFormat: @"<visibleFrame x=\"%f\" y=\"%f\" width=\"%f\" height=\"%f\"/>",
+		frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
 @end
