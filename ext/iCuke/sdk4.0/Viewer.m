@@ -115,6 +115,17 @@ static Viewer *sharedViewer = nil;
 
 @end
 
+@implementation UITableView (AccessibilityVisibilityFix)
+
+-(void)appendChildrenToXml:(NSMutableString *)xml {
+	// Ignore the accessibility interface here because it doesn't allow us a way to tell if a cell is visible.
+	for (UIView *view in [self visibleCells]) {
+		[view appendToXml: xml];
+	}
+}
+
+@end
+
 @interface UIView (Viewer)
 
 -(void)appendToXml:(NSMutableString *)xml;
