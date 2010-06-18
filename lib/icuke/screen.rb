@@ -13,13 +13,15 @@ class Screen
   def exists?(text, scope = '')
     find_element(text, scope).any?
   end
-
+  
   def visible?(text, scope='')
-    element = find_element(text, scope).first
-    _x, _y = element_center(element)
-    return _x >= self.x && _y >= self.y && _x < self.width && _y < self.height
+    find_element(text, scope).each do |element|
+      _x, _y = element_center(element)
+      return true if _x >= self.x && _y >= self.y && _x < self.width && _y < self.height
+    end
+    return false
   end
-
+  
   def element_center(element)
     frame = element.at_xpath('./frame')
     
