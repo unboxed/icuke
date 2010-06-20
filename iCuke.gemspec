@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.date = %q{2010-06-20}
   s.description = %q{Cucumber support for iPhone applications}
   s.email = %q{rob@the-it-refinery.co.uk}
-  s.executables = ["icuke", "icuke-module", "iphonesim"]
+  s.executables = ["icuke", "icuke-module"]
   s.extensions = ["ext/Rakefile"]
   s.extra_rdoc_files = [
     "LICENSE",
@@ -56,7 +56,6 @@ Gem::Specification.new do |s|
      "bin/.gitignore",
      "bin/icuke",
      "bin/icuke-module",
-     "bin/iphonesim",
      "ext/Rakefile",
      "ext/iCuke/.gitignore",
      "ext/iCuke/Rakefile",
