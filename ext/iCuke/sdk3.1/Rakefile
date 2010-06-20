@@ -11,7 +11,7 @@ end
 CLEAN.include('**/*.o')
 
 file "../#{ICuke::SDK.dylib}" => FileList['**/*.m'].ext('.o') do |t|
-  sh "#{ICuke::SDK.gcc} -dynamiclib -o #{t.name} -framework Foundation -framework GraphicsServices -framework UIKit -framework CFNetwork -framework AXRuntime #{t.prerequisites.join(' ')}"
+  sh "#{ICuke::SDK.ld} -dynamiclib -o #{t.name} -framework Foundation -framework GraphicsServices -framework UIKit -framework CFNetwork -framework AXRuntime #{t.prerequisites.join(' ')}"
 end
 
 CLEAN.include("../#{ICuke::SDK.dylib}")
