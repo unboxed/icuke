@@ -47,6 +47,10 @@ module ICuke
       get '/defaults', :query => defaults.to_json
     end
     
+    def quit
+      get '/quit'
+    end
+    
     def get(path, options = {})
       options[:query] = URI.escape(options[:query]) if options.has_key?(:query)
       response = self.class.get(path, options)

@@ -122,7 +122,7 @@ module ICuke
     
     def self.launch(application, family = :ipad, environment = {})
       environment_args = environment.map { |k, v| %Q{#{k}="#{v}"} }.join(' ')
-      %Q{#{ICUKE_BIN_DIR}/iphonesim #{environment_args} "#{application}" #{version} #{family}}
+      %Q{#{ICUKE_BIN_DIR}/iphonesim #{environment_args} launch "#{application}" #{version} #{family}}
     end
     
     private
