@@ -1,6 +1,6 @@
 task :install do
-  sh "cd iphonesim && xcodebuild install DSTROOT=../../"
-  sh "cd ext && rake"
+  sh "cd iphonesim && xcodebuild install DSTROOT=../../ INSTALL_PATH=/bin"
+  sh "cd iCuke && rake"
 end
 
 task :default => :install
