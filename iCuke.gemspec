@@ -53,6 +53,7 @@ Gem::Specification.new do |s|
      "app/iPhone/MainWindow_Phone.xib",
      "app/iPhone/TestViewController_Phone.h",
      "app/iPhone/TestViewController_Phone.m",
+     "bin/.gitignore",
      "bin/icuke",
      "bin/icuke-module",
      "bin/iphonesim",
@@ -138,13 +139,11 @@ Gem::Specification.new do |s|
      "lib/icuke.rb",
      "lib/icuke/core_ext.rb",
      "lib/icuke/cucumber.rb",
-     "lib/icuke/headless.rb",
      "lib/icuke/iphonesim.rb",
      "lib/icuke/screen.rb",
      "lib/icuke/sdk.rb",
      "lib/icuke/simulate.rb",
-     "lib/icuke/simulator.rb",
-     "lib/icuke/xcode.rb"
+     "lib/icuke/simulator.rb"
   ]
   s.homepage = %q{http://github.com/unboxed/iCuke}
   s.rdoc_options = ["--charset=UTF-8"]
