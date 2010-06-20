@@ -4,17 +4,14 @@ require 'rake/clean'
 version = '4.0'
 ICuke::SDK.use_latest(version)
 
-CFLAGS = '-arch i386 -pipe -ggdb -std=c99 -DTARGET_OS_IPHONE'
-SDK_CFLAGS = "-isysroot #{ICuke::SDK.root} -F/System/Library/PrivateFrameworks -D__IPHONE_OS_VERSION_MIN_REQUIRED=40000"
-
 rule '.o' => '.m' do |o|
-  sh "xcrun -sdk #{ICuke::SDK.fullname} gcc -I. -Ijson -c -o #{o.name} -x objective-c -fobjc-abi-version=2 -fobjc-legacy-dispatch #{CFLAGS} #{SDK_CFLAGS} #{o.source}"
+  sh "#{ICuke::SDK.gcc} -c -o #{o.name} #{o.source}"
 end
 
 CLEAN.include('**/*.o')
 
 file "../#{ICuke::SDK.dylib}" => FileList['**/*.m'].ext('.o') do |t|
-  sh "xcrun -sdk #{ICuke::SDK.fullname} gcc -dynamiclib -o #{t.name} #{CFLAGS} -Xlinker -objc_abi_version -Xlinker 2 #{SDK_CFLAGS} -framework Foundation -framework GraphicsServices -framework UIKit -framework CFNetwork -framework AXRuntime #{t.prerequisites.join(' ')}"
+  sh "#{ICuke::SDK.ld} -dynamiclib -o #{t.name} -framework Foundation -framework GraphicsServices -framework UIKit -framework CFNetwork -framework AXRuntime #{t.prerequisites.join(' ')}"
 end
 
 CLEAN.include("../#{ICuke::SDK.dylib}")

@@ -1,5 +1,9 @@
 module ICuke
   module SDK
+    ICUKE_EXT_DIR = File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'ext', 'iCuke'))
+    ICUKE_BIN_DIR = File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'bin'))
+    CFLAGS = '-arch i386 -pipe -ggdb -std=c99 -DTARGET_OS_IPHONE'
+    
     def self.all
       @all ||= begin
         `xcodebuild -showsdks`.grep(/iphonesimulator/).map do |s|
@@ -33,6 +37,12 @@ module ICuke
     end
     
     def self.use_latest(major_version = nil)
+      case major_version
+      when :iphone
+        major_version = installed?('4.0') ? '4.0' : '3.1'
+      when :ipad
+        major_version = installed?('4.0') ? '4.0' : '3.2'
+      end
       use latest(major_version)
     end
     
@@ -72,10 +82,47 @@ module ICuke
       "#{ENV['HOME']}/Library/Application Support/iPhone Simulator/#{version}"
     end
     
-    def self.dylib
+    def self.dylib(name = 'libicuke')
       require_sdk
       
-      "libicuke-sdk#{minor_version}.dylib"
+      "#{name}-sdk#{minor_version}.dylib"
+    end
+    
+    def self.dylib_fullpath(name = 'libicuke')
+      require_sdk
+      
+      File.join(ICUKE_EXT_DIR, dylib(name))
+    end
+    
+    def self.ext_dir
+      ICUKE_EXT_DIR
+    end
+    
+    def self.sdk_ext_dir
+      File.join(ext_dir, "sdk#{minor_version}")
+    end
+    
+    def self.cflags
+      "#{CFLAGS} -isysroot #{root} -F/System/Library/PrivateFrameworks -D__IPHONE_OS_VERSION_MIN_REQUIRED=#{major_version == '3.1' ? '30000' : '40000'}"
+    end
+    
+    def self.gcc
+      if major_version == '4'
+        abi_flags = "-fobjc-abi-version=2 -fobjc-legacy-dispatch"
+      end
+      "xcrun -sdk #{fullname} gcc -I. -I#{sdk_ext_dir} -I#{sdk_ext_dir}/json #{cflags} -x objective-c #{abi_flags}"
+    end
+    
+    def self.ld
+      if major_version == '4'
+        abi_flags = "-Xlinker -objc_abi_version -Xlinker 2"
+      end
+      "xcrun -sdk #{fullname} gcc -I. -I#{sdk_ext_dir} -I#{sdk_ext_dir}/json #{cflags} #{abi_flags}"
+    end
+    
+    def self.launch(application, family = :ipad, environment = {})
+      environment_args = environment.map { |k, v| %Q{#{k}="#{v}"} }.join(' ')
+      %Q{#{ICUKE_BIN_DIR}/iphonesim #{environment_args} "#{application}" #{version} #{family}}
     end
     
     private

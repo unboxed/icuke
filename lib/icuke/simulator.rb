@@ -1,9 +1,5 @@
 require 'icuke/core_ext'
-if ENV['ICUKE_HEADLESS']
-  require 'icuke/headless'
-else
-  require 'icuke/xcode'
-end
+require 'icuke/iphonesim'
 
 require 'httparty'
 
@@ -28,28 +24,31 @@ module ICuke
     end
     
     def save(path)
-      get '/save', :query => URI.escape(path)
+      get '/save', :query => path
     end
     
     def load(path)
-      get '/load', :query => URI.escape(path)
+      get '/load', :query => path
     end
     
     def play
       get '/play'
     end
     
+    def load_module(path)
+      get '/module', :query => path
+    end
+    
     def fire_event(event)
-      get '/event', :query => URI.escape(event.to_json)
+      get '/event', :query => event.to_json
     end
     
     def set_defaults(defaults)
-      get '/defaults', :query => URI.escape(defaults.to_json)
+      get '/defaults', :query => defaults.to_json
     end
     
-    private
-    
     def get(path, options = {})
+      options[:query] = URI.escape(options[:query]) if options.has_key?(:query)
       response = self.class.get(path, options)
       if response.code != 200
         raise Simulator::Error, response.body

@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+require 'fileutils'
+
+base = File.expand_path(ARGV[0])
+FileUtils.mkdir_p(File.join(base, 'features', 'support'))
+File.open(File.join(base, 'features', 'support', 'env.rb'), 'w') do |f|
+  f.puts "require 'icuke/cucumber'"
+end
+FileUtils.touch File.join(base, 'features', 'example.feature')

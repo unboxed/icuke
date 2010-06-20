@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+
+require File.join(File.dirname(__FILE__), '..', 'lib', 'icuke', 'sdk')
+
+sdk = ARGV[0]
+ICuke::SDK.use_latest(sdk)
+file = ARGV[1]
+frameworks = ['Foundation', 'CFNetwork']
+frameworks.concat(ARGV[2 .. -1])
+frameworks = frameworks.map { |f| "-framework #{f}" }.join(' ')
+
+compile = "#{ICuke::SDK.gcc} -c -o #{File.basename(file, '.m')}.o #{file} "
+puts compile
+system compile
+link = "#{ICuke::SDK.ld} -dynamiclib -o #{ICuke::SDK.dylib(File.basename(file, '.m'))} -undefined dynamic_lookup #{File.basename(file, '.m')}.o #{frameworks}"
+puts link
+system link

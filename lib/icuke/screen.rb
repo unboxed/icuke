@@ -3,8 +3,8 @@ require 'nokogiri'
 class Screen
   attr_reader :xml, :x, :y, :width, :height
   
-  def initialize(root)
-    @xml = Nokogiri::XML::Document.parse(root).root
+  def initialize(xml)
+    @xml = Nokogiri::XML::Document.parse(xml).root
     frame = @xml.at_xpath('/screen/frame')
     @x, @y = frame['x'].to_f, frame['y'].to_f
     @width, @height = frame['width'].to_f, frame['height'].to_f
@@ -41,7 +41,7 @@ class Screen
         %Q{//*[#{trait(:link)} and @value="#{label}" and frame]},
         %Q{//*[@label="#{label}" and frame]}
       ).first
-    raise %Q{No element labelled "#{label}" found in: #@xml} unless element
+    raise %Q{No element labelled "#{label}" found in: #{@xml}} unless element
     element
   end
 
@@ -51,7 +51,7 @@ class Screen
         %Q{//UISlider[@label="#{label}" and frame]},
         %Q{//*[@label="#{label}"]/../UISlider}
       ).first
-    raise %Q{No element labelled "#{label}" found in: #@xml} unless element
+    raise %Q{No element labelled "#{label}" found in: #{@xml}} unless element
     element
   end
 

@@ -1,0 +1,3 @@
+[submodule "ext/iphonesim"]
+	path = ext/iphonesim
+	url = git://github.com/robholland/iphonesim.git
