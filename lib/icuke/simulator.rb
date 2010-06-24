@@ -1,5 +1,5 @@
 require 'icuke/core_ext'
-require 'icuke/iphonesim'
+require 'icuke/waxsim'
 
 require 'httparty'
 
@@ -45,10 +45,6 @@ module ICuke
     
     def set_defaults(defaults)
       get '/defaults', :query => defaults.to_json
-    end
-    
-    def quit
-      get '/quit'
     end
     
     def get(path, options = {})

@@ -1,3 +1,4 @@
+require 'background_process'
 require 'tmpdir'
 
 module ICuke
@@ -16,13 +17,7 @@ module ICuke
       options[:env]['CFFIXED_USER_HOME'] = Dir.mktmpdir
       
       command = ICuke::SDK.launch("#{directory}/#{app_name}.app", options[:platform], options[:env])
-      fork {
-        STDERR.close
-        STDIN.close
-        STDOUT.close
-        
-        exec command
-      }
+      @simulator = BackgroundProcess.run(command)
       
       timeout(30) do
         begin
@@ -32,6 +27,10 @@ module ICuke
           retry
         end
       end
+    end
+    
+    def quit
+      @simulator.kill('QUIT')
     end
   end
 end

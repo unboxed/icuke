@@ -1,7 +1,7 @@
 module ICuke
   module SDK
     ICUKE_EXT_DIR = File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'ext', 'iCuke'))
-    ICUKE_BIN_DIR = File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'bin'))
+    ICUKE_BIN_DIR = File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'ext', 'bin'))
     CFLAGS = '-arch i386 -pipe -ggdb -std=c99 -DTARGET_OS_IPHONE'
     
     def self.all
@@ -120,9 +120,9 @@ module ICuke
       "xcrun -sdk #{fullname} gcc -I. -I#{sdk_ext_dir} -I#{sdk_ext_dir}/json #{cflags} #{abi_flags}"
     end
     
-    def self.launch(application, family = :ipad, environment = {})
-      environment_args = environment.map { |k, v| %Q{#{k}="#{v}"} }.join(' ')
-      %Q{#{environment_args} #{ICUKE_EXT_DIR}/bin/waxsim -s #{version} "#{application}"}
+    def self.launch(application, family = :iphone, environment = {})
+      environment_args = environment.map { |k, v| %Q{-e "#{k}=#{v}"} }.join(' ')
+      %Q{#{ICUKE_BIN_DIR}/waxsim -s #{version} -f #{family} #{environment_args} "#{application}"}
     end
     
     private
