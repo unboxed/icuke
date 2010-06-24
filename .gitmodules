@@ -1,6 +1,3 @@
-[submodule "ext/iphonesim"]
-	path = ext/iphonesim
-	url = git://github.com/robholland/iphonesim.git
 [submodule "ext/WaxSim"]
 	path = ext/WaxSim
-	url = http://github.com/probablycorey/WaxSim.git
+	url = http://github.com/robholland/WaxSim.git
