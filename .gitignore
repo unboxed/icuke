@@ -11,3 +11,5 @@ pkg
 
 ## PROJECT::SPECIFIC
 events.plist
+
+bin/waxsim
