@@ -30,8 +30,14 @@ module ICuke
     end
     
     def quit
-      get '/quit' rescue nil
+      get '/quit' rescue nil # results in a hard exit(0)
       @simulator.wait
+    end
+    
+    def suspend
+      @simulator.kill('QUIT') # invokes the normal app exit routine
+      @simulator.wait
+      sleep 1
     end
   end
 end

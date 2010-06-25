@@ -12,14 +12,29 @@ class ICukeWorld
   
   def initialize
     @simulator = ICuke::Simulator.new
+    @application = nil
+    @launch_options = {}
   end
   
   def launch(application, options = {})
+    @application = application
+    @launch_options = options
     @simulator.launch(application, options)
   end
   
   def quit
     @simulator.quit
+    @application = nil
+  end
+  
+  def suspend
+    @simulator.suspend
+  end
+  
+  def resume
+    if @application
+      @simulator.launch(@application, @launch_options)
+    end
   end
   
   def screen
@@ -241,6 +256,14 @@ When /^I scroll (down|up|left|right)(?: to "([^\"]*)")?$/ do |direction, text|
   else
     scroll(direction.to_sym)
   end
+end
+
+When /^I suspend the application/ do
+  suspend
+end
+
+When /^I resume the application/ do
+  resume
 end
 
 Then /^I put the phone into recording mode$/ do
