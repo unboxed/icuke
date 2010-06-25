@@ -22,7 +22,7 @@ module ICuke
       timeout(30) do
         begin
           view
-        rescue Errno::ECONNREFUSED
+        rescue Errno::ECONNREFUSED, Errno::ECONNRESET, EOFError
           sleep(0.5)
           retry
         end
