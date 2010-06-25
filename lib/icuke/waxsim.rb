@@ -18,7 +18,7 @@ module ICuke
       
       command = ICuke::SDK.launch("#{directory}/#{app_name}.app", options[:platform], options[:env])
       @simulator = BackgroundProcess.run(command)
-      
+
       timeout(30) do
         begin
           view
@@ -30,9 +30,8 @@ module ICuke
     end
     
     def quit
-      @simulator.kill('QUIT')
+      get '/quit' rescue nil
       @simulator.wait
-      sleep 1
     end
   end
 end
