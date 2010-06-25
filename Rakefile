@@ -14,6 +14,7 @@ begin
     gem.add_dependency "cucumber", ">= 0"
     gem.add_dependency "httparty", ">= 0"
     gem.add_dependency "nokogiri", ">= 0"
+    gem.add_dependency "background_process"
     gem.extensions = ['ext/Rakefile']
     gem.files += ['ext/bin/waxsim']
     gem.files += ['ext/iCuke/libicuke*.dylib']
