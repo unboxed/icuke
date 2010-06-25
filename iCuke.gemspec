@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{iCuke}
-  s.version = "0.6.1"
+  s.version = "0.6.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Rob Holland"]
@@ -91,6 +91,8 @@ Gem::Specification.new do |s|
      "ext/iCuke/sdk3.1/EventResponse.m",
      "ext/iCuke/sdk3.1/ModuleResponse.h",
      "ext/iCuke/sdk3.1/ModuleResponse.m",
+     "ext/iCuke/sdk3.1/QuitResponse.h",
+     "ext/iCuke/sdk3.1/QuitResponse.m",
      "ext/iCuke/sdk3.1/Rakefile",
      "ext/iCuke/sdk3.1/Recorder.h",
      "ext/iCuke/sdk3.1/Recorder.m",
@@ -126,6 +128,8 @@ Gem::Specification.new do |s|
      "ext/iCuke/sdk4.0/EventResponse.m",
      "ext/iCuke/sdk4.0/ModuleResponse.h",
      "ext/iCuke/sdk4.0/ModuleResponse.m",
+     "ext/iCuke/sdk4.0/QuitResponse.h",
+     "ext/iCuke/sdk4.0/QuitResponse.m",
      "ext/iCuke/sdk4.0/Rakefile",
      "ext/iCuke/sdk4.0/Recorder.h",
      "ext/iCuke/sdk4.0/Recorder.m",
