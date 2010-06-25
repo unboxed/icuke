@@ -15,10 +15,10 @@ begin
     gem.add_dependency "httparty", ">= 0"
     gem.add_dependency "nokogiri", ">= 0"
     gem.extensions = ['ext/Rakefile']
-    gem.files += ['bin/WaxSim']
+    gem.files += ['ext/bin/waxsim']
     gem.files += ['ext/iCuke/libicuke*.dylib']
     gem.files += ['ext/WaxSim/**/*']
-    gem.files -= ['ext/WaxSim/build/**/*']
+    gem.files -= ['ext/WaxSim/build']
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
@@ -26,9 +26,10 @@ rescue LoadError
 end
 
 file 'app/build/Debug-iphonesimulator/Universal.app/Universal' do
+  ICuke::SDK.use_latest
   sh "cd app && xcodebuild -target Universal -configuration Debug -sdk #{ICuke::SDK.fullname}"
 end
-task :app => 'app/sdk4/build/Debug-iphonesimulator/UICatalog.app/UICatalog'
+task :app => 'app/build/Debug-iphonesimulator/Universal.app/Universal'
 task :features => :app
 
 task :lib do

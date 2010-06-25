@@ -20,8 +20,8 @@ Write some scenarios like:
 
 == How it works
 
-iCuke uses applescript to drive Xcode in order to launch your application into the iPhone Simulator. A preload library
-is used to add a HTTP server into your application.
+iCuke launches your application into the iPhone Simulator. A preload library is used to add a HTTP server into your
+application.
 
 The HTTP server allows us to see an XML version of the iPhone's screen, and to emulate taps/swipes etc.
 
@@ -30,12 +30,12 @@ to function sensibly. If your accessibility information is not accurate, iCuke m
 
 == Bugs
 
-iCuke does not support testing applications on real devices, because I don't know of a way get a preload library to load
-on the device.
+iCuke does not support testing applications on real devices, because I don't know of a way get a preload library to
+load on the device.
 
-iCuke does not support drags or pinches yet. They'll be here soon!
+iCuke does not support pinches yet. They'll be here soon!
 
-iCuke compiles against the latest 3.1 and 4.0 SDKs it can find. Compiling against 3.2 is not currently supported.
+iCuke compiles against the latest 3.1 and 4.0 SDKs it can find. Compiling against 3.2 is not currently supported as Apple have released two versions with different ABIs.
 
 == Contributors
 
@@ -43,6 +43,7 @@ iCuke compiles against the latest 3.1 and 4.0 SDKs it can find. Compiling agains
 * Aslak Hellesøy
 * Dominic Baggott
 * Jeff Morgan
+* Luke Redpath
 
 == Thanks
 

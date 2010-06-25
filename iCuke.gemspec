@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Rob Holland"]
-  s.date = %q{2010-06-24}
+  s.date = %q{2010-06-25}
   s.description = %q{Cucumber support for iPhone applications}
   s.email = %q{rob@the-it-refinery.co.uk}
   s.executables = ["icuke", "icuke-module"]
@@ -56,38 +56,20 @@ Gem::Specification.new do |s|
      "bin/.gitignore",
      "bin/icuke",
      "bin/icuke-module",
+     "ext/.gitignore",
      "ext/Rakefile",
      "ext/WaxSim/Simulator.h",
      "ext/WaxSim/Simulator.m",
      "ext/WaxSim/WaxSim.m",
-     "ext/WaxSim/WaxSim.xcodeproj/luke.pbxuser",
-     "ext/WaxSim/WaxSim.xcodeproj/luke.perspectivev3",
      "ext/WaxSim/WaxSim.xcodeproj/project.pbxproj",
+     "ext/WaxSim/WaxSim.xcodeproj/robholland.mode1v3",
+     "ext/WaxSim/WaxSim.xcodeproj/robholland.pbxuser",
      "ext/WaxSim/WaxSim_Prefix.pch",
-     "ext/WaxSim/build/Debug/waxsim",
      "ext/WaxSim/build/Release/waxsim",
      "ext/WaxSim/build/Release/waxsim.dSYM/Contents/Info.plist",
      "ext/WaxSim/build/Release/waxsim.dSYM/Contents/Resources/DWARF/waxsim",
-     "ext/WaxSim/build/WaxSim.build/Debug/WaxSim.build/Objects-normal/x86_64/Simulator.o",
-     "ext/WaxSim/build/WaxSim.build/Debug/WaxSim.build/Objects-normal/x86_64/WaxSim.o",
-     "ext/WaxSim/build/WaxSim.build/Debug/WaxSim.build/Objects-normal/x86_64/waxsim.LinkFileList",
-     "ext/WaxSim/build/WaxSim.build/Debug/WaxSim.build/WaxSim.dep",
-     "ext/WaxSim/build/WaxSim.build/Debug/WaxSim.build/build-state.dat",
-     "ext/WaxSim/build/WaxSim.build/Debug/WaxSim.build/waxsim-all-target-headers.hmap",
-     "ext/WaxSim/build/WaxSim.build/Debug/WaxSim.build/waxsim-generated-files.hmap",
-     "ext/WaxSim/build/WaxSim.build/Debug/WaxSim.build/waxsim-own-target-headers.hmap",
-     "ext/WaxSim/build/WaxSim.build/Debug/WaxSim.build/waxsim-project-headers.hmap",
-     "ext/WaxSim/build/WaxSim.build/Debug/WaxSim.build/waxsim.hmap",
-     "ext/WaxSim/build/WaxSim.build/Release/WaxSim.build/Objects-normal/i386/Simulator.o",
-     "ext/WaxSim/build/WaxSim.build/Release/WaxSim.build/Objects-normal/i386/WaxSim.o",
-     "ext/WaxSim/build/WaxSim.build/Release/WaxSim.build/Objects-normal/i386/waxsim",
-     "ext/WaxSim/build/WaxSim.build/Release/WaxSim.build/Objects-normal/i386/waxsim.LinkFileList",
-     "ext/WaxSim/build/WaxSim.build/Release/WaxSim.build/Objects-normal/ppc/Simulator.o",
-     "ext/WaxSim/build/WaxSim.build/Release/WaxSim.build/Objects-normal/ppc/WaxSim.o",
-     "ext/WaxSim/build/WaxSim.build/Release/WaxSim.build/Objects-normal/ppc/waxsim.LinkFileList",
      "ext/WaxSim/build/WaxSim.build/Release/WaxSim.build/Objects-normal/x86_64/Simulator.o",
      "ext/WaxSim/build/WaxSim.build/Release/WaxSim.build/Objects-normal/x86_64/WaxSim.o",
-     "ext/WaxSim/build/WaxSim.build/Release/WaxSim.build/Objects-normal/x86_64/waxsim",
      "ext/WaxSim/build/WaxSim.build/Release/WaxSim.build/Objects-normal/x86_64/waxsim.LinkFileList",
      "ext/WaxSim/build/WaxSim.build/Release/WaxSim.build/Script-0482769511263E2A003DFACB.sh",
      "ext/WaxSim/build/WaxSim.build/Release/WaxSim.build/WaxSim.dep",
@@ -112,9 +94,12 @@ Gem::Specification.new do |s|
      "ext/WaxSim/build/WaxSim.build/WaxSim.pbxindex/subclasses.pbxbtree",
      "ext/WaxSim/build/WaxSim.build/WaxSim.pbxindex/symbols0.pbxsymbols",
      "ext/WaxSim/iPhoneSimulatorRemoteClient/iPhoneSimulatorRemoteClient.h",
+     "ext/bin/waxsim",
      "ext/iCuke/.gitignore",
      "ext/iCuke/Rakefile",
+     "ext/iCuke/libicuke-sdk3.1.dylib",
      "ext/iCuke/libicuke-sdk4.0.dylib",
+     "ext/iCuke/libicuke.dylib",
      "ext/iCuke/sdk3.1/DefaultsResponse.h",
      "ext/iCuke/sdk3.1/DefaultsResponse.m",
      "ext/iCuke/sdk3.1/EventResponse.h",
@@ -191,11 +176,11 @@ Gem::Specification.new do |s|
      "lib/icuke.rb",
      "lib/icuke/core_ext.rb",
      "lib/icuke/cucumber.rb",
-     "lib/icuke/iphonesim.rb",
      "lib/icuke/screen.rb",
      "lib/icuke/sdk.rb",
      "lib/icuke/simulate.rb",
-     "lib/icuke/simulator.rb"
+     "lib/icuke/simulator.rb",
+     "lib/icuke/waxsim.rb"
   ]
   s.homepage = %q{http://github.com/unboxed/iCuke}
   s.rdoc_options = ["--charset=UTF-8"]
