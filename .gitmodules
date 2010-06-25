@@ -1,3 +1,3 @@
 [submodule "ext/WaxSim"]
 	path = ext/WaxSim
-	url = http://github.com/robholland/WaxSim.git
+	url = git://github.com/robholland/WaxSim.git
