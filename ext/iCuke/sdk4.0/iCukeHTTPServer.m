@@ -143,6 +143,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(iCukeHTTPServer);
 //
 - (void)start
 {
+  NSLog(@"[iCuke] server starting up");
+  
 	self.lastError = nil;
 	self.state = SERVER_STATE_STARTING;
 
@@ -191,6 +193,19 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(iCukeHTTPServer);
 	[listeningHandle acceptConnectionInBackgroundAndNotify];
 	
 	self.state = SERVER_STATE_RUNNING;
+	
+	if (UIApplicationDidEnterBackgroundNotification != NULL) {
+    [[NSNotificationCenter defaultCenter]
+      addObserver:self
+      selector:@selector(applicationDidEnterBackground:)
+      name:UIApplicationDidEnterBackgroundNotification
+      object:nil];
+	}
+}
+
+- (void)applicationDidEnterBackground:(NSNotification *)note;
+{
+  [self stop];
 }
 
 //
@@ -227,6 +242,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(iCukeHTTPServer);
 //
 - (void)stop
 {
+  NSLog(@"[iCuke] server shutting down");
+  
 	self.state = SERVER_STATE_STOPPING;
 
 	[[NSNotificationCenter defaultCenter]
@@ -254,6 +271,13 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(iCukeHTTPServer);
 	}
 
 	self.state = SERVER_STATE_IDLE;
+	
+	if (UIApplicationDidEnterBackgroundNotification != NULL) {
+    [[NSNotificationCenter defaultCenter]
+      removeObserver:self
+      name:UIApplicationDidEnterBackgroundNotification
+      object:nil];
+	}
 }
 
 //
