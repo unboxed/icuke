@@ -8,22 +8,13 @@ module ICuke
     attr_accessor :current_process
     
     def launch(process)
-      project_file = process.project_file
-      options = process.launch_options
-      
-      options = {
+      process = process.with_options({
         :configuration => 'Debug',
-        :env => {}
-      }.merge(options)
-      
-      app_name = File.basename(project_file, '.xcodeproj')
-      directory = "#{File.dirname(project_file)}/build/#{options[:configuration]}-iphonesimulator"
-      
-      options[:env]['CFFIXED_USER_HOME'] = Dir.mktmpdir
-      
-      command = ICuke::SDK.launch("#{directory}/#{app_name}.app", options[:platform], options[:env])
-      @simulator = BackgroundProcess.run(command)
-      
+        :env => {
+          'CFFIXED_USER_HOME' => Dir.mktmpdir
+        }
+      })
+      @simulator = BackgroundProcess.run(process.command)
       self.current_process = process
 
       timeout(30) do
@@ -53,10 +44,28 @@ module ICuke
     end
     
     class Process
-      attr_reader :project_file, :launch_options
       def initialize(project_file, launch_options = {})
         @project_file = project_file
         @launch_options = launch_options
+      end
+      
+      # returns a new Process, treat Process as an immutable value object
+      def with_options(options = {})
+        self.class.new(@project_file, options.merge(@launch_options))
+      end
+      
+      def command
+        ICuke::SDK.launch("#{directory}/#{app_name}.app", @launch_options[:platform], @launch_options[:env])
+      end
+      
+      private
+      
+      def app_name
+        File.basename(@project_file, '.xcodeproj')
+      end
+      
+      def directory
+        "#{File.dirname(@project_file)}/build/#{@launch_options[:configuration]}-iphonesimulator"
       end
     end
   end
