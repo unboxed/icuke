@@ -31,6 +31,8 @@ module ICuke
     
     def quit
       @simulator.kill('QUIT')
+      @simulator.wait
+      sleep 1
     end
   end
 end
