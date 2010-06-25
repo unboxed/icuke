@@ -12,19 +12,15 @@ class ICukeWorld
   
   def initialize
     @simulator = ICuke::Simulator.new
-    @application = nil
-    @launch_options = {}
   end
   
   def launch(application, options = {})
-    @application = application
-    @launch_options = options
-    @simulator.launch(application, options)
+    process = ICuke::Simulator::Process.new(application, options)
+    @simulator.launch(process)
   end
   
   def quit
     @simulator.quit
-    @application = nil
   end
   
   def suspend
@@ -32,9 +28,7 @@ class ICukeWorld
   end
   
   def resume
-    if @application
-      @simulator.launch(@application, @launch_options)
-    end
+    @simulator.resume
   end
   
   def screen
