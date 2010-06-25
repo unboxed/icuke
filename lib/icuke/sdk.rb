@@ -120,7 +120,8 @@ module ICuke
       "xcrun -sdk #{fullname} gcc -I. -I#{sdk_ext_dir} -I#{sdk_ext_dir}/json #{cflags} #{abi_flags}"
     end
     
-    def self.launch(application, family = :iphone, environment = {})
+    def self.launch(application, family, environment = {})
+      family ||= :iphone
       environment_args = environment.map { |k, v| %Q{-e "#{k}=#{v}"} }.join(' ')
       %Q{#{ICUKE_BIN_DIR}/waxsim -s #{version} -f #{family} #{environment_args} "#{application}"}
     end
