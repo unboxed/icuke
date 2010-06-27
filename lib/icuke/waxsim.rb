@@ -7,9 +7,13 @@ module ICuke
     
     attr_accessor :current_process
     
+    def initialize(build_configuration = 'Debug')
+      @build_configuration = build_configuration
+    end
+    
     def launch(process)
       process = process.with_options({
-        :configuration => 'Debug',
+        :configuration => @build_configuration,
         :env => {
           'CFFIXED_USER_HOME' => Dir.mktmpdir
         }
