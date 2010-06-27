@@ -5,7 +5,7 @@ require 'icuke/simulator_driver'
 
 class ICukeWorld
   def simulator_driver
-    @simulator_driver ||= ICuke::SimulatorDriver.default_driver
+    @simulator_driver ||= ICuke::SimulatorDriver.default_driver(configuration)
   end
   
   def self.configure(&block)

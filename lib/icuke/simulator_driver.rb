@@ -7,12 +7,13 @@ module ICuke
   class SimulatorDriver
     include ICuke::Simulate::Gestures
     
-    def initialize(simulator)
+    def initialize(simulator, configuration)
       @simulator = simulator
+      @configuration = configuration
     end
     
-    def self.default_driver
-      new(ICuke::Simulator.new)
+    def self.default_driver(configuration)
+      new(ICuke::Simulator.new, configuration)
     end
     
     def launch(application, options = {})
@@ -184,6 +185,10 @@ module ICuke
 
     def direction_modifier(direction)
       [:up, :left].include?(direction) ? -1 : 1
+    end
+    
+    def configuration
+      @configuration
     end
   end
 end
