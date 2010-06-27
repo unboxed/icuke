@@ -4,6 +4,7 @@ require 'icuke/sdk'
 require 'icuke/simulator'
 require 'icuke/simulate'
 require 'icuke/screen'
+require 'icuke/configuration'
 
 class ICukeWorld
   include ICuke::Simulate::Gestures
@@ -15,10 +16,7 @@ class ICukeWorld
   end
   
   def self.configure(&block)
-    @configuration ||= ICuke::Configuration.new({
-      :build_configuration => 'Debug'
-    })
-    @configuration.instance_eval(&block)
+    configuration.instance_eval(&block)
   end
   
   def launch(application, options = {})
@@ -188,6 +186,16 @@ class ICukeWorld
 
   def direction_modifier(direction)
     [:up, :left].include?(direction) ? -1 : 1
+  end
+  
+  def self.configuration
+    @configuration ||= ICuke::Configuration.new({
+      :build_configuration => 'Debug'
+    })
+  end
+  
+  def configuration
+    self.class.configuration
   end
 end
 
