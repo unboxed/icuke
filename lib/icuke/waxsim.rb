@@ -65,12 +65,12 @@ module ICuke
         @launch_options[:target] || File.basename(@project_file, '.xcodeproj')
       end
       
-      def configuration
-        @launch_options[:configuration] || DEFAULT_CONFIGURATION
+      def build_configuration
+        @launch_options[:build_configuration] || DEFAULT_CONFIGURATION
       end
       
       def directory
-        "#{File.dirname(@project_file)}/build/#{configuration}-iphonesimulator"
+        "#{File.dirname(@project_file)}/build/#{build_configuration}-iphonesimulator"
       end
     end
   end

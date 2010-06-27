@@ -14,8 +14,16 @@ class ICukeWorld
     @simulator = ICuke::Simulator.new
   end
   
+  def self.configure(&block)
+    @configuration ||= ICuke::Configuration.new({
+      :build_configuration => 'Debug'
+    })
+    @configuration.instance_eval(&block)
+  end
+  
   def launch(application, options = {})
-    process = ICuke::Simulator::Process.new(application, options)
+    default_options = {:build_configuration => configuration[:build_configuration]}
+    process = ICuke::Simulator::Process.new(application, default_options.merge(options))
     @simulator.launch(process)
   end
   
@@ -181,7 +189,6 @@ class ICukeWorld
   def direction_modifier(direction)
     [:up, :left].include?(direction) ? -1 : 1
   end
-
 end
 
 World do
