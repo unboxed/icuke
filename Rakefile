@@ -31,10 +31,9 @@ file 'app/build/Debug-iphonesimulator/Universal.app/Universal' do
   sh "cd app && xcodebuild -target Universal -configuration Debug -sdk #{ICuke::SDK.fullname}"
 end
 task :app => 'app/build/Debug-iphonesimulator/Universal.app/Universal'
-task :features => :app
 
 task :lib do
-  sh 'cd ext/iCuke && rake'
+  sh 'cd ext && rake'
 end
 
 begin
@@ -42,7 +41,7 @@ begin
   Cucumber::Rake::Task.new(:features)
 
   task :features => :check_dependencies
-  task :features => [:app, :lib]
+  task :features => [:lib, :app]
 rescue LoadError
   task :features do
     abort "Cucumber is not available. In order to run features, you must: sudo gem install cucumber"
