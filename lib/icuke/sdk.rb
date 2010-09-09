@@ -6,8 +6,8 @@ module ICuke
     
     def self.all
       @all ||= begin
-        `xcodebuild -showsdks`.grep(/iphonesimulator/).map do |s|
-          s.sub(/.* iphonesimulator([0-9.]+).*/, '\1').chomp
+        `xcodebuild -showsdks`.split.grep(/iphonesimulator/).map do |s|
+          s.sub(/.*\s?iphonesimulator([0-9.]+).*/, '\1').chomp
         end.sort
       end
     end
