@@ -64,8 +64,7 @@ end
 When /^I tap "([^\"]*)"$/ do |label|
   simulator_driver.tap(label)
 end
-
-When /^I type "([^\"]*)" in "([^\"]*)"$/ do |text, textfield|
+When /^I type "([^\"]*)"(?: in "([^\"]*)")?$/ do |text, textfield|
   simulator_driver.type(textfield, text)
 end
 
