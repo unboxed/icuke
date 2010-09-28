@@ -1,6 +1,6 @@
 require 'rubygems'
 require 'rake'
-require 'lib/icuke/sdk'
+require './lib/icuke/sdk'
 
 begin
   require 'jeweler'
