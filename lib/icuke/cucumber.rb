@@ -53,7 +53,7 @@ class ICukeWorld
     
     @simulator.fire_event(Tap.new(x, y, options))
     
-    sleep(options[:pause] ? 2 : 0.2)
+    sleep(options[:pause] ? 0.75 : 0.2)
     
     refresh
     
@@ -63,13 +63,11 @@ class ICukeWorld
   def swipe(direction, options = {})
     x, y, x2, y2 = screen.swipe_coordinates(direction)
     @simulator.fire_event(Swipe.new(x, y, x2, y2, 0.015, options))
-    sleep(1)
     refresh
   end
 
   def drag(source_x, source_y, dest_x, dest_y, options = {})
     @simulator.fire_event(Drag.new(source_x, source_y, dest_x, dest_y, 0.15, options))
-    sleep(1)
     refresh
   end
 
@@ -112,7 +110,7 @@ class ICukeWorld
     
     # Without this sleep fields which have auto-capitilisation/correction can
     # miss the first keystroke for some reason.
-    sleep(0.5)
+    sleep(0.3)
     
     text.split('').each do |c|
       begin
@@ -160,7 +158,7 @@ class ICukeWorld
   
   def scroll(direction)
     x, y, x2, y2 = screen.swipe_coordinates(swipe_direction(direction))
-    @simulator.fire_event(Swipe.new(x, y, x2, y2, 0.15, {}))
+    @simulator.fire_event(Swipe.new(x, y, x2, y2, 0.12, {}))
     refresh
   end
   
