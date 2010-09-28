@@ -45,6 +45,15 @@ module ICuke
     def record
       @simulator.record
     end
+  
+    def tap_at_point(x, y, options={})
+      options = {
+        :pause => true
+      }.merge(options)
+      @simulator.fire_event(Tap.new(x,y,options))
+      sleep(options[:pause] ? 2 : 0.2)
+      refresh
+    end
 
     def tap(label, options = {}, &block)
       options = {

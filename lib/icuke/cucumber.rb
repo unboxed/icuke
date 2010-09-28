@@ -65,6 +65,9 @@ When /^I tap "([^\"]*)"$/ do |label|
   simulator_driver.tap(label)
 end
 
+When /^I tap (\d+),(\d+)$/ do |x,y|
+  simulator_driver.tap_at_point(x.to_i, y.to_i)
+end
 When /^I type "([^\"]*)" in "([^\"]*)"$/ do |text, textfield|
   simulator_driver.type(textfield, text)
 end
