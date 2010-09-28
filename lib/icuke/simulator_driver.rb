@@ -106,52 +106,55 @@ module ICuke
     end
 
     def type(textfield, text, options = {})
-      tap(textfield, :hold_for => 0.75) do |field|
-        if field['value']
-          tap('Select All')
-          tap('Delete')
-        end
-      end
+       unless textfield == '' || textfield.nil?
+         tap(textfield, :hold_for => 0.75) do |field|
+           if field['value']
+             tap('Select All')
+             tap('Delete')
+           end
+         end
+       end
+       
+       # Without this sleep fields which have auto-capitilisation/correction can
+       # miss the first keystroke for some reason.
+       sleep(0.3)
+       
+       text.split('').each do |c|
+         begin
+           tap(c == ' ' ? 'space' : c, :pause => false)
+         rescue Exception => e
+           try_keyboards =
+             case c
+             when /[a-zA-Z]/
+               ['more, letters', 'shift']
+             when /[0-9]/
+               ['more, numbers']
+             else
+               ['more, numbers', 'more, symbols']
+             end
+           until try_keyboards.empty?
+             begin
+               tap(try_keyboards.shift, :pause => false)
+               retry
+             rescue
+             end
+           end
+           raise e
+         end
+       end
 
-      # Without this sleep fields which have auto-capitilisation/correction can
-      # miss the first keystroke for some reason.
-      sleep(0.5)
+       # From UIReturnKeyType
+       # Should probably sort these in rough order of likelyhood?
+       return_keys = ['return', 'go', 'google', 'join', 'next', 'route', 'search', 'send', 'yahoo', 'done', 'emergency call']
+       return_keys.each do |key|
+         begin
+           tap(key)
+           return
+         rescue
+         end
+       end
+     end
 
-      text.split('').each do |c|
-        begin
-          tap(c == ' ' ? 'space' : c, :pause => false)
-        rescue Exception => e
-          try_keyboards =
-            case c
-            when /[a-zA-Z]/
-              ['more, letters', 'shift']
-            when /[0-9]/
-              ['more, numbers']
-            else
-              ['more, numbers', 'more, symbols']
-            end
-          until try_keyboards.empty?
-            begin
-              tap(try_keyboards.shift, :pause => false)
-              retry
-            rescue
-            end
-          end
-          raise e
-        end
-      end
-
-      # From UIReturnKeyType
-      # Should probably sort these in rough order of likelyhood?
-      return_keys = ['return', 'go', 'google', 'join', 'next', 'route', 'search', 'send', 'yahoo', 'done', 'emergency call']
-      return_keys.each do |key|
-        begin
-          tap(key)
-          return
-        rescue
-        end
-      end
-    end
 
     def scroll_to(text, options = {})
       x, y, x2, y2 = screen.swipe_coordinates(swipe_direction(options[:direction]))
