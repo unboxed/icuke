@@ -1,0 +1,252 @@
+<screen>
+  <frame x="0.000000" y="0.000000" width="320.000000" height="480.000000"/>
+  <UIWindow>
+    <UILayoutContainerView>
+      <UINavigationTransitionView>
+        <UIViewControllerWrapperView>
+          <UITableView>
+            <UITableViewCell>
+              <UIGroupTableViewCellBackground/>
+              <UIView>
+                <UILabel traits="static_text " label="ControlsViewController.m: -(UISlider *)customSlider">
+                  <frame x="20.000000" y="465.000000" width="280.000000" height="37.000000"/>
+                </UILabel>
+              </UIView>
+              <UITableTextAccessibilityElement traits="" label="ControlsViewController.m: -(UISlider *)customSlider">
+                <frame x="-0.000000" y="464.000000" width="318.001068" height="39.000000"/>
+              </UITableTextAccessibilityElement>
+            </UITableViewCell>
+            <UITableViewCell>
+              <UIGroupTableViewCellBackground/>
+              <UIView>
+                <UILabel traits="static_text " label="Customized Slider">
+                  <frame x="20.000000" y="415.000000" width="280.000000" height="49.000000"/>
+                </UILabel>
+                <UISlider traits="" label="Custom" value="50%">
+                  <frame x="184.000000" y="427.000000" width="120.000000" height="23.000000"/>
+                  <UIImageView/>
+                  <UIImageView/>
+                  <UIImageView/>
+                </UISlider>
+              </UIView>
+              <UITableTextAccessibilityElement traits="" label="Customized Slider">
+                <frame x="-0.000000" y="414.000000" width="318.001068" height="50.000000"/>
+              </UITableTextAccessibilityElement>
+              <UIAccessibilityElementMockView traits="updates_frequently " label="Custom" value="50%">
+                <frame x="184.000000" y="427.000000" width="120.000000" height="23.000000"/>
+              </UIAccessibilityElementMockView>
+            </UITableViewCell>
+            <UITableViewCell>
+              <UIGroupTableViewCellBackground/>
+              <UIView>
+                <UILabel traits="static_text " label="ControlsViewController.m: -(UISlider *)sliderCtl">
+                  <frame x="20.000000" y="313.000000" width="280.000000" height="37.000000"/>
+                </UILabel>
+              </UIView>
+              <UITableTextAccessibilityElement traits="" label="ControlsViewController.m: -(UISlider *)sliderCtl">
+                <frame x="-0.000000" y="312.000000" width="318.001068" height="39.000000"/>
+              </UITableTextAccessibilityElement>
+            </UITableViewCell>
+            <UITableViewCell>
+              <UIGroupTableViewCellBackground/>
+              <UIView>
+                <UILabel traits="static_text " label="Standard Slider">
+                  <frame x="20.000000" y="263.000000" width="280.000000" height="49.000000"/>
+                </UILabel>
+                <UISlider traits="" label="Standard slider" value="50%">
+                  <frame x="184.000000" y="275.000000" width="120.000000" height="23.000000"/>
+                  <UIImageView/>
+                  <UIImageView/>
+                  <UIImageView/>
+                </UISlider>
+              </UIView>
+              <UITableTextAccessibilityElement traits="" label="Standard Slider">
+                <frame x="-0.000000" y="262.000000" width="318.001068" height="50.000000"/>
+              </UITableTextAccessibilityElement>
+              <UIAccessibilityElementMockView traits="updates_frequently " label="Standard slider" value="50%">
+                <frame x="184.000000" y="275.000000" width="120.000000" height="23.000000"/>
+              </UIAccessibilityElementMockView>
+            </UITableViewCell>
+            <UITableViewCell>
+              <UIGroupTableViewCellBackground/>
+              <UIView>
+                <UILabel traits="static_text " label="ControlsViewController.m: -(UISwitch *)switchCtl">
+                  <frame x="20.000000" y="161.000000" width="280.000000" height="37.000000"/>
+                </UILabel>
+              </UIView>
+              <UITableTextAccessibilityElement traits="" label="ControlsViewController.m: -(UISwitch *)switchCtl">
+                <frame x="-0.000000" y="160.000000" width="318.001068" height="39.000000"/>
+              </UITableTextAccessibilityElement>
+            </UITableViewCell>
+            <UITableViewCell>
+              <UIGroupTableViewCellBackground/>
+              <UIView>
+                <UILabel traits="static_text " label="Standard Switch">
+                  <frame x="20.000000" y="111.000000" width="280.000000" height="49.000000"/>
+                </UILabel>
+                <UISwitch traits="button " label="Standard switch">
+                  <frame x="208.000000" y="123.000000" width="94.000000" height="27.000000"/>
+                  <_UISwitchSlider>
+                    <UIImageView/>
+                    <UIImageView/>
+                    <UIView>
+                      <UILabel traits="static_text " label="ON">
+                        <frame x="171.000000" y="123.000000" width="24.000000" height="27.000000"/>
+                      </UILabel>
+                      <UILabel traits="static_text " label="OFF">
+                        <frame x="259.000000" y="123.000000" width="32.000000" height="27.000000"/>
+                      </UILabel>
+                    </UIView>
+                    <UIImageView/>
+                  </_UISwitchSlider>
+                </UISwitch>
+              </UIView>
+              <UITableTextAccessibilityElement traits="" label="Standard Switch">
+                <frame x="-0.000000" y="110.000000" width="318.001068" height="50.000000"/>
+              </UITableTextAccessibilityElement>
+              <UIAccessibilityElementMockView traits="button updates_frequently " label="Standard switch">
+                <frame x="208.000000" y="123.000000" width="94.000000" height="27.000000"/>
+              </UIAccessibilityElementMockView>
+            </UITableViewCell>
+            <UIImageView/>
+            <UITableHeaderFooterView/>
+            <UITableHeaderFooterView/>
+            <UITableHeaderFooterView/>
+            <UIImageView/>
+            <UITableViewSectionElement>
+              <frame x="0.000000" y="74.000000" width="320.000000" height="36.000000"/>
+              <UITableSectionPart traits="" label="UISwitch">
+                <frame x="0.000000" y="74.000000" width="320.000000" height="36.000000"/>
+              </UITableSectionPart>
+            </UITableViewSectionElement>
+            <UITableViewCellAccessibilityElement>
+              <frame x="0.000000" y="110.000000" width="320.000000" height="50.000000"/>
+              <UITableTextAccessibilityElement traits="" label="Standard Switch">
+                <frame x="-0.000000" y="110.000000" width="318.001068" height="50.000000"/>
+              </UITableTextAccessibilityElement>
+              <UIAccessibilityElementMockView traits="button updates_frequently " label="Standard switch">
+                <frame x="208.000000" y="123.000000" width="94.000000" height="27.000000"/>
+              </UIAccessibilityElementMockView>
+            </UITableViewCellAccessibilityElement>
+            <UITableViewCellAccessibilityElement>
+              <frame x="0.000000" y="160.000000" width="320.000000" height="39.000000"/>
+              <UITableTextAccessibilityElement traits="" label="ControlsViewController.m: -(UISwitch *)switchCtl">
+                <frame x="-0.000000" y="160.000000" width="318.001068" height="39.000000"/>
+              </UITableTextAccessibilityElement>
+            </UITableViewCellAccessibilityElement>
+            <UITableViewSectionElement>
+              <frame x="0.000000" y="226.000000" width="320.000000" height="36.000000"/>
+              <UITableSectionPart traits="" label="UISlider">
+                <frame x="0.000000" y="226.000000" width="320.000000" height="36.000000"/>
+              </UITableSectionPart>
+            </UITableViewSectionElement>
+            <UITableViewCellAccessibilityElement>
+              <frame x="0.000000" y="262.000000" width="320.000000" height="50.000000"/>
+              <UITableTextAccessibilityElement traits="" label="Standard Slider">
+                <frame x="-0.000000" y="262.000000" width="318.001068" height="50.000000"/>
+              </UITableTextAccessibilityElement>
+              <UIAccessibilityElementMockView traits="updates_frequently " label="Standard slider" value="50%">
+                <frame x="184.000000" y="275.000000" width="120.000000" height="23.000000"/>
+              </UIAccessibilityElementMockView>
+            </UITableViewCellAccessibilityElement>
+            <UITableViewCellAccessibilityElement>
+              <frame x="0.000000" y="312.000000" width="320.000000" height="39.000000"/>
+              <UITableTextAccessibilityElement traits="" label="ControlsViewController.m: -(UISlider *)sliderCtl">
+                <frame x="-0.000000" y="312.000000" width="318.001068" height="39.000000"/>
+              </UITableTextAccessibilityElement>
+            </UITableViewCellAccessibilityElement>
+            <UITableViewSectionElement>
+              <frame x="0.000000" y="378.000000" width="320.000000" height="36.000000"/>
+              <UITableSectionPart traits="" label="UISlider">
+                <frame x="0.000000" y="378.000000" width="320.000000" height="36.000000"/>
+              </UITableSectionPart>
+            </UITableViewSectionElement>
+            <UITableViewCellAccessibilityElement>
+              <frame x="0.000000" y="414.000000" width="320.000000" height="50.000000"/>
+              <UITableTextAccessibilityElement traits="" label="Customized Slider">
+                <frame x="-0.000000" y="414.000000" width="318.001068" height="50.000000"/>
+              </UITableTextAccessibilityElement>
+              <UIAccessibilityElementMockView traits="updates_frequently " label="Custom" value="50%">
+                <frame x="184.000000" y="427.000000" width="120.000000" height="23.000000"/>
+              </UIAccessibilityElementMockView>
+            </UITableViewCellAccessibilityElement>
+            <UITableViewCellAccessibilityElement>
+              <frame x="0.000000" y="464.000000" width="320.000000" height="39.000000"/>
+              <UITableTextAccessibilityElement traits="" label="ControlsViewController.m: -(UISlider *)customSlider">
+                <frame x="-0.000000" y="464.000000" width="318.001068" height="39.000000"/>
+              </UITableTextAccessibilityElement>
+            </UITableViewCellAccessibilityElement>
+            <UITableViewSectionElement>
+              <frame x="0.000000" y="530.000000" width="320.000000" height="36.000000"/>
+              <UITableSectionPart traits="" label="UIPageControl">
+                <frame x="0.000000" y="530.000000" width="320.000000" height="36.000000"/>
+              </UITableSectionPart>
+            </UITableViewSectionElement>
+            <UITableViewCellAccessibilityElement>
+              <frame x="0.000000" y="0.000000" width="0.000000" height="0.000000"/>
+              <UITableTextAccessibilityElement traits="" label="Ten Pages">
+                <frame x="-0.000000" y="0.000000" width="-1.998950" height="0.000000"/>
+              </UITableTextAccessibilityElement>
+              <UIAccessibilityElementMockView traits="updates_frequently " label="page 1 of 10">
+                <frame x="0.000000" y="0.000000" width="158.000000" height="25.000000"/>
+              </UIAccessibilityElementMockView>
+            </UITableViewCellAccessibilityElement>
+            <UITableViewCellAccessibilityElement>
+              <frame x="0.000000" y="0.000000" width="0.000000" height="0.000000"/>
+              <UITableTextAccessibilityElement traits="" label="ControlsViewController.m: -(UIPageControl *)pageControl">
+                <frame x="-0.000000" y="0.000000" width="-1.998950" height="0.000000"/>
+              </UITableTextAccessibilityElement>
+            </UITableViewCellAccessibilityElement>
+            <UITableViewSectionElement>
+              <frame x="0.000000" y="682.000000" width="320.000000" height="36.000000"/>
+              <UITableSectionPart traits="" label="UIActivityIndicatorView">
+                <frame x="0.000000" y="682.000000" width="320.000000" height="36.000000"/>
+              </UITableSectionPart>
+            </UITableViewSectionElement>
+            <UITableViewCellAccessibilityElement>
+              <frame x="0.000000" y="0.000000" width="0.000000" height="0.000000"/>
+              <UITableTextAccessibilityElement traits="" label="Style Gray">
+                <frame x="-0.000000" y="0.000000" width="-1.998950" height="0.000000"/>
+              </UITableTextAccessibilityElement>
+            </UITableViewCellAccessibilityElement>
+            <UITableViewCellAccessibilityElement>
+              <frame x="0.000000" y="0.000000" width="0.000000" height="0.000000"/>
+              <UITableTextAccessibilityElement traits="" label="ControlsViewController.m: -(UIActivityIndicatorView *)progressInd">
+                <frame x="-0.000000" y="0.000000" width="-1.998950" height="0.000000"/>
+              </UITableTextAccessibilityElement>
+            </UITableViewCellAccessibilityElement>
+            <UITableViewSectionElement>
+              <frame x="0.000000" y="834.000000" width="320.000000" height="36.000000"/>
+              <UITableSectionPart traits="" label="UIProgressView">
+                <frame x="0.000000" y="834.000000" width="320.000000" height="36.000000"/>
+              </UITableSectionPart>
+            </UITableViewSectionElement>
+            <UITableViewCellAccessibilityElement>
+              <frame x="0.000000" y="0.000000" width="0.000000" height="0.000000"/>
+              <UITableTextAccessibilityElement traits="" label="Style Default">
+                <frame x="-0.000000" y="0.000000" width="-1.998950" height="0.000000"/>
+              </UITableTextAccessibilityElement>
+              <UIAccessibilityElementMockView traits="updates_frequently " label="Progress" value="50%">
+                <frame x="0.000000" y="0.000000" width="160.000000" height="24.000000"/>
+              </UIAccessibilityElementMockView>
+            </UITableViewCellAccessibilityElement>
+            <UITableViewCellAccessibilityElement>
+              <frame x="0.000000" y="0.000000" width="0.000000" height="0.000000"/>
+              <UITableTextAccessibilityElement traits="" label="ControlsViewController.m: -(UIProgressView *)progressBar">
+                <frame x="-0.000000" y="0.000000" width="-1.998950" height="0.000000"/>
+              </UITableTextAccessibilityElement>
+            </UITableViewCellAccessibilityElement>
+          </UITableView>
+        </UIViewControllerWrapperView>
+      </UINavigationTransitionView>
+      <UINavigationBar>
+        <UINavigationItemView traits="static_text " label="Controls">
+          <frame x="118.000000" y="28.000000" width="84.000000" height="27.000000"/>
+        </UINavigationItemView>
+        <UINavigationItemButtonView traits="button " label="Back">
+          <frame x="5.000000" y="27.000000" width="49.000000" height="30.000000"/>
+        </UINavigationItemButtonView>
+      </UINavigationBar>
+    </UILayoutContainerView>
+  </UIWindow>
+</screen>

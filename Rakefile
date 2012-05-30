@@ -1,6 +1,6 @@
 require 'rubygems'
 require 'rake'
-require 'lib/icuke/sdk'
+require './lib/icuke/sdk'
 
 begin
   require 'jeweler'
@@ -19,6 +19,7 @@ begin
     gem.files += ['ext/bin/waxsim']
     gem.files += ['ext/iCuke/libicuke*.dylib']
     gem.files += ['ext/WaxSim/**/*']
+    gem.files += ['lib/icuke/**/*.rb']
     gem.files -= ['ext/WaxSim/build']
   end
   Jeweler::GemcutterTasks.new
